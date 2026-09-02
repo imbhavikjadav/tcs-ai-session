@@ -17,6 +17,11 @@
     --lc-accent-dim: rgba(245, 165, 36, 0.14);
     --lc-accent-border: rgba(245, 165, 36, 0.35);
 
+    /* Neutral accent for text that belongs to neither project specifically
+       (e.g. the overview hero's kicker) — a calm periwinkle-gray, distinct
+       from both brand colors, legible on the dark ink background. */
+    --neutral-accent: #B8C4E0;
+
     --fn-accent: #2DD4BF;
     --fn-accent-dim: rgba(45, 212, 191, 0.14);
     --fn-accent-border: rgba(45, 212, 191, 0.35);
@@ -47,6 +52,7 @@
       --text: #1C2333;
       --text-dim: #4B5468;
       --text-faint: #7C8499;
+      --neutral-accent: #4A5578;
     }
   }
   :root[data-theme="light"] {
@@ -59,6 +65,7 @@
     --text: #1C2333;
     --text-dim: #4B5468;
     --text-faint: #7C8499;
+    --neutral-accent: #4A5578;
   }
 
   * { box-sizing: border-box; }
@@ -223,10 +230,10 @@
   }
   .hero-kicker {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 16px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--lc-accent);
+    color: var(--neutral-accent);
     margin-bottom: 22px;
   }
   .hero h1 {
@@ -391,13 +398,22 @@
     padding: 32px;
   }
   .distinction-grid {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
-    align-items: start;
-    margin-top: 22px;
+    align-items: stretch;
+    margin-top: 28px;
   }
   @media (max-width: 700px) { .distinction-grid { grid-template-columns: 1fr; } .distinction-grid .vs { display: none; } }
+  .distinction-col {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-raised);
+    padding: 26px 28px;
+  }
+  .distinction-col.lc { border-color: var(--lc-accent-border); }
+  .distinction-col.fn { border-color: var(--fn-accent-border); }
   .distinction-col h4 {
     font-size: 16px;
     text-transform: uppercase;
@@ -408,11 +424,21 @@
   .distinction-col.fn h4 { color: var(--fn-accent); }
   .distinction-col p { color: var(--text-dim); font-size: 16px; line-height: 1.65; }
   .vs {
-    font-family: var(--font-mono);
-    font-size: 11px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.02em;
     color: var(--text-faint);
-    text-align: center;
-    align-self: center;
+    box-shadow: 0 0 0 6px var(--card);
   }
 
   /* ===== Generic content blocks reused across panels ===== */
