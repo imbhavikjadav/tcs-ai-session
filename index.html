@@ -1414,7 +1414,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     <div class="eyebrow">Primary sources</div>
     <h2>Both real invoices, generated automatically</h2>
     <p class="section-lede">Not screenshots of PDFs — the actual files, generated automatically at two
-    different points in the real TRP00059 trip lifecycle and fetched straight from production Storage.
+    different points in the real TRP00060 trip lifecycle and fetched straight from production Storage.
     Preview inline or download.</p>
     <div class="doc-tray">
       <div class="doc-card fn">
@@ -1422,7 +1422,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
           <div class="doc-icon">PDF</div>
           <div>
             <div class="doc-title">Trip Acceptance Invoice</div>
-            <div class="doc-sub">INV-TRP00059 · generated on bid acceptance</div>
+            <div class="doc-sub">INV-TRP00060 · generated on bid acceptance</div>
           </div>
         </div>
         <p class="doc-desc">Auto-generated the instant Bhavik accepted Akshay's bid — trip details, itemized bid, deposit amount, "Confirmed" status.</p>
@@ -1436,7 +1436,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
           <div class="doc-icon">PDF</div>
           <div>
             <div class="doc-title">Trip Completion Invoice</div>
-            <div class="doc-sub">INV-TRP00059-F22080 · generated on settlement</div>
+            <div class="doc-sub">INV-TRP00060-18095E · generated on settlement</div>
           </div>
         </div>
         <p class="doc-desc">Final settlement: actual toll vs. estimate, the misc expense with receipt, both payments confirmed, full status history — and the explicit not-an-E-Way-Bill disclaimer.</p>
@@ -1451,274 +1451,217 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
   <div class="section">
     <div class="eyebrow">Live walkthrough</div>
     <h2>One trip, start to finish</h2>
-    <p class="section-lede">Two real accounts created against the live production Supabase project —
-    <strong>Bhavik Jadav</strong> as the business owner, <strong>Akshay Makwana</strong> as the individual
-    driver — carrying a real KYC document set through admin approval, a real Gujarat-registered truck,
-    and a real Ahmedabad → Bhavnagar shipment from posting through final payment and rating.</p>
+    <p class="section-lede">Two real accounts on the live production Supabase project — <strong>Bhavik
+    Jadav</strong> as the business owner, <strong>Akshay Makwana</strong> as the individual driver — running
+    a real shipment of home electronics from Ahmedabad to Rajkot, Gujarat, from posting through final
+    payment and rating. Every screen below is the desktop view, captured live.</p>
     <div class="callout fn" style="margin-top:8px">
-  <strong>This is one real, complete trip</strong> — TRP00059, Ahmedabad → Bhavnagar, ₹24,450 total bid,
-  created against live production Supabase on 2 September 2026 and left in place afterward, exactly as
-  it happened: two real accounts (Bhavik Jadav, business owner · Akshay Makwana, individual driver), a
-  real Gujarat-registered truck, real KYC documents, real admin approval, a real bid, real photo evidence
-  at pickup and delivery, real payment proofs, and two real generated invoice PDFs. Every one of the 99
-  screenshots below is grouped by the stage of the journey it belongs to.
-</div>
-
-<div class="gallery-group">
-  <h3>Public &amp; landing <span class="gnum">01–02</span></h3>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/public/01-landing-page-desktop.png" data-cap="Landing page, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/public/01-landing-page-desktop.png" loading="lazy" alt="FreightNexus landing page desktop"/></div>
-      <div class="cap"><b>Landing page</b>"Ship smarter, choose freely" — the bidding-not-dispatch pitch, itemized bid comparison example</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/public/01-landing-page-mobile.png" data-cap="Landing page, mobile">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/public/01-landing-page-mobile.png" loading="lazy" alt="FreightNexus landing page mobile"/></div>
-      <div class="cap"><b>Mobile landing</b>430px viewport — same content, single column</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/public/02-signup-role-picker.png" data-cap="Sign-up role picker">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/public/02-signup-role-picker.png" loading="lazy" alt="Role picker screen"/></div>
-      <div class="cap"><b>Get started</b>Business Owner · Individual Owner-Driver · Fleet Owner</div>
+      <strong>This is one real, complete trip</strong> — TRP00060, Ahmedabad → Rajkot, 40 cartons of
+      branded home electronics and small appliances (LED TVs, mixer-grinders, inverter parts), 3,200kg,
+      closed container. Settlement: ₹18,000 freight + ₹1,500 driver allowance + ₹1,050 actual toll
+      (estimated ₹850, +₹200 delta) + ₹200 misc expense (police checkpoint fee) = <strong>₹20,750 total</strong>
+      — ₹5,087.5 deposit (25%) and ₹15,662.5 final payment, both confirmed on both sides. Both parties
+      rated each other 5 stars. Left in production exactly as it happened.
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Business Owner onboarding — Bhavik Jadav <span class="gnum">03–10</span></h3>
-  <p class="gdesc">A real 4-step KYC registration: account details, government ID (Aadhaar), passport-style photo, then review — using the real BO-Aadhaar-Card.jpeg and BO-Passport-Photo.jpeg from the provided sample set.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/03b-signup-form-filled.png" data-cap="Account details filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/03b-signup-form-filled.png" loading="lazy" alt="Business owner signup form filled"/></div>
-      <div class="cap"><b>Step 1 — Account</b>Name, phone, email, password</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/05-signup-step2-identity-doc-filled.png" data-cap="Identity document filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/05-signup-step2-identity-doc-filled.png" loading="lazy" alt="Identity document step filled"/></div>
-      <div class="cap"><b>Step 2 — Government ID</b>Aadhaar number + real uploaded card image</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/07-signup-step3-photo-filled.png" data-cap="Passport photo uploaded">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/07-signup-step3-photo-filled.png" loading="lazy" alt="Passport photo step filled"/></div>
-      <div class="cap"><b>Step 3 — Photo</b>Passport-style photo upload</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/08-signup-step4-review.png" data-cap="Review and submit">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/08-signup-step4-review.png" loading="lazy" alt="Review and submit step"/></div>
-      <div class="cap"><b>Step 4 — Review</b>Everything checked before submit</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/09-registration-success-pending-review.png" data-cap="Pending review">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/09-registration-success-pending-review.png" loading="lazy" alt="Registration pending review"/></div>
-      <div class="cap"><b>Submitted</b>"Your profile is under review" — Pending Review badge</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/business-owner/10b-dashboard-pre-approval-desktop.png" data-cap="Dashboard, pre-approval, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/10b-dashboard-pre-approval-desktop.png" loading="lazy" alt="Business owner dashboard pre-approval"/></div>
-      <div class="cap"><b>Dashboard</b>Pre-approval state, desktop</div>
+  <div class="section">
+    <div class="eyebrow">Public &amp; auth</div>
+    <h2>Landing page and sign-up</h2>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/public/01-landing-hero.png" data-cap="Landing page hero">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/public/01-landing-hero.png" loading="lazy" alt="Landing page hero"/></div>
+        <div class="cap"><b>Landing — Hero</b>"Ship smarter, choose freely" — the bidding-not-dispatch pitch</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/public/02-landing-how-it-works.png" data-cap="How it works section">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/public/02-landing-how-it-works.png" loading="lazy" alt="How it works section"/></div>
+        <div class="cap"><b>How It Works</b>Side-by-side flow for shippers and drivers</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/public/03-landing-features.png" data-cap="Trust and safety features">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/public/03-landing-features.png" loading="lazy" alt="Trust and safety features"/></div>
+        <div class="cap"><b>Trust &amp; Safety</b>KYC-verified, itemized bids, two-way ratings, no platform custody</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/public/06-sign-up-role-picker.png" data-cap="Sign-up role picker">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/public/06-sign-up-role-picker.png" loading="lazy" alt="Sign-up role picker"/></div>
+        <div class="cap"><b>Get Started</b>Business Owner · Individual Owner-Driver · Fleet Owner</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/public/05-sign-in.png" data-cap="Sign in form">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/public/05-sign-in.png" loading="lazy" alt="Sign in form"/></div>
+        <div class="cap"><b>Sign In</b>Returning-user form</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Driver &amp; truck onboarding — Akshay Makwana <span class="gnum">11–28</span></h3>
-  <p class="gdesc">The longer 6-step wizard: account, government ID, photo, driving license, then a 3-part truck sub-wizard — details, all 5 required documents, all 4 photo angles — for a real Gujarat-registered Tata 407 Gold SFC.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/driver/11b-signup-form-filled.png" data-cap="Driver account details filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/11b-signup-form-filled.png" loading="lazy" alt="Driver signup form"/></div>
-      <div class="cap"><b>Step 1 — Account</b>Akshay Makwana's details</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/19-signup-step4-dl-filled.png" data-cap="Driving license filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/19-signup-step4-dl-filled.png" loading="lazy" alt="Driving license step"/></div>
-      <div class="cap"><b>Step 4 — Driving License</b>DL number, expiry, uploaded license image</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/21-signup-step5-substep1-truck-details-filled.png" data-cap="Truck details filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/21-signup-step5-substep1-truck-details-filled.png" loading="lazy" alt="Truck details form filled"/></div>
-      <div class="cap"><b>Truck 1/3 — Details</b>GJ01AB1234, chassis/engine numbers, Gujarat, national permit</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/22-signup-step5-substep2-docs-resumed.png" data-cap="Truck documents step, resumed after re-login">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/22-signup-step5-substep2-docs-resumed.png" loading="lazy" alt="Truck documents resumed state"/></div>
-      <div class="cap"><b>Resumability</b>Re-login mid-wizard — RC/Insurance/PUC already on file, Continue or Replace per document</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/23-signup-step5-substep2-docs-filled.png" data-cap="All 5 truck documents filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/23-signup-step5-substep2-docs-filled.png" loading="lazy" alt="All truck documents filled"/></div>
-      <div class="cap"><b>Truck 2/3 — Documents</b>RC, Insurance, PUC, Fitness Certificate, Permit</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/26-signup-step5-substep3-photos-filled.png" data-cap="All 4 truck photo angles attached">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/26-signup-step5-substep3-photos-filled.png" loading="lazy" alt="All truck photos attached"/></div>
-      <div class="cap"><b>Truck 3/3 — Photos</b>Front, back, left, right — all 4 angles</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/27-signup-step6-review.png" data-cap="Final review, step 6 of 6">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/27-signup-step6-review.png" loading="lazy" alt="Final review step"/></div>
-      <div class="cap"><b>Step 6 — Review</b>Full submission summary</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/driver/28b-dashboard-pre-approval-desktop.png" data-cap="Driver dashboard, pre-approval, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/28b-dashboard-pre-approval-desktop.png" loading="lazy" alt="Driver dashboard pre-approval desktop"/></div>
-      <div class="cap"><b>Dashboard</b>Pre-approval, showing the truck card with all 4 photos</div>
+  <div class="section">
+    <div class="eyebrow">Posting the trip</div>
+    <h2>Business owner posts TRP00060</h2>
+    <p class="section-lede">A real 5-step wizard: route, goods details, timeline, receiver + deposit, and a final review — geocoded live against Google Maps.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/trip/02-post-step1-route-filled.png" data-cap="Route filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/02-post-step1-route-filled.png" loading="lazy" alt="Route step filled"/></div>
+        <div class="cap"><b>Step 1 — Route</b>Ahmedabad → Rajkot, geocoded</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/06-post-step2-goods-filled.png" data-cap="Goods details filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/06-post-step2-goods-filled.png" loading="lazy" alt="Goods details filled"/></div>
+        <div class="cap"><b>Step 2 — Goods</b>3,200kg · electronics/appliances, closed container required</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/08-post-step3-timeline-filled.png" data-cap="Timeline filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/08-post-step3-timeline-filled.png" loading="lazy" alt="Timeline step filled"/></div>
+        <div class="cap"><b>Step 3 — Timeline</b>Pickup window + expected delivery date</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/10-post-step4-receiver-filled.png" data-cap="Receiver and deposit filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/10-post-step4-receiver-filled.png" loading="lazy" alt="Receiver step filled"/></div>
+        <div class="cap"><b>Step 4 — Deposit</b>Receiver details + 25% deposit set</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/11-post-step5-review.png" data-cap="Final review">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/11-post-step5-review.png" loading="lazy" alt="Final review step"/></div>
+        <div class="cap"><b>Step 5 — Review</b>Everything checked before posting</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/12-post-trip-success.png" data-cap="Trip posted — TRP00060">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/12-post-trip-success.png" loading="lazy" alt="Trip posted confirmation"/></div>
+        <div class="cap"><b>Posted</b>TRP00060 confirmed, live route map</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Admin KYC review <span class="gnum">29–31</span></h3>
-  <p class="gdesc">8 pending documents across both accounts (3 identity + 5 truck), reviewed and approved inline — each card shows the real uploaded image, masked ID number, and expiry date.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/admin/29-admin-kyc-queue-desktop.png" data-cap="Admin KYC queue — 8 pending items">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/admin/29-admin-kyc-queue-desktop.png" loading="lazy" alt="Admin KYC queue"/></div>
-      <div class="cap"><b>KYC Queue</b>All 8 pending documents across both new accounts</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/admin/30-admin-document-review-inline.png" data-cap="Inline document review">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/admin/30-admin-document-review-inline.png" loading="lazy" alt="Inline document review"/></div>
-      <div class="cap"><b>Document review</b>Image + metadata + Approve/Reject, inline on the card</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/admin/31-admin-dashboard-desktop.png" data-cap="Admin dashboard after approvals">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/admin/31-admin-dashboard-desktop.png" loading="lazy" alt="Admin dashboard"/></div>
-      <div class="cap"><b>Admin dashboard</b>0 pending KYC, Gujarat truck density = 1, after both accounts approved</div>
+  <div class="section">
+    <div class="eyebrow">Bidding</div>
+    <h2>Akshay browses, bids, and wins</h2>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/driver/02-browse-trips.png" data-cap="Available trips listing">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/02-browse-trips.png" loading="lazy" alt="Browse trips listing"/></div>
+        <div class="cap"><b>Open for bidding</b>TRP00060 surfaced — passed permit/body-type/capacity filters</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/03-trip-detail-before-bid.png" data-cap="Trip detail before bidding">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/03-trip-detail-before-bid.png" loading="lazy" alt="Trip detail before bid"/></div>
+        <div class="cap"><b>Trip detail</b>Full shipment details from the driver's side</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/05-bid-form-filled.png" data-cap="Bid form filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/05-bid-form-filled.png" loading="lazy" alt="Bid form filled"/></div>
+        <div class="cap"><b>Bid form</b>Freight ₹18,000 + allowance ₹1,500 + estimated toll ₹850</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/06-bid-submitted.png" data-cap="Bid submitted">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/06-bid-submitted.png" loading="lazy" alt="Bid submitted confirmation"/></div>
+        <div class="cap"><b>Bid submitted</b>PENDING, ₹20,350 total breakdown</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/14-bo-review-bids.png" data-cap="Business owner reviewing bids">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/14-bo-review-bids.png" loading="lazy" alt="Business owner reviewing bids"/></div>
+        <div class="cap"><b>Bid review</b>Driver rating/badge, truck details, itemized bid</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/15-bo-after-accept-top.png" data-cap="Bid accepted">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/15-bo-after-accept-top.png" loading="lazy" alt="Bid accepted"/></div>
+        <div class="cap"><b>Accepted</b>Trip Actions timeline appears, deposit now due</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Posting the trip &amp; bidding <span class="gnum">32–48</span></h3>
-  <p class="gdesc">Bhavik posts a real Ahmedabad → Bhavnagar shipment (3,200kg, FMCG); the eligibility filter correctly surfaces it to Akshay's truck, who bids ₹24,450 broken into freight + allowance + estimated toll.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/trip/33-post-trip-step1-route-filled.png" data-cap="Route filled, geocoded">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/33-post-trip-step1-route-filled.png" loading="lazy" alt="Trip route step filled"/></div>
-      <div class="cap"><b>Step 1 — Route</b>Ahmedabad → Bhavnagar, Google-geocoded</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/35-post-trip-step2-goods-filled.png" data-cap="Goods details filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/35-post-trip-step2-goods-filled.png" loading="lazy" alt="Goods details step filled"/></div>
-      <div class="cap"><b>Step 2 — Goods</b>3,200kg · FMCG</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/39-post-trip-step4-receiver-deposit-filled.png" data-cap="Receiver + deposit filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/39-post-trip-step4-receiver-deposit-filled.png" loading="lazy" alt="Receiver and deposit step"/></div>
-      <div class="cap"><b>Step 4 — Deposit</b>Receiver details + 30% deposit set</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/41-post-trip-confirmation.png" data-cap="Trip posted — TRP00059">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/41-post-trip-confirmation.png" loading="lazy" alt="Trip posted confirmation"/></div>
-      <div class="cap"><b>Posted</b>TRP00059 confirmed, live Google Maps route render</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/42b-my-trips-list-desktop.png" data-cap="My Trips list, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/42b-my-trips-list-desktop.png" loading="lazy" alt="My trips list desktop"/></div>
-      <div class="cap"><b>My Trips</b>Business owner's trip list, desktop</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/44b-driver-trip-detail-desktop.png" data-cap="Driver's trip detail, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/44b-driver-trip-detail-desktop.png" loading="lazy" alt="Driver trip detail desktop"/></div>
-      <div class="cap"><b>Trip detail (driver side)</b>Same page, revisited after completion — driver's "Your Bid" card alongside the accepted bid</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/46-driver-bid-form-filled.png" data-cap="Bid form filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/46-driver-bid-form-filled.png" loading="lazy" alt="Bid form filled"/></div>
-      <div class="cap"><b>Bid form</b>Freight ₹21,000 + allowance ₹2,500 + estimated toll ₹950</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/47-driver-bid-submitted-confirmation.png" data-cap="Bid submitted — ₹24,450 total">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/47-driver-bid-submitted-confirmation.png" loading="lazy" alt="Bid submitted confirmation"/></div>
-      <div class="cap"><b>Bid submitted</b>PENDING, ₹24,450 total breakdown</div>
+  <div class="section">
+    <div class="eyebrow">Deposit &amp; pickup</div>
+    <h2>Deposit confirmed, goods collected</h2>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/payments/02-deposit-pay-form-filled.png" data-cap="Deposit payment proof uploaded">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/payments/02-deposit-pay-form-filled.png" loading="lazy" alt="Deposit payment proof uploaded"/></div>
+        <div class="cap"><b>Deposit proof</b>Real bank-transfer receipt attached</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/08-after-confirm-deposit.png" data-cap="Deposit confirmed both sides">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/08-after-confirm-deposit.png" loading="lazy" alt="Deposit confirmed"/></div>
+        <div class="cap"><b>Two-way confirmed</b>Trip now en route to pickup</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/10-confirm-pickup-photos-selected.png" data-cap="4 pickup photos attached">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/10-confirm-pickup-photos-selected.png" loading="lazy" alt="Pickup photos selected"/></div>
+        <div class="cap"><b>Pickup evidence</b>All 4 real pickup-condition photos</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/02-verify-pickup-photos.png" data-cap="Verifying pickup photos">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/02-verify-pickup-photos.png" loading="lazy" alt="Verify pickup photos"/></div>
+        <div class="cap"><b>Blocking checkpoint</b>Shipper must verify before trip proceeds to in-transit</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/trip/19-in-transit-tracking-map-bo.png" data-cap="In-transit live tracking">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/19-in-transit-tracking-map-bo.png" loading="lazy" alt="In transit live tracking"/></div>
+        <div class="cap"><b>Live tracking</b>"Signal unavailable" — the correct empty state with no physical tracker connected</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/17-delivery-signoff-question.png" data-cap="Delivery sign-off question">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/17-delivery-signoff-question.png" loading="lazy" alt="Delivery sign-off question"/></div>
+        <div class="cap"><b>Sign-off</b>"Is everything in order?" — branches to the dispute flow on "No"</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Bid review &amp; acceptance <span class="gnum">49–51</span></h3>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/trip/50-bo-accept-bid-confirm-dialog.png" data-cap="Accepting the bid, mid-action">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/50-bo-accept-bid-confirm-dialog.png" loading="lazy" alt="Accept bid action in progress, mobile"/></div>
-      <div class="cap"><b>Bid review</b>Full trip details, driver's bid breakdown, Accept action mid-flight</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/51-bo-bid-accepted-confirmation.png" data-cap="Bid accepted — deposit now due">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/51-bo-bid-accepted-confirmation.png" loading="lazy" alt="Bid accepted confirmation"/></div>
-      <div class="cap"><b>Accepted</b>Trip Actions timeline appears, ₹7,335 deposit due, Acceptance Invoice generated</div>
+  <div class="section">
+    <div class="eyebrow">Delivery &amp; settlement</div>
+    <h2>Delivered, tolls trued up, final amount approved</h2>
+    <p class="section-lede">The toll true-up in action: estimated ₹850 vs. actual ₹1,050, plus a real ₹200 misc expense (police checkpoint fee) — folded into one shipper approval.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/driver/19-delivery-photos-selected.png" data-cap="4 delivery photos attached">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/19-delivery-photos-selected.png" loading="lazy" alt="Delivery photos selected"/></div>
+        <div class="cap"><b>Delivery evidence</b>All 4 real delivery-condition photos</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/06-delivery-photos-verified.png" data-cap="Delivery photos verified">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/06-delivery-photos-verified.png" loading="lazy" alt="Delivery photos verified"/></div>
+        <div class="cap"><b>Verified</b>Trip moves to final expenses submission</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/24-final-toll-and-expense-filled.png" data-cap="Toll and misc expense filled">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/24-final-toll-and-expense-filled.png" loading="lazy" alt="Toll and expense filled"/></div>
+        <div class="cap"><b>Toll true-up</b>Actual ₹1,050 toll + ₹200 police-checkpoint fee, both with receipts</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/07-approve-final-amount-view.png" data-cap="Final amount approval">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/07-approve-final-amount-view.png" loading="lazy" alt="Final amount approval view"/></div>
+        <div class="cap"><b>One combined approval</b>Toll delta (+₹200) and misc expense folded into a single review</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/payments/06-final-payment-form-filled.png" data-cap="Final payment proof uploaded">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/payments/06-final-payment-form-filled.png" loading="lazy" alt="Final payment proof"/></div>
+        <div class="cap"><b>Final payment</b>₹15,662.5 — proof of transfer attached</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/28-confirm-final-payment-view.png" data-cap="Confirming final payment received">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/28-confirm-final-payment-view.png" loading="lazy" alt="Confirm final payment received"/></div>
+        <div class="cap"><b>Two-way confirmed</b>Driver's view before confirming receipt, shipper's proof visible</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Execution — deposit, pickup, transit, delivery <span class="gnum">52–69</span></h3>
-  <p class="gdesc">Every step of execution is its own gated status, each requiring an explicit action — real deposit proof, real pickup photos (all 4), live-tracking's honest empty state (no physical GPS hardware), real delivery sign-off, real delivery photos.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/payments/52-bo-deposit-payment-proof-uploaded.png" data-cap="Deposit proof uploaded">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/payments/52-bo-deposit-payment-proof-uploaded.png" loading="lazy" alt="Deposit payment proof uploaded"/></div>
-      <div class="cap"><b>Deposit proof</b>Real bank-transfer receipt attached</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/payments/55-driver-deposit-confirmed-en-route-ready.png" data-cap="Deposit confirmed both sides">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/payments/55-driver-deposit-confirmed-en-route-ready.png" loading="lazy" alt="Deposit confirmed"/></div>
-      <div class="cap"><b>Two-way confirmed</b>Trip now en route to pickup</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/57-driver-pickup-photos-selected.png" data-cap="4 pickup photos attached">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/57-driver-pickup-photos-selected.png" loading="lazy" alt="Pickup photos selected"/></div>
-      <div class="cap"><b>Pickup evidence</b>All 4 real pickup-condition photos</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/59-bo-verify-pickup-photos-view.png" data-cap="Shipper verifies pickup photos">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/59-bo-verify-pickup-photos-view.png" loading="lazy" alt="Verify pickup photos"/></div>
-      <div class="cap"><b>Blocking checkpoint</b>Shipper must verify before trip proceeds to in-transit</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/61b-bo-in-transit-live-tracking-desktop.png" data-cap="In-transit live tracking, desktop">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/61b-bo-in-transit-live-tracking-desktop.png" loading="lazy" alt="In transit live tracking desktop"/></div>
-      <div class="cap"><b>Live tracking</b>"Signal unavailable" — the correct empty state with no physical tracker connected</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/64-driver-arrived-signoff-form.png" data-cap="Delivery sign-off form">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/64-driver-arrived-signoff-form.png" loading="lazy" alt="Delivery sign-off form"/></div>
-      <div class="cap"><b>Sign-off</b>"Is everything in order?" — branches to the dispute flow on "No"</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/66-driver-delivery-photos-selected.png" data-cap="4 delivery photos attached">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/66-driver-delivery-photos-selected.png" loading="lazy" alt="Delivery photos selected"/></div>
-      <div class="cap"><b>Delivery evidence</b>All 4 real delivery-condition photos</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/69-bo-delivery-verified-final-expenses-view.png" data-cap="Delivery verified">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/69-bo-delivery-verified-final-expenses-view.png" loading="lazy" alt="Delivery verified"/></div>
-      <div class="cap"><b>Verified</b>Trip moves to final expenses submission</div>
+  <div class="section">
+    <div class="eyebrow">Completion, invoices &amp; ratings</div>
+    <h2>Trip closed, both sides rated</h2>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/09-trip-completed-bo-fullpage.png" data-cap="Completed trip, full page">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/09-trip-completed-bo-fullpage.png" loading="lazy" alt="Completed trip full page"/></div>
+        <div class="cap"><b>Completed</b>All 14 milestones, both invoices, settlement breakdown, photos, status history</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/11-rating-form-filled.png" data-cap="5-star rating with comment">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/11-rating-form-filled.png" loading="lazy" alt="Rating form filled"/></div>
+        <div class="cap"><b>Rating</b>Bhavik rates Akshay — 5 stars + comment</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/12-rating-submitted-both-visible.png" data-cap="Both ratings and invoices visible">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/12-rating-submitted-both-visible.png" loading="lazy" alt="Both ratings and invoices"/></div>
+        <div class="cap"><b>Closed out</b>Both 5-star ratings and both invoices, side by side</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/33-dashboard-trip-completed.png" data-cap="Driver dashboard, trip completed">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/33-dashboard-trip-completed.png" loading="lazy" alt="Driver dashboard completed"/></div>
+        <div class="cap"><b>Driver dashboard</b>₹45,600 total earned across 2 completed trips, 5.0 average rating</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Final toll, expenses &amp; payment <span class="gnum">70–78</span></h3>
-  <p class="gdesc">The toll true-up in action: estimated ₹950 vs. actual ₹1,050, plus a real ₹300 misc expense (police checkpoint fee) — folded into one shipper approval, per the spec's "no separate per-expense review" rule.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/trip/72-driver-toll-and-misc-expense-filled.png" data-cap="Toll + misc expense filled">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/72-driver-toll-and-misc-expense-filled.png" loading="lazy" alt="Toll and misc expense filled"/></div>
-      <div class="cap"><b>Toll true-up</b>Actual ₹1,050 toll + ₹300 police-checkpoint fee, both with receipts</div>
+  <div class="section">
+    <div class="eyebrow">Profile &amp; account</div>
+    <h2>Notifications and profile pages, both roles</h2>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/15-profile-page.png" data-cap="Business owner profile page">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/15-profile-page.png" loading="lazy" alt="Business owner profile page"/></div>
+        <div class="cap"><b>BO profile</b>Approved status, last-4-digit masked KYC document</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/35-profile-page.png" data-cap="Driver profile page">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/35-profile-page.png" loading="lazy" alt="Driver profile page"/></div>
+        <div class="cap"><b>Driver profile</b>Approved status, identity documents on file</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/business-owner/14-notifications-panel.png" data-cap="Notifications panel">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/business-owner/14-notifications-panel.png" loading="lazy" alt="Notifications panel"/></div>
+        <div class="cap"><b>Notifications</b>Bell icon panel, pending items</div>
+      </div>
+      <div class="shot" data-src="screenshots/freightnexus/driver/36-notification-preferences.png" data-cap="Notification preferences">
+        <div class="thumb-wrap"><img src="screenshots/freightnexus/driver/36-notification-preferences.png" loading="lazy" alt="Notification preferences"/></div>
+        <div class="cap"><b>Preferences</b>Per-category opt-in email toggles</div>
+      </div>
     </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/74-bo-approve-final-amount-view.png" data-cap="Final amount approval">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/74-bo-approve-final-amount-view.png" loading="lazy" alt="Final amount approval view"/></div>
-      <div class="cap"><b>One combined approval</b>Toll delta (+₹100) and misc expense folded into a single review</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/payments/76-bo-final-payment-proof-uploaded.png" data-cap="Final payment proof uploaded">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/payments/76-bo-final-payment-proof-uploaded.png" loading="lazy" alt="Final payment proof"/></div>
-      <div class="cap"><b>Final payment</b>₹17,515 — proof of transfer attached</div>
-    </div>
-  </div>
-</div>
-
-<div class="gallery-group">
-  <h3>Completion, invoices &amp; ratings <span class="gnum">79–84</span></h3>
-  <p class="gdesc">The finished trip: all 14 milestones checked, both invoice PDFs generated and downloadable, full settlement breakdown, and 5-star ratings exchanged in both directions.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/trip/80b-bo-trip-completed-desktop.png" data-cap="Completed trip, full desktop view">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/80b-bo-trip-completed-desktop.png" loading="lazy" alt="Completed trip desktop"/></div>
-      <div class="cap"><b>Completed</b>All 14 milestones, both invoices, settlement breakdown, photos, status history</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/81-bo-rating-widget-filled.png" data-cap="5-star rating with comment">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/81-bo-rating-widget-filled.png" loading="lazy" alt="Rating widget filled"/></div>
-      <div class="cap"><b>Rating</b>Bhavik rates Akshay — 5 stars + comment</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/trip/84-driver-rating-submitted-final-close-out.png" data-cap="Both ratings reciprocally displayed">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/trip/84-driver-rating-submitted-final-close-out.png" loading="lazy" alt="Final close out"/></div>
-      <div class="cap"><b>Closed out</b>Both sides' 5-star ratings displayed reciprocally</div>
-    </div>
-  </div>
-</div>
-
-<div class="gallery-group">
-  <h3>Profile &amp; account <span class="gnum">85–88</span></h3>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/freightnexus/profile/85-bo-profile-account-page.png" data-cap="Business owner profile page">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/profile/85-bo-profile-account-page.png" loading="lazy" alt="Business owner profile page"/></div>
-      <div class="cap"><b>BO profile</b>Approved status, last-4-digit masked documents</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/profile/86-driver-profile-account-truck-page.png" data-cap="Driver profile + truck page">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/profile/86-driver-profile-account-truck-page.png" loading="lazy" alt="Driver profile and truck page"/></div>
-      <div class="cap"><b>Driver profile</b>Approved status, DL + Aadhaar on file</div>
-    </div>
-    <div class="shot" data-src="screenshots/freightnexus/profile/87-bo-notification-preferences-page.png" data-cap="Notification preferences, opt-in per category">
-      <div class="thumb-wrap"><img src="screenshots/freightnexus/profile/87-bo-notification-preferences-page.png" loading="lazy" alt="Notification preferences page"/></div>
-      <div class="cap"><b>Notification preferences</b>Per-category opt-in toggles</div>
-    </div>
-  </div>
-</div>
-
   </div>
 </section>
 

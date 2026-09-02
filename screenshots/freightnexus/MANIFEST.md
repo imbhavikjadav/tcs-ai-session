@@ -1,174 +1,146 @@
-# FreightNexus Screenshot Manifest
+# FreightNexus Demo Screenshot Manifest
 
-Captured against the **real production Supabase backend** via `npm run dev` on `localhost:3000` (this app has no local database — local dev talks directly to production per its own CLAUDE.md). All accounts, the truck, and the trip below are real rows created during this run and are being **kept**, not wiped.
+All screenshots captured at a 1440x900 desktop viewport via Playwright (headless Chromium). Zero mobile/narrow-viewport screenshots exist anywhere in this folder (verified: every PNG is 1440px wide).
 
-Real test accounts used:
-- Business Owner: Bhavik Jadav — `imbhavikjadav@gmail.com` — profile id `05d20752-0710-4ceb-bc1a-089638f96309` — display code `BSOW0051`
-- Individual Owner-Driver: Akshay Makwana — `jadav.itprof@gmail.com` — profile id `d8a31a65-0e0e-467d-8ba4-84e2fec34d0a` — display code `DRV0043`
-- Truck: `GJ01AB1234` — Tata Motors 407 Gold SFC, Closed Container, Gujarat — truck id `702f5b0e-839f-4442-9df4-f23e54dc4991`
-- Trip: `TRP00059` — Ahmedabad → Bhavnagar — trip id `ffc745f7-4c41-456c-bb28-5d9b814c06b3` — status: **completed**
-- Admin (provisioned via `scripts/create-admin.mjs`, a sanctioned operator script — not the `dev-approve-kyc.mjs` bypass): `freightnexus.showcase.admin@gmail.com`
+**Demo trip used throughout:** `TRP00060` — Ahmedabad, Gujarat → Rajkot, Gujarat. Goods: 40 cartons of branded home electronics and small appliances (LED TVs, mixer-grinders, inverter parts), fragile, 3,200 kg, closed-container body type. Business Owner: Bhavik Jadav. Driver: Akshay Makwana (DRV0043, Tata Motors 407 Gold SFC, GJ01AB1234).
 
----
+**Final settlement:**
+- Freight ₹18,000 + Driver allowance ₹1,500 + Toll (actual) ₹1,050 (estimated ₹850 at bid time, delta +₹200) + Misc expense ₹200 (police checkpoint fee) = **Settlement total ₹20,750**
+- Deposit (25%, paid on acceptance): **₹5,087.5** — confirmed
+- Final payment (remaining after deposit): **₹15,662.5** — confirmed
+- Trip status: **Completed**. Both parties rated each other 5★.
 
-## Public
-
-| File | Description |
-|---|---|
-| `public/01-landing-page-mobile.png` | Landing page, full page, mobile width (430px) |
-| `public/01-landing-page-desktop.png` | Landing page, full page, desktop width (1440px) — flagship screen |
-| `public/02-signup-role-picker.png` | Sign-up entry screen — Business Owner / Individual Owner-Driver / Fleet Owner role picker |
-
-## Business Owner registration (Bhavik Jadav)
-
-| File | Description |
-|---|---|
-| `business-owner/03-signup-form-account-details.png` | Step 1 of 4 — empty account details form (name/phone/email/password) |
-| `business-owner/03b-signup-form-filled.png` | Step 1 filled with Bhavik Jadav's real details |
-| `business-owner/04-signup-step2-identity-doc-empty.png` | Step 2 of 4 — Government ID form, empty (Aadhaar default) |
-| `business-owner/05-signup-step2-identity-doc-filled.png` | Step 2 filled — Aadhaar number + BO-Aadhaar-Card.jpeg uploaded |
-| `business-owner/06-signup-step3-photo-empty.png` | Step 3 of 4 — passport-style photo upload, empty |
-| `business-owner/07-signup-step3-photo-filled.png` | Step 3 filled — BO-Passport-Photo.jpeg uploaded |
-| `business-owner/08-signup-step4-review.png` | Step 4 of 4 — review/submit screen, all items checked |
-| `business-owner/09-registration-success-pending-review.png` | Post-submit account screen — "Your profile is under review," Pending Review badge |
-| `business-owner/10-dashboard-pre-approval-mobile.png` | Dashboard, pre-approval state, mobile |
-| `business-owner/10b-dashboard-pre-approval-desktop.png` | Dashboard, pre-approval state, desktop — flagship screen |
-
-## Individual Owner-Driver registration (Akshay Makwana)
-
-| File | Description |
-|---|---|
-| `driver/11-signup-form-account-details.png` | Step 1 of 6 — empty account details form |
-| `driver/11b-signup-form-filled.png` | Step 1 filled with Akshay Makwana's real details |
-| `driver/12-signup-step2-govt-id-empty.png` | Step 2 of 6 — Government ID form, empty |
-| `driver/13-signup-step2-govt-id-filled.png` | Step 2 filled — Aadhaar + Driver-Aadhaar-Card.jpeg |
-| `driver/15-signup-step3-photo-empty.png` | Step 3 of 6 — passport photo upload, empty |
-| `driver/16-signup-step3-photo-filled.png` | Step 3 filled — Driver-Passport-Photo.jpeg |
-| `driver/18-signup-step4-dl-empty.png` | Step 4 of 6 — Driving License form, empty |
-| `driver/19-signup-step4-dl-filled.png` | Step 4 filled — DL number, expiry date, Driver-Driving-License.jpeg |
-| `driver/21-signup-step5-substep1-truck-details-filled.png` | Truck sub-step 1/3 — full truck registration form filled (reg. GJ01AB1234, chassis/engine numbers, Gujarat home state, national permit) |
-| `driver/22-signup-step5-substep2-docs-empty.png` | Truck sub-step 2/3 — 5 truck documents form, empty |
-| `driver/22-signup-step5-substep2-docs-resumed.png` | Truck documents step resumed after re-login — shows RC/Insurance/PUC already-on-file with Continue/Replace, only Fitness Cert + Permit still needed (demonstrates per-document resumability) |
-| `driver/23-signup-step5-substep2-docs-filled.png` | All 5 truck documents filled — RC, Insurance, PUC, Fitness Certificate, Permit (with National Permit checked) |
-| `driver/25-signup-step5-substep3-photos-empty.png` | Truck sub-step 3/3 — 4 truck photo uploads, empty |
-| `driver/26-signup-step5-substep3-photos-filled.png` | All 4 truck photos attached (front/back/left/right) |
-| `driver/27-signup-step6-review.png` | Step 6 of 6 — final review/submit screen |
-| `driver/28-dashboard-pre-approval-mobile.png` | Dashboard, pre-approval state, mobile — shows truck card with all 4 photos |
-| `driver/28b-dashboard-pre-approval-desktop.png` | Dashboard, pre-approval state, desktop — flagship screen |
-
-## Admin KYC approval
-
-| File | Description |
-|---|---|
-| `admin/29-admin-kyc-queue-desktop.png` | KYC Queue — 8 pending items across both accounts (3 identity docs + 5 truck docs), each showing the real uploaded document image, masked ID (last 4 digits), and expiry |
-| `admin/30-admin-document-review-inline.png` | Document review — this app reviews inline on the queue card (image + metadata + independent Approve/Reject per document), no separate detail page exists |
-| `admin/29b-admin-kyc-queue-after-approvals.png` | KYC Queue after all 8 documents approved — "0 pending items" |
-| `admin/31-admin-dashboard-desktop.png` | Admin operational dashboard after approvals — 0 pending KYC, Gujarat truck density = 1 |
-| `admin/31b-admin-dashboard-mobile.png` | Admin dashboard, mobile |
-| `admin/31c-admin-accounts.png` | Admin accounts list |
-
-## Trip posting (Business Owner)
-
-| File | Description |
-|---|---|
-| `trip/32b-post-trip-origin-autocomplete.png` | Step 1 of 5 — Google Places autocomplete dropdown on pickup address |
-| `trip/32c-post-trip-destination-autocomplete.png` | Places autocomplete on delivery address |
-| `trip/33-post-trip-step1-route-filled.png` | Step 1 — route filled (Ahmedabad → Bhavnagar, geocoded) |
-| `trip/34-post-trip-step2-goods-empty.png` | Step 2 of 5 — goods details form, empty |
-| `trip/35-post-trip-step2-goods-filled.png` | Step 2 filled — 3,200kg, General/FMCG cartons, Closed Container required |
-| `trip/37-post-trip-step3-timeline-filled.png` | Step 3 of 5 — pickup window + expected delivery filled |
-| `trip/39-post-trip-step4-receiver-deposit-filled.png` | Step 4 of 5 — receiver name/phone + 30% deposit filled |
-| `trip/41-post-trip-confirmation.png` | Trip posted confirmation — real trip TRP00059 with live Google Maps route render |
-| `trip/42-my-trips-list-mobile.png` | "My Trips" list, mobile |
-| `trip/42b-my-trips-list-desktop.png` | "My Trips" list, desktop — flagship screen |
-
-## Bidding (Driver)
-
-| File | Description |
-|---|---|
-| `trip/43-driver-available-trips-mobile.png` | "Open For Bidding" list showing TRP00059 as eligible (passed body-type/capacity/home-state/document filters) |
-| `trip/44-driver-trip-detail-mobile.png` | Trip detail from driver's side, mobile |
-| `trip/44b-driver-trip-detail-desktop.png` | Trip detail + bid form combined screen, desktop — flagship screen, shows real Google Directions distance (163km, ~2h45m) |
-| `trip/45-driver-trip-detail-bid-form-mobile.png` | Bid form, empty, mobile |
-| `trip/46-driver-bid-form-filled.png` | Bid form filled — freight ₹21,000 / driver allowance ₹2,500 / estimated toll ₹950 |
-| `trip/47-driver-bid-submitted-confirmation.png` | Bid submitted — PENDING status, ₹24,450 total breakdown |
-| `trip/48-driver-trips-and-bids-list-mobile.png` | Driver's Trips & Bids list showing bid under "Your Bids" |
-
-## Bid review & acceptance (Business Owner)
-
-| File | Description |
-|---|---|
-| `trip/49-bo-bids-received-mobile.png` | Bids-received view, mobile |
-| `trip/49b-bo-bids-received-desktop.png` | Bid detail with full trip milestone timeline, driver rating/badge, truck details, itemized bid — flagship screen |
-| `trip/50-bo-accept-bid-confirm-dialog.png` | Accept-bid action in progress |
-| `trip/51-bo-bid-accepted-confirmation.png` | Bid accepted — Trip Actions vertical timeline appears, deposit payment (₹7,335) now due, Acceptance Invoice generated |
-| `trip/51b-bo-bid-accepted-confirmation-desktop.png` | Same state, desktop |
-
-## Execution — deposit, pickup, transit, delivery (Driver + Business Owner)
-
-| File | Description |
-|---|---|
-| `payments/52-bo-deposit-payment-proof-uploaded.png` | Deposit payment — Payment-Deposit-Receipt.jpeg attached as proof of transfer |
-| `payments/53-bo-deposit-marked-paid-confirmation.png` | Shipper marked deposit paid — awaiting driver confirmation |
-| `payments/54-driver-confirm-deposit-received-view.png` | Driver's view of the shipper's uploaded proof, before confirming receipt |
-| `payments/55-driver-deposit-confirmed-en-route-ready.png` | Deposit confirmed by both sides — trip now `en_route_to_pickup`, pickup-photo upload step active |
-| `trip/56-driver-en-route-confirm-pickup-form.png` | Confirm-pickup step, empty photo upload |
-| `trip/57-driver-pickup-photos-selected.png` | All 4 Pickup-Photo-*.jpeg attached |
-| `trip/58-driver-pickup-confirmed.png` | Pickup confirmed — trip `pickup_photos_pending_verification` |
-| `trip/59-bo-verify-pickup-photos-view.png` | Shipper's pickup-photo verification step, showing the driver's uploaded photos |
-| `trip/60-bo-verify-pickup-photos-dialog.png` | Verify-photos action in progress |
-| `trip/61-bo-in-transit-live-tracking.png` | Trip `in_transit` — live tracking map with "Location signal unavailable — waiting for the tracker's first update" placeholder (no physical GPS hardware connected, exactly per spec's defined empty state) |
-| `trip/61b-bo-in-transit-live-tracking-desktop.png` | Same state, desktop — flagship screen |
-| `trip/62-driver-in-transit-delivery-signoff-form.png` | Driver's "Confirm arrival" step, in transit |
-| `trip/63-driver-confirm-arrival-checkbox-checked.png` | "I have called the receiver at the number on file" checked |
-| `trip/64-driver-arrived-signoff-form.png` | Arrived — delivery sign-off screen: "Is everything in order? Yes / No — damage or shortage" |
-| `trip/65-driver-signoff-yes-photo-upload-form.png` | "Yes" selected, delivery-condition photo upload appears |
-| `trip/66-driver-delivery-photos-selected.png` | All 4 Delivery-Photo-*.jpeg attached |
-| `trip/67-driver-delivery-completed.png` | Delivery completed by driver — shows live final-amount breakdown preview and both pickup + drop-off photo galleries |
-| `trip/68-bo-verify-delivery-photos-view.png` | Shipper's delivery-photo verification step |
-| `trip/69-bo-delivery-verified-final-expenses-view.png` | Delivery verified — trip now `final_expenses_pending_submission` |
-
-## Final toll, expenses & payment
-
-| File | Description |
-|---|---|
-| `trip/70-driver-submit-final-toll-expenses-form.png` | Submit final toll & expenses form, empty — shows estimated toll (₹950) with adjustment note |
-| `trip/71-driver-toll-filled-add-expense-clicked.png` | Actual toll ₹1,050 + Fastag-Toll-Receipt.jpeg entered, "Add an expense" row opened |
-| `trip/72-driver-toll-and-misc-expense-filled.png` | Misc expense added — ₹300 police-checkpoint fee + Police-Checking-Receipt.jpeg |
-| `trip/73-driver-final-expenses-submitted.png` | Submitted — trip `final_amount_pending_approval` |
-| `trip/74-bo-approve-final-amount-view.png` | Shipper's final-amount approval screen — shows toll delta (+₹100) and the submitted misc expense with driver's note, folded into one approval |
-| `trip/75-bo-final-amount-approved.png` | Approved — final payment (₹17,515) now due |
-| `payments/76-bo-final-payment-proof-uploaded.png` | Final payment — Payment-Full-Receipt.jpeg attached as proof |
-| `payments/77-bo-final-payment-marked-paid.png` | Shipper marked final payment paid |
-| `payments/78-driver-confirm-final-payment-view.png` | Driver's view before confirming final payment receipt |
-
-## Trip completion, invoices, ratings & close-out
-
-| File | Description |
-|---|---|
-| `trip/79-driver-trip-completed.png` | Driver's final view — trip `completed` |
-| `trip/80-bo-trip-completed.png` | Shipper's final view, mobile |
-| `trip/80b-bo-trip-completed-desktop.png` | Full completed-trip page, desktop — flagship screen: all 14 milestones checked, both Acceptance + Completion invoices downloadable, full settlement breakdown, rating widget, both photo galleries, complete status history |
-| `trip/81-bo-rating-widget-empty.png` | Rating widget before rating |
-| `trip/81-bo-rating-widget-filled.png` | 5 stars selected + comment written for Akshay Makwana |
-| `trip/82-bo-rating-submitted-confirmation.png` | Shipper's rating submitted |
-| `trip/83-driver-rating-widget-view.png` | Driver's rating widget for the shipper |
-| `trip/83b-driver-rating-widget-filled.png` | 5 stars + comment written for Bhavik Jadav |
-| `trip/84-driver-rating-submitted-final-close-out.png` | Both ratings displayed reciprocally — trip fully closed out |
-
-## Profile & account
-
-| File | Description |
-|---|---|
-| `profile/85-bo-profile-account-page.png` | Business Owner profile/account page — Approved status, editable name/phone, identity documents with last-4-digit masking |
-| `profile/86-driver-profile-account-truck-page.png` | Driver profile/account page — Approved status, both identity documents (DL + Aadhaar) shown |
-| `profile/87-bo-notification-preferences-page.png` | Notification preferences — per-category email toggles (bidding activity, trip lifecycle, disputes, KYC decisions, account status) |
-| `profile/88-bo-notification-bell-widget.png` | Notification bell widget — "9+" unread badge, dropdown panel opening |
+Total files: **87** (85 PNG screenshots + 2 PDF invoices). 47 existed prior to this session; 40 were added completing the trip lifecycle from "arrival confirmed" through completion, ratings, dashboards, notifications, and profile pages.
 
 ---
 
-## Notes on captures
+## public/ (6 files)
+Marketing site and auth pages, unauthenticated.
 
-- **Live tracking**: no physical GPS tracker hardware exists for this demo (per spec, tracker integration is a webhook contract only — device provisioning is out of scope), so the live-tracking map correctly shows its defined "Location signal unavailable" placeholder state rather than a live marker. This is the accurate, intended empty state, not a bug.
-- **Desktop shots**: captured at 1440×900 for all flagship/key screens (landing page, both dashboards, trip detail, bid comparison, in-transit tracking, completed trip) per instruction, in addition to the mobile-first 430×932 captures used everywhere else.
-- Every wizard in this app (KYC registration steps, truck sub-wizard, trip-posting wizard) keeps its in-progress step as **client-side-only state** that resets to step 1 on a hard reload — except the top-level KYC step, which is resumable via re-sign-in (the server remembers `profiles.kyc_status`/submitted documents and the sign-in flow redirects back into the wizard at the correct step). This shaped the automation approach: each wizard was driven in one continuous browser session per stage.
+| File | Description |
+|---|---|
+| 01-landing-hero.png | Landing page hero section |
+| 02-landing-how-it-works.png | Landing page "how it works" section |
+| 03-landing-features.png | Landing page features section |
+| 04-landing-footer.png | Landing page footer |
+| 05-sign-in.png | Sign-in form |
+| 06-sign-up-role-picker.png | Sign-up role picker (Business Owner vs Driver) |
+
+## trip/ (19 files)
+Trip posting wizard (Business Owner) through bid acceptance and in-transit tracking, for TRP00060.
+
+| File | Description |
+|---|---|
+| 01-post-step1-route-empty.png | Post-trip wizard step 1 (route), empty |
+| 02-post-step1-route-filled.png | Step 1 filled: Ahmedabad → Rajkot |
+| 03-post-step2-goods-empty.png | Step 2 (goods details), empty |
+| 04-post-step2-goods-nature-open.png | Step 2, "nature of goods" dropdown open |
+| 05-post-step2-bodytype-open.png | Step 2, required body type dropdown open |
+| 06-post-step2-goods-filled.png | Step 2 filled: electronics/appliances, 3,200 kg, closed container |
+| 07-post-step3-timeline-empty.png | Step 3 (pickup window/expected delivery), empty |
+| 08-post-step3-timeline-filled.png | Step 3 filled with pickup window and expected delivery date |
+| 09-post-step4-receiver-empty.png | Step 4 (receiver details), empty |
+| 10-post-step4-receiver-filled.png | Step 4 filled with receiver contact info |
+| 11-post-step5-review.png | Step 5, final review before posting |
+| 12-post-trip-success.png | Trip posted successfully confirmation |
+| 13-bo-trip-with-bid-top.png | BO trip detail page after a driver bid arrives |
+| 14-bo-review-bids.png | BO reviewing submitted bids |
+| 15-bo-after-accept-top.png | Trip detail top section after BO accepts a bid |
+| 16-bo-after-accept-mid.png | Trip detail mid section after acceptance |
+| 17-bo-after-accept-bottom.png | Trip detail bottom section after acceptance |
+| 18-in-transit-top-bo.png | BO view once trip is in transit |
+| 19-in-transit-tracking-map-bo.png | BO view of live tracking map during transit |
+
+## driver/ (37 files)
+Full driver-side lifecycle: browsing, bidding, deposit, pickup, in-transit, delivery sign-off, final expenses, payment confirmation, completion, rating, dashboard, notifications, profile.
+
+| File | Description |
+|---|---|
+| 01-dashboard.png | Driver dashboard, initial state |
+| 02-browse-trips.png | Browse available trips/bids listing |
+| 03-trip-detail-before-bid.png | Trip detail page before placing a bid |
+| 04-bid-form-empty.png | Bid form, empty |
+| 05-bid-form-filled.png | Bid form filled (freight, allowance, estimated toll) |
+| 06-bid-submitted.png | Bid submitted confirmation |
+| 07-confirm-deposit-view.png | Driver view while deposit payment is pending |
+| 08-after-confirm-deposit.png | Driver view after confirming deposit received |
+| 09-confirm-pickup-empty.png | Confirm-pickup form, empty |
+| 10-confirm-pickup-photos-selected.png | Confirm-pickup form with 4 pickup-condition photos selected |
+| 11-pickup-submitted-awaiting-verify.png | Pickup submitted, awaiting BO verification |
+| 12-in-transit-top-driver.png | Driver view once trip is in transit |
+| 13-delivery-signoff-step-arrival.png | Delivery sign-off step, arrival stage |
+| 14-confirm-arrival-checked.png | (Prior session) "I have called the receiver" checkbox checked |
+| 15-confirm-arrival-checked.png | (This session, continuation) checkbox re-checked after session reload, before clicking Confirm arrival |
+| 16-after-confirm-arrival.png | Immediately after clicking Confirm arrival (transition in progress) |
+| 17-delivery-signoff-question.png | "Is everything in order?" Yes/No damage question |
+| 18-delivery-photo-upload-empty.png | Delivery-condition photo upload section, empty, after answering Yes |
+| 19-delivery-photos-selected.png | All 4 delivery-condition photos selected, Complete delivery button visible |
+| 20-delivery-photos-submitted.png | Delivery photos submitted — milestone updated, step 6 now "waiting on Business Owner" |
+| 21-awaiting-bo-photo-verify.png | Driver view scrolled to "Verify delivery photos" step, awaiting BO |
+| 22-final-toll-expenses-empty.png | Submit final toll & expenses form, empty (shows ₹850 estimate) |
+| 23-final-toll-filled-expense-form.png | Toll amount (₹1,050) + FASTag receipt uploaded, "Add an expense" row opened |
+| 24-final-toll-and-expense-filled.png | Full form filled: toll ₹1,050 + receipt, expense ₹200 (police checkpoint fee) + description + receipt |
+| 25-final-toll-expenses-submitted.png | Submit clicked, "Submitting..." transitional state |
+| 26-toll-expenses-confirmed-view.png | Confirmed view: step 7 done, step 8 "Approve final amount — waiting on Business Owner" |
+| 27-final-amount-breakdown.png | Final amount breakdown showing toll delta (+₹200) and misc expense folded in |
+| 28-confirm-final-payment-view.png | "Confirm final payment received" step, BO's proof visible, before confirming |
+| 29-trip-completed-driver.png | Trip completed, top viewport (all milestones dated) |
+| 29-trip-completed-driver-fullpage.png | Trip completed, full page scroll capture |
+| 30-rating-form-empty.png | Driver's rating form for Bhavik Jadav, empty |
+| 31-rating-form-filled.png | Rating form: 5 stars selected + comment typed, before submit |
+| 32-rating-submitted.png | Rating submitted: "You rated: 5★ — ..." confirmation |
+| 33-dashboard-trip-completed.png | Driver dashboard: 2 trips this month, ₹45,600 total earned, 6,400 kg cargo carried, both trips shown COMPLETED, reviews section with 5.0 average |
+| 34-notifications-panel.png | Notifications panel opened (bell icon, 9+ pending) |
+| 35-profile-page.png | Driver's "Your Profile" / account details page |
+| 36-notification-preferences.png | Driver's notification preferences page (email toggle categories) |
+
+## business-owner/ (16 files)
+BO-side pickup/delivery verification, final settlement approval, payment, completion, rating, dashboard, notifications, profile.
+
+| File | Description |
+|---|---|
+| 01-dashboard.png | BO dashboard, initial state |
+| 02-verify-pickup-photos.png | BO verifying pickup-condition photos |
+| 03-pickup-photos-card.png | Pickup photos card detail view |
+| 04-verify-delivery-photos.png | BO trip detail at "Verify delivery photos" step, before clicking |
+| 05-delivery-photos-modal.png | Delivery-photo verification in progress ("Saving...") |
+| 06-delivery-photos-verified.png | Delivery photos verified — step 7 (final toll & expenses) now waiting on driver |
+| 07-approve-final-amount-view.png | BO view of "Approve final amount" step with toll delta and misc expense listed |
+| 08-final-amount-approved.png | Final amount approval clicked, "Saving..." transitional state |
+| 09-trip-completed-bo-fullpage.png | Trip completed, full-page scroll capture (BO perspective) |
+| 10-rating-form-empty.png | BO's rating form for Akshay Makwana, empty |
+| 11-rating-form-filled.png | Rating form: 5 stars + comment, before submit |
+| 12-rating-submitted-both-visible.png | Both invoices (Acceptance + Completion) and both parties' 5★ ratings visible together |
+| 13-dashboard-trip-completed.png | BO dashboard/account page showing TRP00060 and TRP00059 both COMPLETED |
+| 14-notifications-panel.png | Notifications panel opened (bell icon, 21 pending) |
+| 15-profile-page.png | BO's "Your Profile" / account details page (Aadhaar KYC doc, Approved) |
+| 16-notification-preferences.png | BO's notification preferences page |
+
+## payments/ (7 files)
+Deposit and final-payment flows.
+
+| File | Description |
+|---|---|
+| 01-deposit-pay-form-empty.png | Deposit payment form, empty |
+| 02-deposit-pay-form-filled.png | Deposit payment form with proof uploaded |
+| 03-deposit-marked-paid-bo.png | BO marks deposit as paid |
+| 04-deposit-paid-status-top.png | Deposit-paid status reflected at top of trip page |
+| 05-final-payment-form-empty.png | Final payment ("Pay the final amount") form, empty |
+| 06-final-payment-form-filled.png | Final payment form with Payment-Full-Receipt.jpeg proof uploaded |
+| 07-final-payment-marked-paid-bo.png | BO marks final payment as paid ("I've paid this") |
+
+## invoices/ (2 files)
+PDF invoices fetched via signed Supabase Storage URL (response interception on the download server action).
+
+| File | Description |
+|---|---|
+| freightnexus-acceptance-invoice.pdf | Acceptance invoice, generated on bid acceptance/deposit. 1 page. |
+| freightnexus-completion-invoice.pdf | Completion invoice (INV-TRP00060-18095E), generated on trip completion. 2 pages. Full charge breakdown: Freight ₹18,000, Driver allowance ₹1,500, Toll (actual) ₹1,050, Misc expense ₹200, Settlement total ₹20,750, Deposit ₹5,087.5 confirmed, Final payment ₹15,662.5 confirmed. Includes full status-history timeline and shipper/driver/truck details. |
+
+---
+
+## Notes
+- `driver/14-confirm-arrival-checked.png` and `driver/15-confirm-arrival-checked.png` are two distinct captures of the same UI moment (checkbox checked, pre-submit) taken in different sessions — both retained, no duplicates were deleted per instructions.
+- `driver/29-trip-completed-driver.png` (viewport-only) and `driver/29-trip-completed-driver-fullpage.png` (full scroll) share the numeric prefix by design — both capture the same completed-trip milestone at different scroll extents.
+- No trip data was wiped or reset after capture, per standing instructions.
+- No application source files were modified during this session (`git status` in `/Users/jadz/AI Stuff/freightnexus` is clean).
