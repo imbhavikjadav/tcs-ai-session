@@ -1,4 +1,4 @@
-<title>Bhavik Jadav — AI Projects</title>
+<title>Bhavik Jadav | Hobby Projects</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -124,18 +124,24 @@
   .brand {
     display: flex;
     align-items: baseline;
-    gap: 10px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.01em;
+    gap: 12px;
     white-space: nowrap;
   }
-  .brand .dot { color: var(--lc-accent); }
+  .brand .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 23px;
+    letter-spacing: -0.01em;
+    background: linear-gradient(100deg, var(--lc-accent), var(--fn-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .brand .dot { color: var(--text-faint); font-size: 18px; }
   .brand small {
     font-family: var(--font-mono);
     font-weight: 400;
-    font-size: 10.5px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     color: var(--text-faint);
     text-transform: uppercase;
@@ -748,7 +754,7 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="brand">Bhavik Jadav <span class="dot">—</span> AI Projects</div>
+    <div class="brand"><span class="name">Bhavik Jadav</span> <span class="dot">|</span> <small>Hobby Projects</small></div>
     <div class="tabs" role="tablist">
       <button class="tab active" data-panel="overview" role="tab">Overview</button>
       <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
