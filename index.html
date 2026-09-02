@@ -285,6 +285,8 @@
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
   }
   .proj-card:hover { transform: translateY(-3px); }
   .proj-card.lc { border-color: var(--lc-accent-border); }
@@ -315,18 +317,20 @@
   }
   .proj-card.lc .proj-tag { background: var(--lc-accent-dim); color: var(--lc-accent); border: 1px solid var(--lc-accent-border); }
   .proj-card.fn .proj-tag { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
-  .proj-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .proj-logo { display: flex; align-items: center; gap: 14px; height: 56px; margin-bottom: 18px; }
   .proj-logo-badge {
-    width: 42px; height: 42px;
-    border-radius: 10px;
+    width: 52px; height: 52px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     background: var(--lc-accent);
   }
-  .proj-logo-badge svg { width: 24px; height: 24px; }
-  .proj-logo-wordmark { font-weight: 700; font-size: 21px; letter-spacing: -0.01em; color: var(--text); }
+  .proj-logo-badge svg { width: 30px; height: 30px; }
+  .proj-logo-badge.fn-badge { background: var(--fn-accent); }
+  .proj-logo-badge img { width: 28px; height: auto; display: block; filter: brightness(0) invert(1); }
+  .proj-logo-wordmark { font-weight: 700; font-size: 26px; letter-spacing: -0.01em; color: var(--text); }
   .proj-logo-wordmark .accent { color: var(--lc-accent); }
-  .proj-logo img { height: 38px; width: auto; display: block; }
+  .proj-logo-wordmark .accent.fn { color: var(--fn-accent); }
   .panel-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
   .panel-logo-badge {
     width: 52px; height: 52px;
@@ -352,7 +356,8 @@
     color: var(--text-dim);
   }
   .proj-cta {
-    margin-top: 20px;
+    margin-top: auto;
+    padding-top: 20px;
     font-size: 15px;
     font-weight: 600;
     display: flex;
@@ -749,7 +754,10 @@
       <div class="proj-card fn" data-goto="freightnexus">
         <span class="proj-tag">Agent-built system</span>
         <div class="proj-logo">
-          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:38px"/>
+          <div class="proj-logo-badge fn-badge">
+            <img src="assets/freightnexus-icon.png" alt="" />
+          </div>
+          <div class="proj-logo-wordmark">Freight<span class="accent fn">Nexus</span></div>
         </div>
         <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
         bid-based shipment tendering, live execution tracking, and manual two-way payment
