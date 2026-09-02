@@ -2155,7 +2155,7 @@ Legal Document Text:
       const panel = document.getElementById('panel-' + tab.dataset.panel);
       if (panel) panel.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
-      try { localStorage.setItem('aidemo-tab', tab.dataset.panel); } catch(e) {}
+      try { localStorage.setItem('tcs-ai-session-tab', tab.dataset.panel); } catch(e) {}
     });
   });
   document.querySelectorAll('[data-goto]').forEach(el => {
@@ -2164,7 +2164,7 @@ Legal Document Text:
     });
   });
   try {
-    const saved = localStorage.getItem('aidemo-tab');
+    const saved = localStorage.getItem('tcs-ai-session-tab');
     if (saved) { const t = document.querySelector(`.tab[data-panel="${saved}"]`); if (t) t.click(); }
   } catch(e) {}
 
