@@ -1,4 +1,4 @@
-<title>Two Builds, One Season</title>
+<title>Bhavik Jadav — AI Projects</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -78,13 +78,22 @@
   code, pre, .mono { font-family: var(--font-mono); }
   ::selection { background: var(--lc-accent-dim); }
 
-  /* ===== Texture: schematic grid backdrop ===== */
+  /* ===== Texture: schematic grid backdrop, faded away from text ===== */
   .grid-bg {
+    position: relative;
+  }
+  .grid-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     background-image:
       linear-gradient(var(--border-soft) 1px, transparent 1px),
       linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
     background-size: 48px 48px;
     background-position: -1px -1px;
+    -webkit-mask-image: radial-gradient(ellipse 65% 60% at 30% 35%, transparent 35%, black 85%);
+    mask-image: radial-gradient(ellipse 65% 60% at 30% 35%, transparent 35%, black 85%);
   }
 
   /* ===== Top identity bar ===== */
@@ -178,10 +187,11 @@
   .section:last-child { border-bottom: none; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-faint);
+    color: var(--text-dim);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -525,17 +535,16 @@
   #lightbox .lb-stage {
     max-width: 92vw; max-height: 86vh;
     overflow: auto;
-    cursor: grab;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--card);
   }
-  #lightbox .lb-stage.grabbing { cursor: grabbing; }
   #lightbox img {
     display: block;
-    max-width: none;
-    transition: transform 0.15s ease;
-    transform-origin: 0 0;
+    max-width: 92vw;
+    max-height: 86vh;
+    width: auto;
+    height: auto;
   }
   #lightbox .lb-cap {
     position: fixed;
@@ -549,9 +558,9 @@
     border-radius: 999px;
     font-family: var(--font-mono);
   }
-  #lightbox .lb-close, #lightbox .lb-zoom {
+  #lightbox .lb-close {
     position: fixed;
-    top: 24px;
+    top: 24px; right: 24px;
     background: var(--card);
     border: 1px solid var(--border);
     color: var(--text);
@@ -561,9 +570,6 @@
     cursor: pointer;
     font-size: 18px;
   }
-  #lightbox .lb-close { right: 24px; }
-  #lightbox .lb-zoom-out { right: 76px; }
-  #lightbox .lb-zoom-in { right: 128px; }
   #lightbox .lb-hint {
     position: fixed;
     top: 30px; left: 24px;
@@ -653,7 +659,7 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="brand">Two Builds<span class="dot">·</span>One Season <small>AI-BUILT SOFTWARE, FIELD NOTES</small></div>
+    <div class="brand">Bhavik Jadav <span class="dot">—</span> AI Projects</div>
     <div class="tabs" role="tablist">
       <button class="tab active" data-panel="overview" role="tab">Overview</button>
       <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
@@ -666,7 +672,7 @@
 <main id="main">
 <section id="panel-overview" class="panel active">
   <div class="hero grid-bg">
-    <div class="hero-kicker">Field notes · two shipped products</div>
+    <div class="hero-kicker">Built end to end with Claude Code</div>
     <h1>Ideas, built and <em>shipped.</em></h1>
     <p class="hero-sub">
       This is a working record of two products built end-to-end with Claude Code in the same season —
@@ -674,13 +680,6 @@
       logistics marketplace built entirely by an agentic coding session, with no LLM in its runtime path at all.
       Every screen ahead was captured from the running apps, not mocked for the occasion.
     </p>
-    <div class="hero-meta">
-      <div class="hero-meta-item"><div class="k">Builder</div><div class="v">Bhavik Jadav</div></div>
-      <div class="hero-meta-item"><div class="k">Method</div><div class="v">Claude Code, agentic sessions</div></div>
-      <div class="hero-meta-item"><div class="k">Window</div><div class="v">May – Sep 2026</div></div>
-      <div class="hero-meta-item"><div class="k">Stacks</div><div class="v">Python/FastAPI · Next.js/Supabase</div></div>
-    </div>
-
     <div class="split-grid">
       <div class="proj-card lc" data-goto="legalclear">
         <span class="proj-tag">Runtime AI product</span>
@@ -769,72 +768,83 @@
     <p class="section-lede">Two moving parts in front of the model: Nginx has to get out of the way of a
     streaming response, and the backend has to survive a 5–10 minute Claude call without the proxy or the
     browser giving up on it.</p>
-    <figure style="margin:28px 0 0">
-  <svg viewBox="0 0 920 400" role="img" aria-label="LegalClear request path: browser sends document to FastAPI, which checks a SQLite cache; on a miss it streams from Claude over SSE through Nginx with buffering disabled, generates a PDF, and can email it via SendGrid" style="width:100%;height:auto;max-width:920px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+    <figure style="margin:32px 0 0">
+  <svg viewBox="0 0 1180 520" role="img" aria-label="LegalClear request path: browser sends document to FastAPI, which checks a SQLite cache; on a miss it streams from Claude over SSE through Nginx with buffering disabled, generates a PDF, and can email it via SendGrid" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <marker id="lcArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <marker id="lcArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
         <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
       </marker>
     </defs>
-    <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11.5" fill="currentColor">
+    <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" fill="currentColor">
 
       <!-- Browser -->
-      <rect x="20" y="150" width="120" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <text x="80" y="175" text-anchor="middle" font-weight="600">Browser</text>
-      <text x="80" y="192" text-anchor="middle" font-size="10" opacity="0.65">React + Vite</text>
+      <rect x="30" y="200" width="160" height="76" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="110" y="234" text-anchor="middle" font-weight="600">Browser</text>
+      <text x="110" y="254" text-anchor="middle" font-size="12" opacity="0.65">React + Vite</text>
 
       <!-- Nginx -->
-      <rect x="190" y="150" width="130" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <text x="255" y="172" text-anchor="middle" font-weight="600">Nginx</text>
-      <text x="255" y="188" text-anchor="middle" font-size="9.5" opacity="0.65">proxy_buffering off</text>
-      <line x1="140" y1="180" x2="184" y2="180" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
-      <text x="162" y="171" text-anchor="middle" font-size="9.5" opacity="0.75">POST /api/</text>
+      <rect x="250" y="200" width="170" height="76" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="335" y="230" text-anchor="middle" font-weight="600">Nginx</text>
+      <text x="335" y="250" text-anchor="middle" font-size="11.5" opacity="0.65">proxy_buffering off</text>
+
+      <line x1="190" y1="238" x2="244" y2="238" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
+      <rect x="163" y="180" width="94" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="210" y="197" text-anchor="middle" font-size="11.5" opacity="0.8">POST /api/</text>
 
       <!-- FastAPI -->
-      <rect x="370" y="130" width="160" height="100" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
-      <text x="450" y="153" text-anchor="middle" font-weight="700">FastAPI backend</text>
-      <text x="450" y="169" text-anchor="middle" font-size="9.5" opacity="0.65">translate-stream</text>
-      <text x="450" y="184" text-anchor="middle" font-size="9.5" opacity="0.65">SSE event_generator()</text>
-      <line x1="320" y1="180" x2="364" y2="180" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
+      <rect x="475" y="172" width="210" height="132" rx="10" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <text x="580" y="205" text-anchor="middle" font-weight="700">FastAPI backend</text>
+      <text x="580" y="228" text-anchor="middle" font-size="11.5" opacity="0.65">translate-stream</text>
+      <text x="580" y="248" text-anchor="middle" font-size="11.5" opacity="0.65">SSE event_generator()</text>
+
+      <line x1="420" y1="238" x2="469" y2="238" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
 
       <!-- Cache -->
-      <rect x="370" y="20" width="160" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="4 3"/>
-      <text x="450" y="45" text-anchor="middle" font-weight="600">SQLite cache</text>
-      <text x="450" y="61" text-anchor="middle" font-size="9.5" opacity="0.65">sha256(text) → result</text>
-      <text x="450" y="76" text-anchor="middle" font-size="9.5" opacity="0.65">90-day expiry</text>
-      <line x1="450" y1="130" x2="450" y2="94" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
-      <text x="463" y="112" font-size="9.5" opacity="0.75">1. check hash</text>
+      <rect x="475" y="20" width="210" height="92" rx="10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="580" y="52" text-anchor="middle" font-weight="600">SQLite cache</text>
+      <text x="580" y="72" text-anchor="middle" font-size="11.5" opacity="0.65">sha256(text) → result</text>
+      <text x="580" y="90" text-anchor="middle" font-size="11.5" opacity="0.65">90-day expiry</text>
+
+      <line x1="580" y1="172" x2="580" y2="118" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
+      <rect x="595" y="133" width="126" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="658" y="150" text-anchor="middle" font-size="11.5" opacity="0.8">1. check hash</text>
 
       <!-- Claude -->
-      <rect x="610" y="60" width="160" height="80" rx="8" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="1.8"/>
-      <text x="690" y="86" text-anchor="middle" font-weight="700" fill="var(--lc-accent, #F5A524)">Claude API</text>
-      <text x="690" y="102" text-anchor="middle" font-size="9.5" opacity="0.75">claude-sonnet-4-5</text>
-      <text x="690" y="116" text-anchor="middle" font-size="9.5" opacity="0.75">messages.stream()</text>
-      <line x1="530" y1="150" x2="640" y2="140" stroke="var(--lc-accent, #F5A524)" stroke-width="1.4" marker-end="url(#lcArrow)"/>
-      <text x="575" y="132" text-anchor="middle" font-size="9.5" fill="var(--lc-accent, #F5A524)">2. miss →</text>
-      <line x1="640" y1="140" x2="530" y2="165" stroke="var(--lc-accent, #F5A524)" stroke-width="1.4" stroke-dasharray="3 3" marker-end="url(#lcArrow)"/>
-      <text x="595" y="176" text-anchor="middle" font-size="9.5" fill="var(--lc-accent, #F5A524)">&lt;section&gt; chunks</text>
+      <rect x="800" y="70" width="210" height="106" rx="10" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="2"/>
+      <text x="905" y="103" text-anchor="middle" font-weight="700" fill="var(--lc-accent, #F5A524)">Claude API</text>
+      <text x="905" y="124" text-anchor="middle" font-size="11.5" opacity="0.8">claude-sonnet-4-5</text>
+      <text x="905" y="143" text-anchor="middle" font-size="11.5" opacity="0.8">messages.stream()</text>
+
+      <line x1="685" y1="195" x2="792" y2="163" stroke="var(--lc-accent, #F5A524)" stroke-width="1.6" marker-end="url(#lcArrow)"/>
+      <rect x="700" y="163" width="82" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="741" y="180" text-anchor="middle" font-size="11.5" fill="var(--lc-accent, #F5A524)">2. on miss</text>
+
+      <line x1="792" y1="185" x2="685" y2="215" stroke="var(--lc-accent, #F5A524)" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#lcArrow)"/>
+      <rect x="700" y="204" width="150" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="775" y="221" text-anchor="middle" font-size="11.5" fill="var(--lc-accent, #F5A524)">&lt;section&gt; chunks</text>
 
       <!-- PDF -->
-      <rect x="610" y="260" width="140" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <text x="680" y="284" text-anchor="middle" font-weight="600">ReportLab</text>
-      <text x="680" y="300" text-anchor="middle" font-size="9.5" opacity="0.65">PDF report</text>
+      <rect x="800" y="340" width="180" height="76" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="890" y="373" text-anchor="middle" font-weight="600">ReportLab</text>
+      <text x="890" y="393" text-anchor="middle" font-size="11.5" opacity="0.65">PDF report</text>
 
       <!-- SendGrid -->
-      <rect x="770" y="260" width="130" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <text x="835" y="284" text-anchor="middle" font-weight="600">SendGrid</text>
-      <text x="835" y="300" text-anchor="middle" font-size="9.5" opacity="0.65">emails PDF</text>
-      <line x1="750" y1="290" x2="764" y2="290" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
+      <rect x="1000" y="340" width="150" height="76" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="1075" y="373" text-anchor="middle" font-weight="600">SendGrid</text>
+      <text x="1075" y="393" text-anchor="middle" font-size="11.5" opacity="0.65">emails PDF</text>
+      <line x1="980" y1="378" x2="994" y2="378" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
 
-      <line x1="450" y1="230" x2="680" y2="260" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
-      <text x="560" y="253" text-anchor="middle" font-size="9.5" opacity="0.75">3. on request</text>
+      <line x1="580" y1="304" x2="875" y2="340" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
+      <rect x="655" y="313" width="120" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="715" y="330" text-anchor="middle" font-size="11.5" opacity="0.8">3. on request</text>
 
       <!-- Result streamed back -->
-      <path d="M 370 210 C 300 250, 200 250, 145 205" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#lcArrow)"/>
-      <text x="255" y="248" text-anchor="middle" font-size="9.5" opacity="0.75">SSE: meta → sections → final</text>
+      <path d="M 475 265 C 380 320, 260 320, 195 280" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#lcArrow)"/>
+      <rect x="235" y="300" width="230" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="350" y="317" text-anchor="middle" font-size="11.5" opacity="0.8">SSE: meta → sections → final</text>
     </g>
   </svg>
-  <figcaption style="text-align:center; font-size:12.5px; color:var(--text-faint); margin-top:14px; font-family:var(--font-mono)">
+  <figcaption style="text-align:center; font-size:13px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
     Every request checks the SQLite cache first — only a miss reaches Claude. Nginx sits between browser and backend with buffering explicitly disabled, or none of this streams.
   </figcaption>
 </figure>
@@ -855,7 +865,7 @@
       <div class="stack-item"><div class="role">Cache</div><div class="name">SQLite</div><div class="why">Zero-ops file-based cache, keyed on a SHA-256 hash of the normalised document text.</div></div>
       <div class="stack-item"><div class="role">PDF</div><div class="name">ReportLab</div><div class="why">Generates the 4-page branded report — cover, quick verdict, high-risk summary, full translation.</div></div>
       <div class="stack-item"><div class="role">Email</div><div class="name">SendGrid</div><div class="why">Delivers the same PDF as an attachment via Single Sender Verification.</div></div>
-      <div class="stack-item"><div class="role">Reverse proxy</div><div class="name">Nginx</div><div class="why">TLS termination + streaming-safe proxying (buffering explicitly disabled — see Infra tab).</div></div>
+      <div class="stack-item"><div class="role">Reverse proxy</div><div class="name">Nginx</div><div class="why">TLS termination + streaming-safe proxying (buffering explicitly disabled — see the deployment section below).</div></div>
       <div class="stack-item"><div class="role">Host</div><div class="name">AWS EC2, Ubuntu 22.04</div><div class="why">t3.micro, free-tier eligible, systemd-managed backend service.</div></div>
     </div>
   </div>
@@ -1085,7 +1095,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 
   <div class="section">
     <div class="eyebrow">legalclear-control</div>
-    <h2>A phone-sized on/off switch for a real AWS server</h2>
+    <h2>A pocket-sized on/off switch for a real AWS server</h2>
     <p class="section-lede">A second, separate, <em>private</em> repository — deliberately never merged
     into the main LegalClear codebase — containing a single-page mobile web app that starts and stops
     the EC2 instance and repoints DNS accordingly, with no laptop, terminal, or AWS Console required.
@@ -1110,17 +1120,21 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       </div>
       <div>
         <h4 style="font-size:14px; margin-bottom:10px; color:var(--lc-accent)">How it's built</h4>
-        <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7">
-        A static HTML/CSS/JS page (no framework — the whole UI is one <code class="mono">index.html</code>)
-        deployed to Netlify, backed by one Netlify serverless function,
-        <code class="mono">netlify/functions/control.js</code>. That function does the actual work: it
-        hand-implements <strong>AWS Signature Version 4</strong> — HMAC-SHA256 request signing — in
-        plain Node.js using only the built-in <code class="mono">crypto</code> module, calling the raw
-        EC2 HTTP API directly rather than pulling in the full AWS SDK, which would be considerable
-        weight for three actions. Password gate is a client-side session check; the real security
-        boundary is that AWS credentials live only as Netlify environment variables, never in the
-        shipped code, and the repository itself is private.
-        </p>
+        <div class="flow-steps" style="height:calc(100% - 34px)">
+          <div class="flow-step" style="grid-template-columns:1fr">
+            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0">
+            A static HTML/CSS/JS page (no framework — the whole UI is one <code class="mono">index.html</code>)
+            deployed to Netlify, backed by one Netlify serverless function,
+            <code class="mono">netlify/functions/control.js</code>. That function does the actual work: it
+            hand-implements <strong>AWS Signature Version 4</strong> — HMAC-SHA256 request signing — in
+            plain Node.js using only the built-in <code class="mono">crypto</code> module, calling the raw
+            EC2 HTTP API directly rather than pulling in the full AWS SDK, which would be considerable
+            weight for three actions. Password gate is a client-side session check; the real security
+            boundary is that AWS credentials live only as Netlify environment variables, never in the
+            shipped code, and the repository itself is private.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="code-block">
@@ -1216,90 +1230,90 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     talk directly to Supabase, and every table is protected by Row-Level Security rather than
     application-layer access checks — the database itself refuses a query that shouldn't be allowed,
     not just the UI that would have hidden the button.</p>
-    <figure style="margin:28px 0 0">
-  <svg viewBox="0 0 920 380" role="img" aria-label="FreightNexus architecture: Next.js server components and server actions on Vercel talk directly to Supabase Postgres, Auth, Storage and Realtime, all protected by row-level security, with SendGrid for email and Google Maps for geocoding and tracking, and no LLM anywhere in the runtime path" style="width:100%;height:auto;max-width:920px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+    <figure style="margin:32px 0 0">
+  <svg viewBox="0 0 1180 480" role="img" aria-label="FreightNexus architecture: Next.js server components and server actions on Vercel talk directly to Supabase Postgres, Auth, Storage and Realtime, all protected by row-level security, with SendGrid for email and Google Maps for geocoding and tracking, and no LLM anywhere in the runtime path" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <marker id="fnArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <marker id="fnArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
         <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
       </marker>
     </defs>
-    <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11.5" fill="currentColor">
+    <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" fill="currentColor">
 
-      <!-- 4 clients -->
+      <!-- 4 clients + admin -->
       <g>
-        <rect x="20" y="20" width="110" height="42" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-        <text x="75" y="46" text-anchor="middle" font-size="10.5">Business Owner</text>
-        <rect x="20" y="72" width="110" height="42" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-        <text x="75" y="98" text-anchor="middle" font-size="10.5">Owner-Driver</text>
-        <rect x="20" y="124" width="110" height="42" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-        <text x="75" y="150" text-anchor="middle" font-size="10.5">Fleet Owner</text>
-        <rect x="20" y="176" width="110" height="42" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-        <text x="75" y="202" text-anchor="middle" font-size="10.5">Fleet Driver</text>
-        <rect x="20" y="228" width="110" height="42" rx="7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
-        <text x="75" y="254" text-anchor="middle" font-size="10.5" opacity="0.75">Admin (internal)</text>
+        <rect x="24" y="24" width="150" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+        <text x="99" y="57" text-anchor="middle" font-size="13">Business Owner</text>
+        <rect x="24" y="90" width="150" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+        <text x="99" y="123" text-anchor="middle" font-size="13">Owner-Driver</text>
+        <rect x="24" y="156" width="150" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+        <text x="99" y="189" text-anchor="middle" font-size="13">Fleet Owner</text>
+        <rect x="24" y="222" width="150" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+        <text x="99" y="255" text-anchor="middle" font-size="13">Fleet Driver</text>
+        <rect x="24" y="288" width="150" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 4"/>
+        <text x="99" y="321" text-anchor="middle" font-size="13" opacity="0.75">Admin (internal)</text>
       </g>
 
       <!-- Next.js -->
-      <rect x="190" y="70" width="180" height="150" rx="9" fill="none" stroke="currentColor" stroke-width="1.7"/>
-      <text x="280" y="96" text-anchor="middle" font-weight="700">Next.js 16</text>
-      <text x="280" y="114" text-anchor="middle" font-size="9.5" opacity="0.65">App Router, Vercel</text>
-      <line x1="288" y1="122" x2="272" y2="122" stroke="currentColor" stroke-width="0"/>
-      <text x="280" y="140" text-anchor="middle" font-size="9.5" opacity="0.65">Server Components</text>
-      <text x="280" y="156" text-anchor="middle" font-size="9.5" opacity="0.65">Server Actions</text>
-      <text x="280" y="172" text-anchor="middle" font-size="9.5" opacity="0.65">Route Handlers</text>
-      <text x="280" y="196" text-anchor="middle" font-size="9" fill="var(--fn-accent, #2DD4BF)">no LLM call, anywhere</text>
+      <rect x="255" y="90" width="235" height="196" rx="11" fill="none" stroke="currentColor" stroke-width="1.9"/>
+      <text x="372" y="124" text-anchor="middle" font-weight="700" font-size="15">Next.js 16</text>
+      <text x="372" y="148" text-anchor="middle" font-size="12" opacity="0.65">App Router, Vercel</text>
+      <text x="372" y="176" text-anchor="middle" font-size="12" opacity="0.65">Server Components</text>
+      <text x="372" y="196" text-anchor="middle" font-size="12" opacity="0.65">Server Actions</text>
+      <text x="372" y="216" text-anchor="middle" font-size="12" opacity="0.65">Route Handlers</text>
+      <text x="372" y="255" text-anchor="middle" font-size="11.5" fill="var(--fn-accent, #2DD4BF)">no LLM call, anywhere</text>
 
-      <g stroke="currentColor" stroke-width="1.1">
-        <line x1="130" y1="41" x2="184" y2="120" marker-end="url(#fnArrow)"/>
-        <line x1="130" y1="93" x2="184" y2="130" marker-end="url(#fnArrow)"/>
-        <line x1="130" y1="145" x2="184" y2="150" marker-end="url(#fnArrow)"/>
-        <line x1="130" y1="197" x2="184" y2="165" marker-end="url(#fnArrow)"/>
-        <line x1="130" y1="249" x2="184" y2="185" marker-end="url(#fnArrow)" stroke-dasharray="4 3"/>
+      <g stroke="currentColor" stroke-width="1.2">
+        <line x1="174" y1="53" x2="249" y2="152" marker-end="url(#fnArrow)"/>
+        <line x1="174" y1="118" x2="249" y2="167" marker-end="url(#fnArrow)"/>
+        <line x1="174" y1="184" x2="249" y2="188" marker-end="url(#fnArrow)"/>
+        <line x1="174" y1="250" x2="249" y2="210" marker-end="url(#fnArrow)"/>
+        <line x1="174" y1="315" x2="249" y2="232" marker-end="url(#fnArrow)" stroke-dasharray="5 4"/>
       </g>
 
       <!-- Supabase cluster -->
-      <rect x="440" y="20" width="220" height="260" rx="10" fill="none" stroke="var(--fn-accent, #2DD4BF)" stroke-width="1.6"/>
-      <text x="550" y="42" text-anchor="middle" font-weight="700" fill="var(--fn-accent, #2DD4BF)">Supabase</text>
+      <rect x="565" y="20" width="280" height="330" rx="12" fill="none" stroke="var(--fn-accent, #2DD4BF)" stroke-width="1.8"/>
+      <text x="705" y="52" text-anchor="middle" font-weight="700" font-size="15" fill="var(--fn-accent, #2DD4BF)">Supabase</text>
 
-      <rect x="458" y="56" width="184" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
-      <text x="550" y="80" text-anchor="middle" font-size="10.5">Postgres · 25+ tables</text>
+      <rect x="588" y="70" width="234" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text x="705" y="101" text-anchor="middle" font-size="13">Postgres · 25+ tables</text>
 
-      <rect x="458" y="106" width="184" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
-      <text x="550" y="130" text-anchor="middle" font-size="10.5">Row-Level Security</text>
+      <rect x="588" y="130" width="234" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text x="705" y="161" text-anchor="middle" font-size="13">Row-Level Security</text>
 
-      <rect x="458" y="156" width="184" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
-      <text x="550" y="180" text-anchor="middle" font-size="10.5">Auth · one row / user</text>
+      <rect x="588" y="190" width="234" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text x="705" y="221" text-anchor="middle" font-size="13">Auth · one row / user</text>
 
-      <rect x="458" y="206" width="184" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
-      <text x="550" y="230" text-anchor="middle" font-size="10.5">Storage · KYC + photos</text>
+      <rect x="588" y="250" width="234" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text x="705" y="281" text-anchor="middle" font-size="13">Storage · KYC + photos</text>
 
-      <rect x="458" y="245" width="184" height="30" rx="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
-      <text x="550" y="264" text-anchor="middle" font-size="10">Realtime · live GPS</text>
+      <rect x="588" y="310" width="234" height="34" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text x="705" y="332" text-anchor="middle" font-size="12.5">Realtime · live GPS</text>
 
-      <line x1="370" y1="140" x2="434" y2="140" stroke="currentColor" stroke-width="1.3" marker-end="url(#fnArrow)"/>
-      <text x="402" y="132" text-anchor="middle" font-size="9">SQL + RLS</text>
+      <line x1="490" y1="185" x2="559" y2="185" stroke="currentColor" stroke-width="1.4" marker-end="url(#fnArrow)"/>
+      <rect x="497" y="173" width="80" height="24" rx="5" fill="var(--surface, #0F1826)"/>
+      <text x="537" y="190" text-anchor="middle" font-size="11.5" opacity="0.85">SQL + RLS</text>
 
       <!-- External -->
-      <rect x="720" y="60" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
-      <text x="800" y="82" text-anchor="middle" font-weight="600" font-size="11">SendGrid</text>
-      <text x="800" y="98" text-anchor="middle" font-size="9.5" opacity="0.65">invoices, alerts</text>
+      <rect x="920" y="70" width="220" height="66" rx="9" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="1030" y="98" text-anchor="middle" font-weight="600" font-size="13.5">SendGrid</text>
+      <text x="1030" y="118" text-anchor="middle" font-size="11.5" opacity="0.65">invoices, alerts</text>
 
-      <rect x="720" y="130" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
-      <text x="800" y="152" text-anchor="middle" font-weight="600" font-size="11">Google Maps</text>
-      <text x="800" y="168" text-anchor="middle" font-size="9.5" opacity="0.65">geocode, directions</text>
+      <rect x="920" y="158" width="220" height="66" rx="9" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="1030" y="186" text-anchor="middle" font-weight="600" font-size="13.5">Google Maps</text>
+      <text x="1030" y="206" text-anchor="middle" font-size="11.5" opacity="0.65">geocode, directions</text>
 
-      <rect x="720" y="200" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
-      <text x="800" y="222" text-anchor="middle" font-weight="600" font-size="11">Vercel Cron</text>
-      <text x="800" y="238" text-anchor="middle" font-size="9.5" opacity="0.65">expiry + auto-cancel</text>
+      <rect x="920" y="246" width="220" height="66" rx="9" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="1030" y="274" text-anchor="middle" font-weight="600" font-size="13.5">Vercel Cron</text>
+      <text x="1030" y="294" text-anchor="middle" font-size="11.5" opacity="0.65">expiry + auto-cancel</text>
 
-      <line x1="370" y1="105" x2="714" y2="85" stroke="currentColor" stroke-width="1.1" marker-end="url(#fnArrow)"/>
-      <line x1="370" y1="150" x2="714" y2="155" stroke="currentColor" stroke-width="1.1" marker-end="url(#fnArrow)"/>
-      <line x1="370" y1="190" x2="714" y2="220" stroke="currentColor" stroke-width="1.1" marker-end="url(#fnArrow)"/>
+      <line x1="490" y1="140" x2="914" y2="103" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
+      <line x1="490" y1="200" x2="914" y2="191" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
+      <line x1="490" y1="255" x2="914" y2="279" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
 
-      <text x="620" y="315" text-anchor="middle" font-size="10" opacity="0.6">Every table gated by RLS — a fleet driver's query for another fleet's trip returns zero rows, not a 403</text>
+      <text x="705" y="405" text-anchor="middle" font-size="12.5" opacity="0.65">Every table gated by RLS — a fleet driver's query for another fleet's trip returns zero rows, not a 403</text>
     </g>
   </svg>
-  <figcaption style="text-align:center; font-size:12.5px; color:var(--text-faint); margin-top:14px; font-family:var(--font-mono)">
+  <figcaption style="text-align:center; font-size:13px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
     No dedicated backend service — Next.js server code talks to Postgres directly, and the database itself enforces who can see what.
   </figcaption>
 </figure>
@@ -1779,13 +1793,29 @@ OUTPUT BREVITY RULES — strict, followed exactly:
   </div>
 
   <div class="section">
-    <div class="eyebrow">3 · Building the request</div>
-    <h2>User message = instructions + schema + the actual document</h2>
-    <p class="section-lede">The user turn is a template, not free text — it restates the exact JSON
-    shape expected, field by field, immediately followed by the raw document text. Repeating the schema
-    in the user message (on top of the system prompt) measurably improves adherence on long documents,
-    where the system prompt's instructions are further back in the context window by the time
-    generation starts.</p>
+    <div class="eyebrow">3 · Context construction</div>
+    <h2>How the request actually gets built — every single call, from zero</h2>
+    <p class="section-lede">LegalClear has no memory between requests and no retrieval step — there's no
+    vector store, no embedding search, no prior turns to load. Every analysis is a cold, single-turn call
+    with exactly two pieces of context: a fixed <strong>system prompt</strong> (the analytical rules and
+    output contract, identical on every request) and a <strong>user message</strong> built fresh from
+    three things — a restated JSON schema, the document's name, and the raw document text, concatenated
+    directly into one string. That's the entire context window. No summarization pass, no chunk retrieval
+    at query time — the model reads the whole document in one shot, in one turn, every time.</p>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div><div class="title">System prompt — fixed, never changes per request</div><div class="desc">Sent as the <code class="mono">system</code> parameter, not a message. Carries the persona ("You are LegalClear..."), the 11 numbered interpretation rules, the output format contract, and the per-field word-count ceilings. Anthropic's API treats this as a separate slot from the message list — it doesn't count against message history, and it's the same string byte-for-byte on every single call this service ever makes.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <div><div class="title">User message — reassembled from scratch every request</div><div class="desc">Not just "the document." It's the JSON schema restated field-by-field (belt-and-braces — repeating structure close to the actual content measurably improves adherence versus relying on the system prompt alone, which is further back in the context window by generation time), followed by <code class="mono">Document Name: {document_name}</code>, followed by the full raw document text. One string, one user turn, no message history before it.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <div><div class="title">No context survives the request</div><div class="desc">There's no session, no thread, no follow-up turn. <code class="mono">messages.create()</code> is called with a single <code class="mono">{"role": "user", ...}</code> entry — the one exception is the one-shot JSON-parse retry (Section 5 below), which appends a single primed <code class="mono">assistant</code> turn to bias reformatting, then throws the whole exchange away either way.</div></div>
+      </div>
+    </div>
     <div class="code-block">
       <div class="code-head"><span>USER_MESSAGE_TEMPLATE (non-streaming variant, abridged)</span><span>claude_service.py:70</span></div>
       <pre>Analyse the following legal document and return a JSON object conforming to this exact schema:
@@ -1813,7 +1843,7 @@ Legal Document Text:
 {document_text}</pre>
     </div>
     <div class="code-block">
-      <div class="code-head"><span>The actual API call</span><span>claude_service.py:373</span></div>
+      <div class="code-head"><span>The actual API call — system and user are two separate slots</span><span>claude_service.py:373</span></div>
       <pre><span class="k">def</span> <span class="fn">_call</span>(extra_messages=None) -> str:
     messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: user_message}]
     <span class="k">if</span> extra_messages:
@@ -1821,21 +1851,46 @@ Legal Document Text:
     response = client.messages.create(
         model=<span class="s">"claude-sonnet-4-5"</span>,
         max_tokens=<span class="s">8192</span>,
-        system=SYSTEM_PROMPT,
-        messages=messages,
+        system=SYSTEM_PROMPT,      <span class="c"># fixed persona + rules, every call</span>
+        messages=messages,          <span class="c"># fresh document context, this call only</span>
     )
     <span class="k">return</span> response.content[<span class="s">0</span>].text</pre>
+    </div>
+    <div class="callout">
+      <strong>Why no RAG, no embeddings, no chunk retrieval at query time?</strong> Because rule 9 of the
+      system prompt ("never translate a clause in isolation if it depends on or is modified by another")
+      is only enforceable if the model can see the whole document at once. Retrieval-based context —
+      fetching only the "relevant" paragraphs for a query — would actively break that rule: a termination
+      clause that's modified three pages later needs both pages in context simultaneously, not ranked
+      separately by similarity search. The one place this breaks down is documents too large to fit one
+      call's practical output budget — that's what chunking (Section 6) exists to handle, and it's a
+      real, accepted quality trade-off, not a free lunch.
     </div>
   </div>
 
   <div class="section">
     <div class="eyebrow">4 · The streaming protocol</div>
-    <h2>Why XML tags around JSON, not JSON alone</h2>
-    <p class="section-lede">A single top-level JSON object can't be usefully parsed until the closing
-    brace arrives — you can't safely render "the first two sections" out of a half-finished blob. The
-    fix: ask Claude to wrap each independent unit in a plain-text tag pair, and scan the growing text
-    buffer for complete <code class="mono">&lt;tag&gt;...&lt;/tag&gt;</code> pairs on every chunk, parsing
-    and emitting each one the instant it closes.</p>
+    <h2>Processing the response in chunks — so there's always something to look at</h2>
+    <p class="section-lede">The whole point of this section: a 38-section lease takes Claude roughly
+    four minutes to fully analyse. A blank screen for four minutes reads as broken, not thorough. So
+    LegalClear never waits for the complete response — it processes Claude's output <em>as it's being
+    written</em>, section by section, and hands each finished piece to the browser the instant it's
+    ready. The single biggest constraint this creates: a top-level JSON object can't be usefully parsed
+    until its closing brace arrives — you can't safely render "the first two sections" out of a
+    half-finished blob. The fix is to change what Claude is asked to emit, not to parse JSON harder: wrap
+    each independent unit in a plain-text tag pair, and scan the growing text buffer for complete
+    <code class="mono">&lt;tag&gt;...&lt;/tag&gt;</code> pairs on every chunk, parsing and emitting each
+    one the instant it closes — regardless of how much of the response is still unwritten.</p>
+    <div class="callout">
+      <strong>What this actually looks like on screen, in order:</strong> the progress bar appears
+      within a second of submitting; the <code class="mono">&lt;meta&gt;</code> block — document name,
+      verdict, parties — lands around 5–10 seconds in, so the "At a Glance" card is populated long
+      before analysis is done; then one section card mounts roughly every few seconds as each
+      <code class="mono">&lt;section&gt;</code> tag closes, each with its own risk flags, so the "What to
+      Watch Out For" panel and the live stat counters climb in real time rather than jumping from 0 to 38
+      at the very end. The user is reading real analysis of their real document from around the 10-second
+      mark — not staring at a spinner until minute four.
+    </div>
     <div class="code-block">
       <div class="code-head"><span>The extraction loop</span><span>stream_claude_service.py:150</span></div>
       <pre>buffer = <span class="s">""</span>
@@ -2012,9 +2067,7 @@ Legal Document Text:
 </footer>
 
 <div id="lightbox">
-  <div class="lb-hint">SCROLL / PINCH TO ZOOM · DRAG TO PAN · ESC TO CLOSE</div>
-  <button class="lb-zoom lb-zoom-in" onclick="lbZoom(1.25)">+</button>
-  <button class="lb-zoom lb-zoom-out" onclick="lbZoom(0.8)">–</button>
+  <div class="lb-hint">ESC OR CLICK OUTSIDE TO CLOSE</div>
   <button class="lb-close" onclick="closeLightbox()">×</button>
   <div class="lb-stage" id="lbStage">
     <img id="lbImg" src="" alt="" />
@@ -2045,22 +2098,15 @@ Legal Document Text:
     if (saved) { const t = document.querySelector(`.tab[data-panel="${saved}"]`); if (t) t.click(); }
   } catch(e) {}
 
-  // Lightbox
-  let lbScale = 1;
+  // Lightbox — click to open at full size, no zoom controls
   function openLightbox(src, cap) {
     const img = document.getElementById('lbImg');
     img.src = src;
-    lbScale = 1;
-    img.style.transform = 'scale(1)';
     document.getElementById('lbCap').textContent = cap || '';
     document.getElementById('lightbox').classList.add('open');
   }
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
-  }
-  function lbZoom(factor) {
-    lbScale = Math.min(6, Math.max(0.5, lbScale * factor));
-    document.getElementById('lbImg').style.transform = `scale(${lbScale})`;
   }
   document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target.id === 'lightbox') closeLightbox();
@@ -2068,23 +2114,6 @@ Legal Document Text:
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeLightbox();
   });
-  const stage = document.getElementById('lbStage');
-  stage.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    lbZoom(e.deltaY < 0 ? 1.12 : 0.9);
-  }, { passive: false });
-  let panning = false, panStartX, panStartY, scrollStartX, scrollStartY;
-  stage.addEventListener('mousedown', (e) => {
-    panning = true; stage.classList.add('grabbing');
-    panStartX = e.clientX; panStartY = e.clientY;
-    scrollStartX = stage.scrollLeft; scrollStartY = stage.scrollTop;
-  });
-  window.addEventListener('mousemove', (e) => {
-    if (!panning) return;
-    stage.scrollLeft = scrollStartX - (e.clientX - panStartX);
-    stage.scrollTop = scrollStartY - (e.clientY - panStartY);
-  });
-  window.addEventListener('mouseup', () => { panning = false; stage.classList.remove('grabbing'); });
 
   function wireGallery() {
     document.querySelectorAll('.shot[data-src]').forEach(el => {
