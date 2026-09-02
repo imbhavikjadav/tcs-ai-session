@@ -1340,7 +1340,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     application-layer access checks — the database itself refuses a query that shouldn't be allowed,
     not just the UI that would have hidden the button.</p>
     <figure style="margin:32px 0 0">
-  <svg viewBox="0 0 1180 480" role="img" aria-label="FreightNexus architecture: Next.js server components and server actions on Vercel talk directly to Supabase Postgres, Auth, Storage and Realtime, all protected by row-level security, with SendGrid for email and Google Maps for geocoding and tracking, and no LLM anywhere in the runtime path" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 1180 460" role="img" aria-label="FreightNexus architecture: Next.js server components and server actions on Vercel talk directly to Supabase Postgres, Auth, Storage and Realtime, all protected by row-level security, with SendGrid for email and Google Maps for geocoding and tracking, and no LLM anywhere in the runtime path" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="fnArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
         <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
@@ -1415,19 +1415,20 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       <text x="1030" y="274" text-anchor="middle" font-weight="600" font-size="13.5">Vercel Cron</text>
       <text x="1030" y="294" text-anchor="middle" font-size="11.5" opacity="0.65">expiry + auto-cancel</text>
 
-      <!-- Routed around the Supabase box (over the top, not through its
-           middle) rather than straight through it — these three calls go
-           directly from Next.js server code, not via Supabase. Each rises
-           on its own rail above the box, runs right, then drops into its
-           external box's left edge. -->
-      <path d="M 490 140 L 502 140 L 502 4 L 900 4 L 900 103 L 914 103" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
-      <path d="M 490 200 L 514 200 L 514 10 L 906 10 L 906 191 L 914 191" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
-      <path d="M 490 255 L 526 255 L 526 16 L 912 16 L 912 279 L 914 279" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
+      <!-- Routed clear below everything (not through the Supabase box)
+           rather than through its middle — these three calls go directly
+           from Next.js server code, not via Supabase. Each drops straight
+           down from Next.js on its own lane, runs along a shared rail
+           below the whole diagram, then rises straight up into its
+           external box's bottom edge. -->
+      <path d="M 410 286 L 410 396 L 963 396 L 963 136" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
+      <path d="M 372 286 L 372 412 L 1030 412 L 1030 224" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
+      <path d="M 334 286 L 334 428 L 1097 428 L 1097 312" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#fnArrow)"/>
 
-      <text x="705" y="405" text-anchor="middle" font-size="12.5" opacity="0.65">Every table gated by RLS — a fleet driver's query for another fleet's trip returns zero rows, not a 403</text>
+      <text x="705" y="447" text-anchor="middle" font-size="15" opacity="0.75">Every table gated by RLS — a fleet driver's query for another fleet's trip returns zero rows, not a 403</text>
     </g>
   </svg>
-  <figcaption style="text-align:center; font-size:13px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
+  <figcaption style="text-align:center; font-size:16px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
     No dedicated backend service — Next.js server code talks to Postgres directly, and the database itself enforces who can see what.
   </figcaption>
 </figure>
