@@ -561,8 +561,13 @@
   }
   #lightbox.open { display: flex; }
   #lightbox .lb-stage {
-    max-width: 92vw; max-height: 86vh;
-    overflow: hidden;
+    /* Always a wide fixed frame — regardless of the image's own aspect
+       ratio — so a tall/narrow full-page screenshot doesn't shrink the
+       stage down to its own proportional width. Tall images scroll
+       vertically inside this wide frame instead of constraining it. */
+    width: 92vw; height: 86vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--card);
@@ -572,10 +577,10 @@
   }
   #lightbox img {
     display: block;
-    max-width: 92vw;
-    max-height: 86vh;
-    width: auto;
+    width: 100%;
     height: auto;
+    max-width: none;
+    max-height: none;
     transform-origin: 50% 50%;
     transition: transform 0.12s ease-out;
     will-change: transform;
