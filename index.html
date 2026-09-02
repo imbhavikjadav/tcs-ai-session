@@ -317,7 +317,7 @@
   }
   .proj-card.lc .proj-tag { background: var(--lc-accent-dim); color: var(--lc-accent); border: 1px solid var(--lc-accent-border); }
   .proj-card.fn .proj-tag { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
-  .proj-logo { display: flex; align-items: center; gap: 14px; height: 56px; margin-bottom: 18px; }
+  .proj-logo { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
   .proj-logo-badge {
     width: 52px; height: 52px;
     border-radius: 12px;
@@ -326,11 +326,13 @@
     background: var(--lc-accent);
   }
   .proj-logo-badge svg { width: 30px; height: 30px; }
-  .proj-logo-badge.fn-badge { background: var(--fn-accent); }
-  .proj-logo-badge img { width: 28px; height: auto; display: block; filter: brightness(0) invert(1); }
-  .proj-logo-wordmark { font-weight: 700; font-size: 26px; letter-spacing: -0.01em; color: var(--text); }
+  .proj-logo-wordmark { font-weight: 700; font-size: 26px; letter-spacing: -0.01em; color: var(--text); margin-top: 12px; }
   .proj-logo-wordmark .accent { color: var(--lc-accent); }
-  .proj-logo-wordmark .accent.fn { color: var(--fn-accent); }
+  /* freightnexus-logo.png has ~32% blank padding above its visible mark and
+     ~23% below (baked into the 2000x800 canvas) — pull it up so the actual
+     logo content lines up with LegalClear's badge top edge instead of the
+     image element's own (mostly blank) top edge. */
+  .fn-logo-img { height: 90px; width: auto; display: block; margin: -28px 0 -21px; }
   .panel-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
   .panel-logo-badge {
     width: 52px; height: 52px;
@@ -381,7 +383,7 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     gap: 24px;
-    align-items: center;
+    align-items: start;
     margin-top: 22px;
   }
   @media (max-width: 700px) { .distinction-grid { grid-template-columns: 1fr; } .distinction-grid .vs { display: none; } }
@@ -399,6 +401,7 @@
     font-size: 11px;
     color: var(--text-faint);
     text-align: center;
+    align-self: center;
   }
 
   /* ===== Generic content blocks reused across panels ===== */
@@ -754,10 +757,7 @@
       <div class="proj-card fn" data-goto="freightnexus">
         <span class="proj-tag">Agent-built system</span>
         <div class="proj-logo">
-          <div class="proj-logo-badge fn-badge">
-            <img src="assets/freightnexus-icon.png" alt="" />
-          </div>
-          <div class="proj-logo-wordmark">Freight<span class="accent fn">Nexus</span></div>
+          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" class="fn-logo-img"/>
         </div>
         <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
         bid-based shipment tendering, live execution tracking, and manual two-way payment
@@ -1261,7 +1261,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 <section id="panel-freightnexus" class="panel">
   <div class="section" style="padding-top:56px">
     <div class="panel-logo">
-      <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:44px"/>
+      <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:132px"/>
     </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 02 · Agent-built system</div>
     <p class="section-lede">A pan-India, mobile-first truck tendering marketplace. Not a dispatch app —
