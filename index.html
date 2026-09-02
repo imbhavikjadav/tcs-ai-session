@@ -180,7 +180,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .panel.active { animation: none; }
-    .shot img { transition: none !important; transform: none !important; }
+    #lightbox img { transition: none !important; transform: none !important; }
   }
 
   /* ===== Section scaffolding ===== */
@@ -536,17 +536,9 @@
     justify-content: center;
     overflow: hidden;
     position: relative;
-    /* Magnifying-glass cursor over the hover-zoom area — inline SVG, no asset file */
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" fill="none" stroke="white" stroke-width="2.5"/><circle cx="12" cy="12" r="8" fill="none" stroke="black" stroke-width="1" stroke-opacity="0.35"/><line x1="18" y1="18" x2="25" y2="25" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="18" x2="25" y2="25" stroke="black" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/></svg>') 12 12, zoom-in;
   }
-  .shot img {
-    width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
-    transform-origin: 50% 20%;
-    transition: transform 0.12s ease-out;
-    will-change: transform;
-  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .shot .thumb-wrap.contain-strip img { object-fit: contain; padding: 0 4px; }
-  .shot .thumb-wrap:hover img { transition: transform 0.05s linear; }
   .shot .placeholder {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -570,10 +562,13 @@
   #lightbox.open { display: flex; }
   #lightbox .lb-stage {
     max-width: 92vw; max-height: 86vh;
-    overflow: auto;
+    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--card);
+    position: relative;
+    /* Magnifying-glass cursor over the zoomable full-size image — inline SVG, no asset file */
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" fill="none" stroke="white" stroke-width="2.5"/><circle cx="12" cy="12" r="8" fill="none" stroke="black" stroke-width="1" stroke-opacity="0.35"/><line x1="18" y1="18" x2="25" y2="25" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="18" x2="25" y2="25" stroke="black" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/></svg>') 12 12, zoom-in;
   }
   #lightbox img {
     display: block;
@@ -581,7 +576,11 @@
     max-height: 86vh;
     width: auto;
     height: auto;
+    transform-origin: 50% 50%;
+    transition: transform 0.12s ease-out;
+    will-change: transform;
   }
+  #lightbox .lb-stage:hover img { transition: transform 0.05s linear; }
   #lightbox .lb-cap {
     position: fixed;
     bottom: 28px; left: 50%;
@@ -2145,6 +2144,8 @@ Legal Document Text:
   function openLightbox(src, cap) {
     const img = document.getElementById('lbImg');
     img.src = src;
+    img.style.transform = 'scale(1)';
+    img.style.transformOrigin = '50% 50%';
     document.getElementById('lbCap').textContent = cap || '';
     document.getElementById('lightbox').classList.add('open');
   }
@@ -2165,28 +2166,27 @@ Legal Document Text:
   }
   document.addEventListener('DOMContentLoaded', wireGallery);
 
-  // Hover-magnify — the image scales up and its transform-origin tracks the
-  // cursor position, so whatever's under the pointer stays under the pointer
-  // as it grows (rather than zooming toward a fixed center). Click still
-  // opens the full lightbox; this is purely a hover preview.
-  const ZOOM_SCALE = 2.4;
-  function wireHoverZoom() {
+  // Hover-magnify inside the lightbox only — thumbnails stay plain. The
+  // full-size image scales up and its transform-origin tracks the cursor
+  // position, so whatever's under the pointer stays under the pointer as
+  // it grows, rather than zooming toward a fixed center.
+  const ZOOM_SCALE = 2.2;
+  function wireLightboxZoom() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll('.shot .thumb-wrap').forEach(wrap => {
-      const img = wrap.querySelector('img');
-      if (!img) return;
-      wrap.addEventListener('mousemove', (e) => {
-        const rect = wrap.getBoundingClientRect();
-        const xPct = ((e.clientX - rect.left) / rect.width) * 100;
-        const yPct = ((e.clientY - rect.top) / rect.height) * 100;
-        img.style.transformOrigin = `${xPct}% ${yPct}%`;
-        img.style.transform = `scale(${ZOOM_SCALE})`;
-      });
-      wrap.addEventListener('mouseleave', () => {
-        img.style.transform = 'scale(1)';
-        img.style.transformOrigin = '50% 20%';
-      });
+    const stage = document.getElementById('lbStage');
+    const img = document.getElementById('lbImg');
+    if (!stage || !img) return;
+    stage.addEventListener('mousemove', (e) => {
+      const rect = img.getBoundingClientRect();
+      const xPct = Math.min(100, Math.max(0, ((e.clientX - rect.left) / rect.width) * 100));
+      const yPct = Math.min(100, Math.max(0, ((e.clientY - rect.top) / rect.height) * 100));
+      img.style.transformOrigin = `${xPct}% ${yPct}%`;
+      img.style.transform = `scale(${ZOOM_SCALE})`;
+    });
+    stage.addEventListener('mouseleave', () => {
+      img.style.transform = 'scale(1)';
+      img.style.transformOrigin = '50% 50%';
     });
   }
-  document.addEventListener('DOMContentLoaded', wireHoverZoom);
+  document.addEventListener('DOMContentLoaded', wireLightboxZoom);
 </script>
