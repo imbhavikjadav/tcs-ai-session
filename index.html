@@ -318,7 +318,7 @@
   }
   .proj-card.lc .proj-tag { background: var(--lc-accent-dim); color: var(--lc-accent); border: 1px solid var(--lc-accent-border); }
   .proj-card.fn .proj-tag { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
-  .proj-logo { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+  .proj-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
   .proj-logo-badge {
     width: 70px; height: 70px;
     border-radius: 16px;
@@ -327,13 +327,14 @@
     background: var(--lc-accent);
   }
   .proj-logo-badge svg { width: 40px; height: 40px; }
-  .proj-logo-wordmark { font-weight: 700; font-size: 35px; letter-spacing: -0.01em; color: var(--text); margin-top: 16px; }
+  .proj-logo-wordmark { font-weight: 700; font-size: 35px; letter-spacing: -0.01em; color: var(--text); }
   .proj-logo-wordmark .accent { color: var(--lc-accent); }
-  /* freightnexus-logo.png has ~32% blank padding above its visible mark and
-     ~23% below (baked into the 2000x800 canvas) — pull it up so the actual
-     logo content lines up with LegalClear's badge top edge instead of the
-     image element's own (mostly blank) top edge. */
-  .fn-logo-img { height: 122px; width: auto; display: block; margin: -39px 0 -29px; }
+  /* freightnexus-logo.png's visible mark sits slightly below the vertical
+     center of its own 2000x800 canvas (~32% blank padding above it vs. ~23%
+     below) — .proj-logo centers items by their box, so nudge the image up a
+     few px to align its visible content's center with the badge's, rather
+     than the image element's own (slightly-off) geometric center. */
+  .fn-logo-img { height: 122px; width: auto; display: block; transform: translateY(-5px); }
   .panel-logo { display: flex; align-items: center; gap: 24px; margin-bottom: 18px; }
   .panel-logo-badge {
     width: 125px; height: 125px;
