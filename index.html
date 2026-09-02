@@ -313,6 +313,28 @@
   }
   .proj-card.lc .proj-tag { background: var(--lc-accent-dim); color: var(--lc-accent); border: 1px solid var(--lc-accent-border); }
   .proj-card.fn .proj-tag { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
+  .proj-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .proj-logo-badge {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: var(--lc-accent);
+  }
+  .proj-logo-wordmark { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--text); }
+  .proj-logo-wordmark .accent { color: var(--lc-accent); }
+  .proj-logo img { height: 26px; width: auto; display: block; }
+  .panel-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .panel-logo-badge {
+    width: 44px; height: 44px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: var(--lc-accent);
+  }
+  .panel-logo-wordmark { font-weight: 700; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .panel-logo-wordmark .accent { color: var(--lc-accent); }
+  .panel-logo img { height: 34px; width: auto; display: block; }
   .proj-card h3 { font-size: 24px; margin-bottom: 10px; }
   .proj-card p { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 18px; }
   .proj-stack { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -683,7 +705,12 @@
     <div class="split-grid">
       <div class="proj-card lc" data-goto="legalclear">
         <span class="proj-tag">Runtime AI product</span>
-        <h3>LegalClear</h3>
+        <div class="proj-logo">
+          <div class="proj-logo-badge">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          </div>
+          <div class="proj-logo-wordmark">Legal<span class="accent">Clear</span></div>
+        </div>
         <p>Upload a contract, NDA, or lease. Claude reads it end-to-end, streams back a
         plain-English breakdown clause by clause, and flags the terms that actually matter —
         HIGH, MEDIUM, NOTE — before generating a branded PDF report and emailing it out.</p>
@@ -699,7 +726,9 @@
       </div>
       <div class="proj-card fn" data-goto="freightnexus">
         <span class="proj-tag">Agent-built system</span>
-        <h3>FreightNexus</h3>
+        <div class="proj-logo">
+          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:24px"/>
+        </div>
         <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
         bid-based shipment tendering, live execution tracking, and manual two-way payment
         confirmation, running against a 25+ table Postgres schema with full RLS.</p>
@@ -748,8 +777,13 @@
 
 <section id="panel-legalclear" class="panel">
   <div class="section" style="padding-top:56px">
+    <div class="panel-logo">
+      <div class="panel-logo-badge">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+      </div>
+      <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
+    </div>
     <div class="eyebrow" style="color:var(--lc-accent)">Case file 01 · Runtime AI product</div>
-    <h2>LegalClear</h2>
     <p class="section-lede">A legal-document translator that reads what you paste or upload — Terms of
     Service, NDAs, leases, employment contracts — and returns a section-by-section plain-English
     breakdown with every risky clause flagged by severity, streamed live and backed by a real Claude
@@ -1196,8 +1230,10 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 
 <section id="panel-freightnexus" class="panel">
   <div class="section" style="padding-top:56px">
+    <div class="panel-logo">
+      <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:32px"/>
+    </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 02 · Agent-built system</div>
-    <h2>FreightNexus</h2>
     <p class="section-lede">A pan-India, mobile-first truck tendering marketplace. Not a dispatch app —
     a bidding marketplace: a shipper posts a shipment, eligible verified drivers bid on it with an
     itemised price, and the shipper picks the bid that suits them, not just the first one that shows up.
