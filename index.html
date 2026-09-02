@@ -92,8 +92,8 @@
       linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
     background-size: 48px 48px;
     background-position: -1px -1px;
-    -webkit-mask-image: radial-gradient(ellipse 65% 60% at 30% 35%, transparent 35%, black 85%);
-    mask-image: radial-gradient(ellipse 65% 60% at 30% 35%, transparent 35%, black 85%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 55% at 28% 22%, transparent 40%, black 90%);
+    mask-image: radial-gradient(ellipse 70% 55% at 28% 22%, transparent 40%, black 90%);
   }
 
   /* ===== Top identity bar ===== */
@@ -303,45 +303,48 @@
   .proj-card.fn::after { background: var(--fn-accent); }
   .proj-tag {
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 999px;
     display: inline-block;
     margin-bottom: 16px;
   }
   .proj-card.lc .proj-tag { background: var(--lc-accent-dim); color: var(--lc-accent); border: 1px solid var(--lc-accent-border); }
   .proj-card.fn .proj-tag { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
-  .proj-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .proj-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .proj-logo-badge {
-    width: 34px; height: 34px;
-    border-radius: 9px;
+    width: 42px; height: 42px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     background: var(--lc-accent);
   }
-  .proj-logo-wordmark { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--text); }
+  .proj-logo-badge svg { width: 24px; height: 24px; }
+  .proj-logo-wordmark { font-weight: 700; font-size: 21px; letter-spacing: -0.01em; color: var(--text); }
   .proj-logo-wordmark .accent { color: var(--lc-accent); }
-  .proj-logo img { height: 26px; width: auto; display: block; }
-  .panel-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .proj-logo img { height: 38px; width: auto; display: block; }
+  .panel-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
   .panel-logo-badge {
-    width: 44px; height: 44px;
-    border-radius: 11px;
+    width: 52px; height: 52px;
+    border-radius: 13px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     background: var(--lc-accent);
   }
-  .panel-logo-wordmark { font-weight: 700; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .panel-logo-badge svg { width: 28px; height: 28px; }
+  .panel-logo-wordmark { font-weight: 700; font-size: 27px; letter-spacing: -0.01em; color: var(--text); }
   .panel-logo-wordmark .accent { color: var(--lc-accent); }
-  .panel-logo img { height: 34px; width: auto; display: block; }
+  .panel-logo img { height: 44px; width: auto; display: block; }
   .proj-card h3 { font-size: 24px; margin-bottom: 10px; }
-  .proj-card p { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 18px; }
-  .proj-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .proj-card p { color: var(--text-dim); font-size: 16px; line-height: 1.65; margin-bottom: 18px; }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 7px; }
   .chip {
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    padding: 3px 9px;
+    font-size: 12px;
+    padding: 4px 10px;
     border-radius: 6px;
     background: var(--card-raised);
     border: 1px solid var(--border);
@@ -349,7 +352,7 @@
   }
   .proj-cta {
     margin-top: 20px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -360,6 +363,8 @@
 
   /* ===== Distinction callout ===== */
   .distinction {
+    position: relative;
+    z-index: 1;
     margin-top: 56px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -375,14 +380,14 @@
   }
   @media (max-width: 700px) { .distinction-grid { grid-template-columns: 1fr; } .distinction-grid .vs { display: none; } }
   .distinction-col h4 {
-    font-size: 13px;
+    font-size: 16px;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
   }
   .distinction-col.lc h4 { color: var(--lc-accent); }
   .distinction-col.fn h4 { color: var(--fn-accent); }
-  .distinction-col p { color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+  .distinction-col p { color: var(--text-dim); font-size: 16px; line-height: 1.65; }
   .vs {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -707,7 +712,7 @@
         <span class="proj-tag">Runtime AI product</span>
         <div class="proj-logo">
           <div class="proj-logo-badge">
-            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
           </div>
           <div class="proj-logo-wordmark">Legal<span class="accent">Clear</span></div>
         </div>
@@ -727,7 +732,7 @@
       <div class="proj-card fn" data-goto="freightnexus">
         <span class="proj-tag">Agent-built system</span>
         <div class="proj-logo">
-          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:24px"/>
+          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:38px"/>
         </div>
         <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
         bid-based shipment tendering, live execution tracking, and manual two-way payment
@@ -746,7 +751,7 @@
 
     <div class="distinction">
       <div class="eyebrow" style="margin-bottom:0">Why these two, side by side</div>
-      <p class="section-lede" style="margin-top:14px">
+      <p class="section-lede" style="margin-top:14px; font-size:17px; line-height:1.7">
         People conflate "built with AI" and "powered by AI" — they're different claims, and this pairing
         makes the difference concrete. One of these products has Claude in its request path every time a
         real user hits Submit. The other was built entirely inside Claude Code sessions and never calls
@@ -779,7 +784,7 @@
   <div class="section" style="padding-top:56px">
     <div class="panel-logo">
       <div class="panel-logo-badge">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
       </div>
       <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
     </div>
@@ -1231,7 +1236,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 <section id="panel-freightnexus" class="panel">
   <div class="section" style="padding-top:56px">
     <div class="panel-logo">
-      <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:32px"/>
+      <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" style="height:44px"/>
     </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 02 · Agent-built system</div>
     <p class="section-lede">A pan-India, mobile-first truck tendering marketplace. Not a dispatch app —
