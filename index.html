@@ -941,25 +941,25 @@
       <div class="eyebrow" style="margin-bottom:0">Why these two, side by side</div>
       <p class="section-lede" style="margin-top:14px; font-size:17px; line-height:1.7">
         People conflate "built with AI" and "powered by AI" — they're different claims, and this pairing
-        makes the difference concrete. One of these products has Claude in its request path every time a
-        real user hits Submit. The other was built entirely inside Claude Code sessions and never calls
-        an LLM once it's running. Both are legitimate uses of the same underlying model — they just sit
-        on opposite sides of the build-time/run-time line.
+        makes the difference concrete. One of these products was built entirely inside Claude Code
+        sessions and never calls an LLM once it's running. The other has Claude in its request path
+        every time a real user hits Submit. Both are legitimate uses of the same underlying model —
+        they just sit on opposite sides of the build-time/run-time line.
       </p>
       <div class="distinction-grid">
-        <div class="distinction-col lc">
-          <h4>LegalClear — Claude at runtime</h4>
-          <p>Every document analysis is a live call to <code class="mono">claude-sonnet-4-5</code>.
-          The product's entire value proposition — reading a contract and finding the risk — <em>is</em>
-          the model's output. Take the API key away and the app has nothing left to sell.</p>
-        </div>
-        <div class="vs">VS</div>
         <div class="distinction-col fn">
           <h4>FreightNexus — Claude at build time</h4>
           <p>Zero <code class="mono">anthropic</code> imports anywhere in the codebase. Every schema,
           RLS policy, wizard, and state machine was authored by a Claude Code agent working from a
           9-file spec. Claude was the engineer, not a feature — the shipped product runs on Postgres
           and TypeScript alone.</p>
+        </div>
+        <div class="vs">VS</div>
+        <div class="distinction-col lc">
+          <h4>LegalClear — Claude at runtime</h4>
+          <p>Every document analysis is a live call to <code class="mono">claude-sonnet-4-5</code>.
+          The product's entire value proposition — reading a contract and finding the risk — <em>is</em>
+          the model's output. Take the API key away and the app has nothing left to sell.</p>
         </div>
       </div>
     </div>
