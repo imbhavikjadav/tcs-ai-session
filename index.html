@@ -684,6 +684,32 @@
     color: var(--text-faint);
   }
 
+  /* ===== Glossary tooltips (acronyms/shortforms) ===== */
+  .gloss {
+    border-bottom: 1px dotted var(--text-faint);
+    cursor: help;
+  }
+  #gloss-tip {
+    position: fixed;
+    z-index: 300;
+    max-width: 280px;
+    background: var(--card-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
+  }
+  #gloss-tip.show { opacity: 1; transform: translateY(0); }
+  #gloss-tip .term { font-family: var(--font-mono); font-weight: 700; color: var(--lc-accent); margin-right: 6px; }
+
   /* ===== Footer ===== */
   footer {
     border-top: 1px solid var(--border);
@@ -1414,11 +1440,11 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       <text x="705" y="281" text-anchor="middle" font-size="13">Storage · KYC + photos</text>
 
       <rect x="588" y="310" width="234" height="34" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-      <text x="705" y="332" text-anchor="middle" font-size="12.5">Realtime · live GPS</text>
+      <text x="705" y="332" text-anchor="middle" font-size="12.5">Realtime · live GPS<title>GPS: Global Positioning System</title></text>
 
       <line x1="490" y1="185" x2="559" y2="185" stroke="currentColor" stroke-width="1.4" marker-end="url(#fnArrow)"/>
       <rect x="497" y="173" width="80" height="24" rx="5" fill="var(--surface, #0F1826)"/>
-      <text x="537" y="190" text-anchor="middle" font-size="11.5" opacity="0.85">SQL + RLS</text>
+      <text x="537" y="190" text-anchor="middle" font-size="11.5" opacity="0.85">SQL + RLS<title>SQL: Structured Query Language · RLS: Row-Level Security</title></text>
 
       <!-- External -->
       <rect x="920" y="70" width="220" height="66" rx="9" fill="none" stroke="currentColor" stroke-width="1.3"/>
@@ -2224,6 +2250,8 @@ Legal Document Text:
   <div class="lb-cap" id="lbCap"></div>
 </div>
 
+<div id="gloss-tip"></div>
+
 <script>
   // Tab switching
   document.querySelectorAll('.tab').forEach(tab => {
@@ -2329,4 +2357,128 @@ Legal Document Text:
     });
   }
   document.addEventListener('DOMContentLoaded', wireLightboxZoom);
+
+  // Glossary tooltips — wrap the first plain-prose occurrence of each
+  // acronym/shortform on the page in a dotted-underline span that shows its
+  // full form on hover. Skips script/style/pre/code elements (code-block
+  // identifiers aren't the same thing as the prose term) and only wraps the
+  // FIRST match per term so the page doesn't get visually noisy.
+  const GLOSSARY = {
+    PDF: 'Portable Document Format',
+    KYC: 'Know Your Customer',
+    API: 'Application Programming Interface',
+    JSON: 'JavaScript Object Notation',
+    AWS: 'Amazon Web Services',
+    EC2: 'Elastic Compute Cloud',
+    EBS: 'Elastic Block Store',
+    SSE: 'Server-Sent Events',
+    RLS: 'Row-Level Security',
+    LLM: 'Large Language Model',
+    DNS: 'Domain Name System',
+    SDK: 'Software Development Kit',
+    CSS: 'Cascading Style Sheets',
+    TLS: 'Transport Layer Security',
+    SHA: 'Secure Hash Algorithm',
+    AST: 'Assured Shorthold Tenancy (a standard UK residential lease type)',
+    UX: 'User Experience',
+    UI: 'User Interface',
+    NDA: 'Non-Disclosure Agreement',
+    HTTP: 'Hypertext Transfer Protocol',
+    HMAC: 'Hash-Based Message Authentication Code',
+    GPS: 'Global Positioning System',
+    UPI: 'Unified Payments Interface',
+    GST: 'Goods and Services Tax',
+    SQL: 'Structured Query Language',
+    RC: 'Registration Certificate',
+    PUC: 'Pollution Under Control (an Indian vehicle emissions test)',
+    RAG: 'Retrieval-Augmented Generation',
+    SVG: 'Scalable Vector Graphics',
+    SSH: 'Secure Shell',
+    XML: 'Extensible Markup Language',
+  };
+
+  function wireGlossary() {
+    const tip = document.getElementById('gloss-tip');
+    if (!tip) return;
+    const wrapped = new Set();
+    const skipTags = new Set(['SCRIPT', 'STYLE', 'PRE', 'CODE', 'TITLE']);
+    // Longest-first so e.g. "SSH" doesn't get matched inside a longer term
+    // that happens to share letters (defensive; current list has no overlaps).
+    const terms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
+    const termPattern = new RegExp('\\b(' + terms.join('|') + ')\\b');
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+        if (skipTags.has(node.parentElement.tagName)) return NodeFilter.FILTER_REJECT;
+        if (node.parentElement.closest('#gloss-tip')) return NodeFilter.FILTER_REJECT;
+        if (node.parentElement.namespaceURI === 'http://www.w3.org/2000/svg') return NodeFilter.FILTER_REJECT;
+        return termPattern.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      },
+    });
+
+    const nodesToProcess = [];
+    let n;
+    while ((n = walker.nextNode())) nodesToProcess.push(n);
+
+    // Global (not sticky) pattern so a single text node can be scanned for
+    // every term it contains, not just the first — a text node mentioning
+    // two different acronyms (e.g. "...UPI...GST document...") needs both
+    // wrapped, not just whichever comes first.
+    const globalPattern = new RegExp('\\b(' + terms.join('|') + ')\\b', 'g');
+
+    for (const node of nodesToProcess) {
+      const text = node.nodeValue;
+      const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+      let match;
+      let sawNewWrap = false;
+      globalPattern.lastIndex = 0;
+      while ((match = globalPattern.exec(text))) {
+        const term = match[1];
+        if (wrapped.has(term)) continue; // still consume the match, just don't re-wrap
+        wrapped.add(term);
+        sawNewWrap = true;
+        if (match.index > lastIndex) {
+          frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+        }
+        const span = document.createElement('span');
+        span.className = 'gloss';
+        span.dataset.term = term;
+        span.textContent = term;
+        frag.appendChild(span);
+        lastIndex = match.index + term.length;
+      }
+      if (!sawNewWrap) continue;
+      if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+
+      const parent = node.parentNode;
+      parent.replaceChild(frag, node);
+    }
+
+    document.body.addEventListener('mouseover', (e) => {
+      const el = e.target.closest('.gloss');
+      if (!el) return;
+      const full = GLOSSARY[el.dataset.term];
+      if (!full) return;
+      tip.innerHTML = `<span class="term">${el.dataset.term}</span>${full}`;
+      tip.classList.add('show');
+      positionTip(el);
+    });
+    document.body.addEventListener('mouseout', (e) => {
+      if (e.target.closest('.gloss')) tip.classList.remove('show');
+    });
+
+    function positionTip(el) {
+      const r = el.getBoundingClientRect();
+      const tipRect = tip.getBoundingClientRect();
+      let left = r.left + r.width / 2 - tipRect.width / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - tipRect.width - 8));
+      let top = r.top - tipRect.height - 8;
+      if (top < 8) top = r.bottom + 8;
+      tip.style.left = left + 'px';
+      tip.style.top = top + 'px';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', wireGlossary);
 </script>
