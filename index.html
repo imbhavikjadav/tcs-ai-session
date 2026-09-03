@@ -2248,6 +2248,58 @@ response = client.messages.create(
       it). Same URL, same auth, same request body shape — one boolean is the entire difference between
       "wait for the whole answer" and "get it as it's written."
     </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>The identical request, with stream: true added</span><span>raw HTTP — same endpoint, same headers, one new field</span></div>
+      <pre><span class="k">POST</span> https://api.anthropic.com/v1/messages
+x-api-key: sk-ant-...
+anthropic-version: 2023-06-01
+content-type: application/json
+
+{
+  <span class="s">"model"</span>: <span class="s">"claude-sonnet-4-5"</span>,
+  <span class="s">"max_tokens"</span>: <span class="s">8192</span>,
+  <span class="s">"system"</span>: <span class="s">"You are LegalClear, an expert legal document analyser..."</span>,
+  <span class="s">"messages"</span>: [
+    {<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"Analyse the following legal document...\n\nDocument Name: ...\n\nLegal Document Text:\n..."</span>}
+  ],
+  <span class="tag">"stream": true</span>
+}
+
+<span class="c">← response is no longer one JSON body — it's a stream of Server-Sent Events:</span>
+
+<span class="k">event:</span> message_start
+<span class="k">data:</span> {<span class="s">"type"</span>: <span class="s">"message_start"</span>, <span class="s">"message"</span>: {...}}
+
+<span class="k">event:</span> content_block_delta
+<span class="k">data:</span> {<span class="s">"type"</span>: <span class="s">"content_block_delta"</span>, <span class="s">"delta"</span>: {<span class="s">"type"</span>: <span class="s">"text_delta"</span>, <span class="s">"text"</span>: <span class="s">"You"</span>}}
+
+<span class="k">event:</span> content_block_delta
+<span class="k">data:</span> {<span class="s">"type"</span>: <span class="s">"content_block_delta"</span>, <span class="s">"delta"</span>: {<span class="s">"type"</span>: <span class="s">"text_delta"</span>, <span class="s">"text"</span>: <span class="s">" are"</span>}}
+
+<span class="c">... one content_block_delta event per streamed piece of text ...</span>
+
+<span class="k">event:</span> message_stop
+<span class="k">data:</span> {<span class="s">"type"</span>: <span class="s">"message_stop"</span>}</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>Same call via the SDK — .stream() instead of .create()</span><span>Python, anthropic SDK</span></div>
+      <pre><span class="k">import</span> anthropic
+
+client = anthropic.Anthropic(api_key=<span class="s">"sk-ant-..."</span>)
+
+<span class="k">with</span> client.messages.stream(
+    model=<span class="s">"claude-sonnet-4-5"</span>,
+    max_tokens=<span class="s">8192</span>,
+    system=<span class="s">"You are LegalClear, an expert legal document analyser..."</span>,
+    messages=[
+        {<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: user_message}
+    ],
+) <span class="k">as</span> stream:
+    <span class="k">for</span> text_chunk <span class="k">in</span> stream.text_stream:   <span class="c"># one call per content_block_delta event above</span>
+        <span class="k">print</span>(text_chunk, end=<span class="s">""</span>, flush=<span class="k">True</span>)</pre>
+    </div>
     <p class="section-lede">The official reference for every field, every model name, every error code,
     and every SDK (Python, TypeScript, and others) is Anthropic's own API documentation at
     <a href="https://docs.anthropic.com/en/api/messages" target="_blank" rel="noopener" class="mono" style="color:var(--lc-accent)">docs.anthropic.com</a> —
