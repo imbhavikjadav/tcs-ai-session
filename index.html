@@ -2269,8 +2269,8 @@ response = client.messages.create(
     <div class="kv-table">
       <table class="kv-table"><tbody>
         <tr><th>Field</th><th>What it is</th></tr>
-        <tr><td class="mono">model</td><td>Which Claude model answers this request — <code class="mono">claude-sonnet-4-5</code> for every call LegalClear makes.</td></tr>
-        <tr><td class="mono">max_tokens</td><td>Hard ceiling on how long the model's reply can be — LegalClear sets 8,192, its real output ceiling.</td></tr>
+        <tr><td class="mono">model</td><td>Which Claude model answers this request — <code class="mono">claude-sonnet-4-5</code> for every call LegalClear makes. Every valid model ID, its price per million tokens, and its own max-output ceiling are listed on Anthropic's <a href="https://platform.claude.com/docs/en/models/overview" target="_blank" rel="noopener" class="mono" style="color:var(--lc-accent)">models overview</a> page — <code class="mono">claude-sonnet-4-5</code> is a legacy model there now (the current lineup has moved on to Claude Sonnet 5 and beyond), but still listed as available and still what this pinned integration calls.</td></tr>
+        <tr><td class="mono">max_tokens</td><td>Not a target length — a hard ceiling on how many tokens the model is <em>allowed</em> to generate before being cut off. Claude can and does stop earlier once it naturally finishes; unused budget is neither generated nor billed. LegalClear sets 8,192: large enough that a full section-by-section analysis never gets truncated mid-JSON (which would break the parser), while still bounding the worst case if a response ever ran unexpectedly long.</td></tr>
         <tr><td class="mono">system</td><td>A separate slot from the conversation — the fixed rulebook (Section 2 below). Doesn't count as a "turn."</td></tr>
         <tr><td class="mono">messages</td><td>The actual conversation — a list of <code class="mono">{role, content}</code> turns. LegalClear only ever sends one: a single <code class="mono">user</code> turn, rebuilt fresh every request.</td></tr>
       </tbody></table>
