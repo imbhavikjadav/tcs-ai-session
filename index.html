@@ -35,6 +35,10 @@
     --le-accent-dim: rgba(167, 139, 250, 0.14);
     --le-accent-border: rgba(167, 139, 250, 0.35);
 
+    --gs-accent: #38BDF8;
+    --gs-accent-dim: rgba(56, 189, 248, 0.14);
+    --gs-accent-border: rgba(56, 189, 248, 0.35);
+
     --risk-high: #F0475C;
     --risk-high-dim: rgba(240, 71, 92, 0.12);
     --risk-medium: #F5A524;
@@ -526,9 +530,11 @@
   }
   .callout.fn { border-color: var(--fn-accent); background: var(--fn-accent-dim); }
   .callout.le { border-color: var(--le-accent); background: var(--le-accent-dim); }
+  .callout.gs { border-color: var(--gs-accent); background: var(--gs-accent-dim); }
   .callout strong { color: var(--lc-accent); }
   .callout.fn strong { color: var(--fn-accent); }
   .callout.le strong { color: var(--le-accent); }
+  .callout.gs strong { color: var(--gs-accent); }
 
   /* ===== Animated chunking diagram ===== */
   .chunk-anim {
@@ -706,6 +712,74 @@
   .sudoku-log .row.reject { color: var(--risk-high); }
   .sudoku-log .row.backtrack { color: var(--risk-medium); }
   .sudoku-log .row.solved { color: var(--fn-accent); font-weight: 700; }
+
+  /* ===== Getting Started — tool cards, category groups, decision path ===== */
+  .tool-category {
+    margin: 36px 0;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .tool-category-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .tool-category-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gs-accent);
+    background: var(--gs-accent-dim);
+    border: 1px solid var(--gs-accent-border);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .tool-category h3 { font-size: 20px; margin: 0; }
+  .tool-category .tc-desc { color: var(--text-dim); font-size: 14.5px; line-height: 1.6; margin: 10px 0 20px; max-width: 70ch; }
+
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .tool-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-raised);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .tool-card:hover { border-color: var(--gs-accent); transform: translateY(-2px); }
+  .tool-card-head { display: flex; align-items: center; gap: 12px; }
+  .tool-icon {
+    width: 40px; height: 40px;
+    border-radius: 9px;
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .tool-icon img { width: 26px; height: 26px; object-fit: contain; }
+  /* Shown only if the real logo file at that path hasn't been added yet —
+     a plain initial-letter placeholder so the grid still looks intentional
+     rather than broken while logos are gathered one at a time. */
+  .tool-icon .tool-icon-fallback {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-faint);
+  }
+  .tool-card-name { font-weight: 700; font-size: 15.5px; color: var(--text); }
+  .tool-card-maker { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
+  .tool-card-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+  .tool-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+  .tool-card-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--gs-accent-dim);
+    color: var(--gs-accent);
+    border: 1px solid var(--gs-accent-border);
+  }
 
   .flow-steps {
     display: flex;
@@ -1027,6 +1101,7 @@
       <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
       <button class="tab" data-panel="claude" role="tab">Claude Integration</button>
       <button class="tab" data-panel="loop" role="tab"><span class="tab-dot" style="background:var(--le-accent)"></span>Loop Engineering</button>
+      <button class="tab" data-panel="start" role="tab"><span class="tab-dot" style="background:var(--gs-accent)"></span>Getting Started</button>
     </div>
   </div>
 </div>
@@ -2826,6 +2901,222 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     model in the loop — but a demo of what that same disciplined attempt-verify-undo loop, applied by
     Claude Code at build time, is capable of producing. The board runs itself. Claude wrote the code that
     lets it.</p>
+  </div>
+</section>
+
+<section id="panel-start" class="panel">
+  <div class="section" style="padding-top:56px">
+    <div class="eyebrow" style="color:var(--gs-accent)">A practical on-ramp</div>
+    <h2>Getting started building with AI</h2>
+    <p class="section-lede">Not a case study, and not a ranking — a map of what's actually out there right
+    now, and one concrete way to start. This space moves fast enough that "best" changes month to month,
+    so treat the tools below as real, current options to try, not a permanent verdict.</p>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow">Start here</div>
+    <h2>Which of these are you actually trying to do?</h2>
+    <p class="section-lede">The tool question only makes sense after this one. All three paths below are
+    "building with AI" — they're just building different things.</p>
+    <figure style="margin:32px 0 0">
+      <svg viewBox="0 0 1180 300" role="img" aria-label="Decision path: are you coding with an agent's help inside your existing workflow, building an agentic application as a standalone product, or automating a workflow without writing code — each leads to a different category of tool" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="gsArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13.5" fill="currentColor">
+          <rect x="470" y="14" width="240" height="56" rx="10" fill="none" stroke="var(--gs-accent)" stroke-width="2"/>
+          <text x="590" y="47" text-anchor="middle" font-weight="700" fill="var(--gs-accent)">What are you building?</text>
+
+          <line x1="590" y1="70" x2="200" y2="120" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+          <line x1="590" y1="70" x2="590" y2="120" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+          <line x1="590" y1="70" x2="980" y2="120" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+
+          <rect x="60" y="126" width="280" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="200" y="153" text-anchor="middle" font-weight="700">Code, with an agent's help</text>
+          <text x="200" y="173" text-anchor="middle" font-size="11.5" opacity="0.65">inside your existing dev workflow</text>
+
+          <rect x="450" y="126" width="280" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="590" y="153" text-anchor="middle" font-weight="700">An agentic application</text>
+          <text x="590" y="173" text-anchor="middle" font-size="11.5" opacity="0.65">the agent IS the product</text>
+
+          <rect x="840" y="126" width="280" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="980" y="153" text-anchor="middle" font-weight="700">A workflow, no code</text>
+          <text x="980" y="173" text-anchor="middle" font-size="11.5" opacity="0.65">automate something that already exists</text>
+
+          <line x1="200" y1="196" x2="200" y2="222" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+          <line x1="590" y1="196" x2="590" y2="222" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+          <line x1="980" y1="196" x2="980" y2="222" stroke="currentColor" stroke-width="1.3" marker-end="url(#gsArrow)"/>
+
+          <text x="200" y="240" text-anchor="middle" font-size="12" opacity="0.75">Agentic IDEs / coding agents</text>
+          <text x="200" y="258" text-anchor="middle" font-size="11" opacity="0.55">VS Code + Claude Code, Cursor,</text>
+          <text x="200" y="273" text-anchor="middle" font-size="11" opacity="0.55">Windsurf, Kiro, GitHub Copilot</text>
+
+          <text x="590" y="240" text-anchor="middle" font-size="12" opacity="0.75">Agent frameworks / SDKs</text>
+          <text x="590" y="258" text-anchor="middle" font-size="11" opacity="0.55">LangGraph, CrewAI,</text>
+          <text x="590" y="273" text-anchor="middle" font-size="11" opacity="0.55">OpenAI Agents SDK, Microsoft Agent Framework</text>
+
+          <text x="980" y="240" text-anchor="middle" font-size="12" opacity="0.75">No-code automation</text>
+          <text x="980" y="258" text-anchor="middle" font-size="11" opacity="0.55">n8n</text>
+        </g>
+      </svg>
+      <figcaption style="text-align:center; font-size:14px; color:var(--text-faint); margin-top:14px; font-family:var(--font-mono)">
+        Three different jobs, three different tool categories — the sections below follow this same split.
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="section">
+    <div class="tool-category">
+      <div class="tool-category-head">
+        <span class="tool-category-num">01</span>
+        <h3>Agentic IDEs &amp; coding agents</h3>
+      </div>
+      <p class="tc-desc">Tools that write, edit, and reason across your codebase alongside you — the
+      category LegalClear and FreightNexus were both built in.</p>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/vscode.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;VS&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">VS Code</div><div class="tool-card-maker">Microsoft</div></div>
+          </div>
+          <div class="tool-card-desc">The base editor most agentic coding tools are built on or extend — including Cursor, Windsurf, and Kiro, and the one Claude Code's own extension runs inside.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">editor</span><span class="tool-card-tag">free</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/claude-code.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;CC&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">Claude Code</div><div class="tool-card-maker">Anthropic</div></div>
+          </div>
+          <div class="tool-card-desc">Agent-first coding tool — terminal, VS Code/JetBrains extensions, desktop app, and a web IDE. Built both products on this site.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">CLI + IDE</span><span class="tool-card-tag">multi-file</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/cursor.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;Cu&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">Cursor</div><div class="tool-card-maker">Anysphere</div></div>
+          </div>
+          <div class="tool-card-desc">A full VS Code fork with AI woven directly into the editing loop. The most broadly adopted tool in this category among individual developers.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">VS Code fork</span><span class="tool-card-tag">multi-model</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/windsurf.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;W&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">Windsurf</div><div class="tool-card-maker">formerly Codeium</div></div>
+          </div>
+          <div class="tool-card-desc">AI-native IDE. Its agentic system, Cascade, handles multi-file edits autonomously and has a "Memories" feature that learns your codebase's patterns over time.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">own IDE</span><span class="tool-card-tag">autonomous edits</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/kiro.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;K&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">Kiro</div><div class="tool-card-maker">AWS</div></div>
+          </div>
+          <div class="tool-card-desc">VS Code-based, built around spec-driven development — it turns a request into a structured requirements/design/task spec before generating any code, rather than generating first.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">spec-first</span><span class="tool-card-tag">VS Code-based</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/github-copilot.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;GH&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">GitHub Copilot</div><div class="tool-card-maker">GitHub / Microsoft</div></div>
+          </div>
+          <div class="tool-card-desc">The largest user base of any tool in this category, largely through deep integration into GitHub and Microsoft-centric teams' existing workflow.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">extension</span><span class="tool-card-tag">largest install base</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-category">
+      <div class="tool-category-head">
+        <span class="tool-category-num">02</span>
+        <h3>Agent frameworks &amp; SDKs</h3>
+      </div>
+      <p class="tc-desc">For when the agent itself is the product you're shipping, not a tool that helps
+      you write one — you write the agent's logic in code, using one of these to handle the underlying
+      plumbing (state, tool-calling, multi-agent coordination).</p>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/langgraph.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;LG&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">LangGraph</div><div class="tool-card-maker">LangChain</div></div>
+          </div>
+          <div class="tool-card-desc">The current leader for production, stateful, multi-step agent workflows — persistent state, human-in-the-loop checkpoints, streaming.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">stateful</span><span class="tool-card-tag">production-grade</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/crewai.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;Cr&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">CrewAI</div><div class="tool-card-maker">CrewAI, Inc.</div></div>
+          </div>
+          <div class="tool-card-desc">Define roles, assign tools, and have a team of agents collaborate in a structured pipeline. The fastest route to a working multi-agent prototype.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">multi-agent</span><span class="tool-card-tag">fast prototyping</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/openai-agents-sdk.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;AI&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">OpenAI Agents SDK</div><div class="tool-card-maker">OpenAI</div></div>
+          </div>
+          <div class="tool-card-desc">A lightweight SDK for shipping an agent quickly — closer to a minimal toolkit than a full orchestration framework.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">lightweight</span><span class="tool-card-tag">ship fast</span></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/microsoft-agent-framework.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;MS&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">Microsoft Agent Framework</div><div class="tool-card-maker">Microsoft</div></div>
+          </div>
+          <div class="tool-card-desc">Open, multi-language (.NET and Python) production agent framework — Microsoft's current stack, succeeding the earlier AutoGen project.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">.NET + Python</span><span class="tool-card-tag">open source</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-category">
+      <div class="tool-category-head">
+        <span class="tool-category-num">03</span>
+        <h3>No-code automation</h3>
+      </div>
+      <p class="tc-desc">For wiring an agent into a workflow without writing an application at all — the
+      right starting point for testing whether an idea is worth a real build.</p>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-card-head">
+            <div class="tool-icon"><img src="assets/tools/n8n.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;n8n&lt;/span&gt;'"/></div>
+            <div><div class="tool-card-name">n8n</div><div class="tool-card-maker">n8n GmbH</div></div>
+          </div>
+          <div class="tool-card-desc">The dominant no-code option right now — its AI Agent node natively supports LangChain-style tool-calling and memory inside a visual workflow builder.</div>
+          <div class="tool-card-tags"><span class="tool-card-tag">visual builder</span><span class="tool-card-tag">no-code</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow">One concrete way to start</div>
+    <h2>Four steps, in order</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div><div class="title">Pick one small, real task</div><div class="desc">Not a hypothetical — something you actually need done this week. A real task exposes real friction; a made-up one doesn't.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <div><div class="title">Pick a tool from the category that matches the task</div><div class="desc">Coding something → an agentic IDE. Shipping an agent as a product → a framework. Automating something that already exists → n8n. The tool choice follows the task, not the other way round.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <div><div class="title">Write one scoped spec before you prompt</div><div class="desc">Even a few plain-language bullet points, written down before the first prompt, catches more mistakes than the same thinking done silently mid-conversation. True regardless of which tool you picked.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">4</div>
+        <div><div class="title">Build in a verification step, not just an output</div><div class="desc">Ask it to test, run, or check its own work before reporting done — or use a stated condition it has to satisfy (see the Loop Engineering tab). An unverified attempt is a guess wearing a finished coat of paint.</div></div>
+      </div>
+    </div>
+    <div class="callout gs">
+      <strong>None of this requires the fanciest tool on the list.</strong> The four steps above are the
+      actual leverage — the tool just decides how much of steps 3 and 4 gets structured for you versus
+      left to your own discipline.
+    </div>
   </div>
 </section>
 
