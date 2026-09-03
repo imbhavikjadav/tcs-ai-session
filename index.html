@@ -341,39 +341,39 @@
      cards' logo rows always end at the same Y regardless of the shorter
      LegalClear badge — each logo centers within this shared height,
      keeping the description paragraph below starting at the same line. */
-  .proj-logo { display: flex; align-items: center; gap: 16px; min-height: 122px; margin-bottom: 20px; }
+  .proj-logo { display: flex; align-items: center; gap: 16px; min-height: 127px; margin-bottom: 20px; }
   .proj-logo-badge {
-    width: 70px; height: 70px;
-    border-radius: 16px;
+    width: 75px; height: 75px;
+    border-radius: 17px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     background: var(--lc-accent);
   }
-  .proj-logo-badge svg { width: 40px; height: 40px; }
-  .proj-logo-wordmark { font-weight: 700; font-size: 35px; letter-spacing: -0.01em; color: var(--text); }
+  .proj-logo-badge svg { width: 43px; height: 43px; }
+  .proj-logo-wordmark { font-weight: 700; font-size: 38px; letter-spacing: -0.01em; color: var(--text); }
   .proj-logo-wordmark .accent { color: var(--lc-accent); }
   /* freightnexus-logo.png's visible mark sits slightly below the vertical
      center of its own 2000x800 canvas (~32% blank padding above it vs. ~23%
      below) — .proj-logo centers items by their box, so nudge the image up a
      few px to align its visible content's center with the badge's, rather
      than the image element's own (slightly-off) geometric center. */
-  .fn-logo-img { height: 122px; width: auto; display: block; transform: translateY(-5px); }
+  .fn-logo-img { height: 127px; width: auto; display: block; transform: translateY(-5px); }
   /* Same fixed-height reasoning as .proj-logo — pinned to FreightNexus's
-     137px logo image (kept full-size for its tagline) so switching tabs
+     142px logo image (kept full-size for its tagline) so switching tabs
      doesn't visually jump: the eyebrow/description below always starts
      at the same Y whichever panel is open. */
-  .panel-logo { display: flex; align-items: center; gap: 18px; min-height: 137px; margin-bottom: 18px; }
+  .panel-logo { display: flex; align-items: center; gap: 18px; min-height: 142px; margin-bottom: 18px; }
   .panel-logo-badge {
-    width: 76px; height: 76px;
-    border-radius: 19px;
+    width: 81px; height: 81px;
+    border-radius: 20px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     background: var(--lc-accent);
   }
-  .panel-logo-badge svg { width: 41px; height: 41px; }
-  .panel-logo-wordmark { font-weight: 700; font-size: 40px; letter-spacing: -0.01em; color: var(--text); }
+  .panel-logo-badge svg { width: 44px; height: 44px; }
+  .panel-logo-wordmark { font-weight: 700; font-size: 43px; letter-spacing: -0.01em; color: var(--text); }
   .panel-logo-wordmark .accent { color: var(--lc-accent); }
-  .panel-logo img { height: 137px; width: auto; display: block; }
+  .panel-logo img { height: 142px; width: auto; display: block; }
   .proj-card h3 { font-size: 24px; margin-bottom: 10px; }
   .proj-card p { color: var(--text-dim); font-size: 16px; line-height: 1.65; margin-bottom: 18px; }
   .proj-stack { display: flex; flex-wrap: wrap; gap: 7px; }
