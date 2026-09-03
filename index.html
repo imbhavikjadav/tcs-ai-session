@@ -923,11 +923,17 @@
   .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 
   /* ===== Build-time stat badge ===== */
+  .badge-stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0 20px;
+  }
+  .badge-stat-row .build-time { margin: 0; }
   .build-time {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin: 14px 0 20px;
     padding: 8px 16px 8px 12px;
     border-radius: 999px;
     font-family: var(--font-mono);
@@ -1118,9 +1124,15 @@
       <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
     </div>
     <div class="eyebrow" style="color:var(--lc-accent)">Case file 02 · Runtime AI product</div>
-    <div class="build-time lc">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
-      <span><span class="bt-num">7 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+    <div class="badge-stat-row">
+      <div class="build-time lc">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        <span><span class="bt-num">7 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+      </div>
+      <div class="build-time lc">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
+        <span><span class="bt-num">Agentic</span> <span class="bt-label">spec-driven build — scoped requirements docs fed to <b>Claude Code</b>, one version at a time</span></span>
+      </div>
     </div>
     <p class="section-lede">A legal-document translator that reads what you paste or upload — Terms of
     Service, NDAs, leases, employment contracts — and returns a section-by-section plain-English
@@ -1579,9 +1591,15 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo"/>
     </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 01 · Agent-built system</div>
-    <div class="build-time fn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
-      <span><span class="bt-num">16 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+    <div class="badge-stat-row">
+      <div class="build-time fn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        <span><span class="bt-num">16 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+      </div>
+      <div class="build-time fn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
+        <span><span class="bt-num">Agentic</span> <span class="bt-label">spec-driven build — a nine-file specification, authored entirely by <b>Claude Code</b></span></span>
+      </div>
     </div>
     <p class="section-lede">A pan-India, mobile-first truck tendering marketplace. Not a dispatch app —
     a bidding marketplace: a shipper posts a shipment, eligible verified drivers bid on it with an
