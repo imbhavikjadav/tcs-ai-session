@@ -2614,10 +2614,9 @@ Legal Document Text:
     <h2>How to actually run this loop in Claude Code</h2>
     <p class="section-lede">Everything above is the underlying pattern. This part is concrete: Claude
     Code has real, shipped commands that run exactly this attempt→verify→retry loop for you, not as a
-    metaphor. The taxonomy below — turn-based, goal-based, time-based, proactive — comes from
-    <a href="https://addyosmani.com/blog/practical-loop-engineering/" target="_blank" rel="noopener" class="mono" style="color:var(--le-accent)">Addy Osmani's "Practical Loop Engineering"</a>;
-    the exact command syntax is pulled from Anthropic's own Claude Code documentation, not paraphrased
-    from memory.</p>
+    metaphor. Four distinct types cover how it actually gets triggered — turn-based, goal-based,
+    time-based, proactive — and the exact command syntax below is pulled from Anthropic's own Claude Code
+    documentation, not paraphrased from memory.</p>
 
     <div class="stack-grid">
       <div class="stack-item">
@@ -2710,10 +2709,10 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     suited to genuinely unattended work: nightly issue triage, deploy verification, docs-drift checks.</p>
 
     <div class="callout le">
-      <strong>The most important constraint, from Osmani's article, isn't a command — it's a discipline:
-      keep the maker and the checker separate.</strong> Claude Code's built-in <code class="mono">/goal</code>
-      evaluator deliberately checks rule compliance against your stated condition, not whether the output
-      is actually <em>good</em> — it can't judge subjective quality, only whether the hard constraint you
+      <strong>The most important constraint here isn't a command — it's a discipline: keep the maker and
+      the checker separate.</strong> Claude Code's built-in <code class="mono">/goal</code> evaluator
+      deliberately checks rule compliance against your stated condition, not whether the output is
+      actually <em>good</em> — it can't judge subjective quality, only whether the hard constraint you
       wrote holds. For anything where "did this actually work" needs real judgment (not just "did the
       tests pass"), the stronger pattern is two agents: one drafts the change, a separate one — that
       didn't write it — verifies it. A single agent grading its own work tends to miss exactly the things
