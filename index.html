@@ -2610,6 +2610,118 @@ Legal Document Text:
   </div>
 
   <div class="section">
+    <div class="eyebrow">The four real types, and the commands behind them</div>
+    <h2>How to actually run this loop in Claude Code</h2>
+    <p class="section-lede">Everything above is the underlying pattern. This part is concrete: Claude
+    Code has real, shipped commands that run exactly this attempt→verify→retry loop for you, not as a
+    metaphor. The taxonomy below — turn-based, goal-based, time-based, proactive — comes from
+    <a href="https://addyosmani.com/blog/practical-loop-engineering/" target="_blank" rel="noopener" class="mono" style="color:var(--le-accent)">Addy Osmani's "Practical Loop Engineering"</a>;
+    the exact command syntax is pulled from Anthropic's own Claude Code documentation, not paraphrased
+    from memory.</p>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="role">Type 1</div>
+        <div class="name">Turn-based</div>
+        <div class="why">You direct every step by hand — a normal conversational session. No special
+        command; this is just prompting, one turn at a time, with you as the checker.</div>
+      </div>
+      <div class="stack-item">
+        <div class="role">Type 2</div>
+        <div class="name">Goal-based — <code class="mono">/goal</code></div>
+        <div class="why">You state a completion condition once; Claude keeps taking turns, unprompted,
+        until a separate evaluator model confirms it's met, judges it impossible, or a turn limit hits.</div>
+      </div>
+      <div class="stack-item">
+        <div class="role">Type 3</div>
+        <div class="name">Time-based — <code class="mono">/loop</code></div>
+        <div class="why">Re-runs a prompt on a schedule — fixed interval or one Claude picks dynamically
+        — rather than toward a condition. Good for polling: watch a deploy, babysit a PR, check back later.</div>
+      </div>
+      <div class="stack-item">
+        <div class="role">Type 4</div>
+        <div class="name">Proactive — <code class="mono">/schedule</code> (Routines)</div>
+        <div class="why">Runs in the cloud with no open session and no human involvement at trigger time
+        — on a schedule, an incoming API call, or a GitHub event like a new pull request.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>/goal — iterate toward a stated condition</span><span>real syntax, Claude Code docs</span></div>
+      <pre><span class="c">// Sets a completion condition. Claude takes a turn immediately, and after</span>
+<span class="c">// each turn a separate small fast model checks the condition against the</span>
+<span class="c">// transcript: not yet met -&gt; another turn runs; met -&gt; goal clears; judged</span>
+<span class="c">// impossible -&gt; goal clears with a reason, no infinite loop.</span>
+/goal all tests in test/auth pass and the lint step is clean
+
+<span class="c">// A well-formed condition names one measurable end state, how Claude</span>
+<span class="c">// should prove it, and a bound so it can't run forever:</span>
+/goal Refactor the data-fetching layer in Dashboard.tsx until Lighthouse
+performance score is &gt;= 92 and LCP is under 1.8s as shown by the Lighthouse
+CLI output. Do not change the public API of any hooks. Stop after 10 turns.
+
+/goal              <span class="c">// no argument -&gt; shows status: condition, turns run, token spend</span>
+/goal clear        <span class="c">// cancels it (aliases: stop, off, reset, none, cancel)</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>/loop — re-run on an interval</span><span>real syntax, Claude Code docs</span></div>
+      <pre><span class="c">// Interval + prompt -&gt; runs on that fixed cron-backed schedule</span>
+/loop 5m check if the deployment finished and tell me what happened
+
+<span class="c">// Prompt only, no interval -&gt; Claude re-picks the delay (1min-1hr) each time,</span>
+<span class="c">// based on what it just observed -- short waits while something's active,</span>
+<span class="c">// longer once it goes quiet</span>
+/loop check whether CI passed and address any review comments
+
+<span class="c">// No prompt at all -&gt; runs Claude Code's built-in maintenance prompt</span>
+<span class="c">// (finish pending work, tend the current PR, clean up) -- or your own</span>
+<span class="c">// .claude/loop.md if one exists in the project</span>
+/loop
+
+<span class="c">// A loop can hand off into a goal once its own condition fires:</span>
+/loop every 24h "Check GitHub for issues labeled 'bug'. If one exists, use
+/goal to implement a fix until all local tests pass and push the branch."</pre>
+    </div>
+    <p class="section-lede">Two real constraints worth knowing before reaching for either: a
+    <code class="mono">/loop</code> expires automatically 7 days after creation, and both commands are
+    session-scoped by default — closing the session stops them, unless you move to
+    <code class="mono">/schedule</code> below.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span>/schedule — cloud routines, no open session needed</span><span>real syntax, Claude Code docs</span></div>
+      <pre><span class="c">// Conversational setup -- Claude asks what repo, prompt, and trigger you want</span>
+/schedule
+
+<span class="c">// Or describe it directly: a recurring routine...</span>
+/schedule daily PR review at 9am
+
+<span class="c">// ...or a one-off that fires once and deletes itself</span>
+/schedule in 2 weeks, open a cleanup PR that removes the feature flag
+
+<span class="c">// Managing existing routines</span>
+/schedule list      <span class="c">// see all routines</span>
+/schedule update     <span class="c">// change one, e.g. set a custom cron interval</span>
+/schedule run        <span class="c">// trigger one immediately, outside its schedule</span></pre>
+    </div>
+    <p class="section-lede">Routines are the "proactive" type because they don't need a session open at
+    all — they run as full cloud sessions on Anthropic's infrastructure, triggered by a schedule, an HTTP
+    POST to a per-routine endpoint, or a GitHub event such as a new pull request. This is the version
+    suited to genuinely unattended work: nightly issue triage, deploy verification, docs-drift checks.</p>
+
+    <div class="callout le">
+      <strong>The most important constraint, from Osmani's article, isn't a command — it's a discipline:
+      keep the maker and the checker separate.</strong> Claude Code's built-in <code class="mono">/goal</code>
+      evaluator deliberately checks rule compliance against your stated condition, not whether the output
+      is actually <em>good</em> — it can't judge subjective quality, only whether the hard constraint you
+      wrote holds. For anything where "did this actually work" needs real judgment (not just "did the
+      tests pass"), the stronger pattern is two agents: one drafts the change, a separate one — that
+      didn't write it — verifies it. A single agent grading its own work tends to miss exactly the things
+      it was already blind to, like optimizing desktop performance while quietly breaking mobile.
+    </div>
+  </div>
+
+  <div class="section">
     <div class="eyebrow">Live demo</div>
     <h2>Watch a real backtracking solver run</h2>
     <p class="section-lede">A genuine, unsolved 9×9 Sudoku — <a href="https://www.sudokuwiki.org/Escargot" target="_blank" rel="noopener" class="mono" style="color:var(--le-accent)">AI Escargot</a>,
