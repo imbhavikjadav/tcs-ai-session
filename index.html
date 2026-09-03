@@ -2573,6 +2573,16 @@ Legal Document Text:
     <p class="section-lede">Not a product, and not a Claude API case study like the two above — a small,
     genuinely-running demo of the pattern underneath both of them. Nothing on this page is pre-recorded
     or simulated: the algorithm below runs for real, in your browser, right now.</p>
+    <div class="callout le">
+      <strong>To be unambiguous: the solver below makes zero calls to Claude, or to any AI model.</strong>
+      It's a classical algorithm — backtracking search, ~40 lines of plain JavaScript, running entirely
+      client-side. There is no API key here for it to call even if it wanted to; this page is static
+      HTML served from GitHub Pages, which is exactly why nothing on it can safely hold one. What this
+      page <em>is</em> claiming is narrower and still real: the solver's own control-flow shape — attempt,
+      verify, undo, retry — is the same shape Claude Code runs at build time (see the table below), and
+      this whole demo, code included, was itself built by Claude Code using that discipline. It's an
+      example of what that loop-engineering discipline can build, not an example of Claude running live.
+    </div>
   </div>
 
   <div class="section">
@@ -2682,6 +2692,11 @@ Legal Document Text:
     and FreightNexus with Claude Code was the same loop again, one level up: give it a scoped
     instruction, let it write code, run/read/test the result, and either move forward or send it back
     with a correction — never trusting an attempt just because it looked plausible.</p>
+    <p class="section-lede">Which is the honest way to describe the Sudoku solver's relationship to
+    Claude: not a demo of Claude running — the solver itself is plain deterministic JavaScript with no
+    model in the loop — but a demo of what that same disciplined attempt-verify-undo loop, applied by
+    Claude Code at build time, is capable of producing. The board runs itself. Claude wrote the code that
+    lets it.</p>
   </div>
 </section>
 
