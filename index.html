@@ -747,7 +747,12 @@
     transition: border-color 0.15s ease, transform 0.15s ease;
   }
   .tool-card:hover { border-color: var(--gs-accent); transform: translateY(-2px); }
-  .tool-card-head { display: flex; align-items: center; gap: 12px; }
+  /* Fixed height sized for the tallest realistic case (a two-line name
+     like "Microsoft Agent Framework" + the maker label underneath) so
+     every card's header takes the same vertical space regardless of
+     whether its own name wraps — otherwise a wrapping name pushes that
+     one card's description down relative to its neighbors in the row. */
+  .tool-card-head { display: flex; align-items: center; gap: 12px; min-height: 64px; }
   /* Fixed off-white tile regardless of site theme: these are brand marks
      drawn for a light background (several are dark/black artwork on a
      transparent PNG), so tying the tile to var(--card) made them vanish
