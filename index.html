@@ -1058,98 +1058,102 @@
     <a href="https://legalclear.duckdns.org/" target="_blank" rel="noopener" class="mono" style="color:var(--lc-accent)">legalclear.duckdns.org</a>,
     hitting the real Claude API (<code class="mono">TEST_MODE=false</code>, not the app's mock mode) and
     analysing <strong>AST – 37 Greyfriars Road</strong>, a real tenancy/lease-style document, end to end.</p>
-    <div class="gallery-group">
-  <h3>Upload &amp; input <span class="gnum">01–03</span></h3>
-  <p class="gdesc">The landing page and the two ways to submit a document — paste raw text, or upload the actual file. The "Powered by Claude AI" badge is not marketing copy here; it's accurate.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/legalclear/01-landing-page.png" data-cap="Landing page — before any interaction">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/01-landing-page.png" loading="lazy" alt="LegalClear landing page"/></div>
-      <div class="cap"><b>Landing page</b>Hero, document-type chips, empty Translate Document panel</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/02a-input-panel-paste-mode.png" data-cap="Text pasted directly into the panel">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/02a-input-panel-paste-mode.png" loading="lazy" alt="Input panel with pasted lease text"/></div>
-      <div class="cap"><b>Paste mode</b>Raw lease text pasted in, file upload disabled while it's there</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/02b-input-panel-file-selected.png" data-cap="File selected — AST 37 Greyfriars Road.pdf attached">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/02b-input-panel-file-selected.png" loading="lazy" alt="File selected in upload panel"/></div>
-      <div class="cap"><b>File selected</b>The real Greyfriars Road tenancy PDF attached, ready to analyse</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/03-translate-clicked-initial-loading.png" data-cap="Initial loading — connecting to the server">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/03-translate-clicked-initial-loading.png" loading="lazy" alt="Initial loading state after clicking Translate"/></div>
-      <div class="cap"><b>Submitted</b>"Uploading your file and connecting to the server..."</div>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow">Upload &amp; input</div>
+    <h2>Paste it, or upload the file</h2>
+    <p class="section-lede">The landing page and the two ways to submit a document — paste raw text, or upload the actual file. The "Powered by Claude AI" badge is not marketing copy here; it's accurate.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/legalclear/01-landing-page.png" data-cap="Landing page — before any interaction">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/01-landing-page.png" loading="lazy" alt="LegalClear landing page"/></div>
+        <div class="cap"><b>Landing page</b>Hero, document-type chips, empty Translate Document panel</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/02a-input-panel-paste-mode.png" data-cap="Text pasted directly into the panel">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/02a-input-panel-paste-mode.png" loading="lazy" alt="Input panel with pasted lease text"/></div>
+        <div class="cap"><b>Paste mode</b>Raw lease text pasted in, file upload disabled while it's there</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/02b-input-panel-file-selected.png" data-cap="File selected — AST 37 Greyfriars Road.pdf attached">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/02b-input-panel-file-selected.png" loading="lazy" alt="File selected in upload panel"/></div>
+        <div class="cap"><b>File selected</b>The real Greyfriars Road tenancy PDF attached, ready to analyse</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/03-translate-clicked-initial-loading.png" data-cap="Initial loading — connecting to the server">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/03-translate-clicked-initial-loading.png" loading="lazy" alt="Initial loading state after clicking Translate"/></div>
+        <div class="cap"><b>Submitted</b>"Uploading your file and connecting to the server..."</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Live streaming <span class="gnum">04</span></h3>
-  <p class="gdesc">This is the real streaming pipeline mid-flight, run against the live production server — the rotating status text and progressive section rendering described in the Claude Integration tab, caught on camera against a genuine 35-section Claude Sonnet run.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/legalclear/04a-streaming-progress-indicator.png" data-cap="Streaming ~9s in — rotating status text">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/04a-streaming-progress-indicator.png" loading="lazy" alt="Streaming progress indicator"/></div>
-      <div class="cap"><b>Streaming begins</b>"Identifying parties and their roles..." with progress bar</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/04b-mid-streaming-partial-results.png" data-cap="Mid-stream — first section rendering live">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/04b-mid-streaming-partial-results.png" loading="lazy" alt="Mid-streaming partial results"/></div>
-      <div class="cap"><b>Sections arriving</b>Progress bar climbing, risk flags and section cards appearing live</div>
+  <div class="section">
+    <div class="eyebrow">Live streaming</div>
+    <h2>Watching Claude write, section by section</h2>
+    <p class="section-lede">This is the real streaming pipeline mid-flight, run against the live production server — the rotating status text and progressive section rendering described in the Claude Integration tab, caught on camera against a genuine 35-section Claude Sonnet run.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/legalclear/04a-streaming-progress-indicator.png" data-cap="Streaming ~9s in — rotating status text">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/04a-streaming-progress-indicator.png" loading="lazy" alt="Streaming progress indicator"/></div>
+        <div class="cap"><b>Streaming begins</b>"Identifying parties and their roles..." with progress bar</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/04b-mid-streaming-partial-results.png" data-cap="Mid-stream — first section rendering live">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/04b-mid-streaming-partial-results.png" loading="lazy" alt="Mid-streaming partial results"/></div>
+        <div class="cap"><b>Sections arriving</b>Progress bar climbing, risk flags and section cards appearing live</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Completed analysis <span class="gnum">05–08</span></h3>
-  <p class="gdesc">The finished result on this real 35-section tenancy agreement, run against the live production server (legalclear.duckdns.org): a one-line verdict, 4 named parties correctly extracted, 9 HIGH + 20 MEDIUM + 6 NOTE risk flags tallied, the top risks surfaced above the fold, and the full section-by-section translation below.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/legalclear/06-summary-card-closeup.png" data-cap="At a Glance — verdict, parties, genuine risk counts">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/06-summary-card-closeup.png" loading="lazy" alt="Summary card close-up"/></div>
-      <div class="cap"><b>At a Glance</b>Quick verdict, 4 parties extracted, 9 High / 20 Medium / 6 Notes</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/07-what-to-watch-out-for-closeup.png" data-cap="What to Watch Out For — HIGH risks only">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/07-what-to-watch-out-for-closeup.png" loading="lazy" alt="What to Watch Out For panel"/></div>
-      <div class="cap"><b>What to Watch Out For</b>Top HIGH-severity clauses, one line each</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/08a-translation-accordion-collapsed.png" data-cap="Full Translation, all sections collapsed">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/08a-translation-accordion-collapsed.png" loading="lazy" alt="Translation accordion, all sections collapsed"/></div>
-      <div class="cap"><b>Collapsed view</b>35 section headers, each with its own risk-flag count</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/08c-translation-section-expanded-closeup.png" data-cap="One section expanded — original text + plain English + risk">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/08c-translation-section-expanded-closeup.png" loading="lazy" alt="Expanded translation section"/></div>
-      <div class="cap"><b>Section close-up</b>Original excerpt, plain English, and its risk flag</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/05b-results-viewport-top.png" data-cap="Full results page, top of viewport">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/05b-results-viewport-top.png" loading="lazy" alt="Full results page top"/></div>
-      <div class="cap"><b>Results page</b>Action Bar + At a Glance, as first seen after streaming completes</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/05c-results-viewport-middle.png" data-cap="Results page, scrolled to middle">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/05c-results-viewport-middle.png" loading="lazy" alt="Results page middle of scroll"/></div>
-      <div class="cap"><b>Mid-scroll</b>Deeper into the section-by-section translation</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/05d-results-viewport-bottom.png" data-cap="Results page, scrolled to bottom">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/05d-results-viewport-bottom.png" loading="lazy" alt="Results page bottom of scroll"/></div>
-      <div class="cap"><b>Further down</b>Later sections, still fully rendered</div>
-    </div>
-    <div class="shot" data-src="screenshots/legalclear/05a-results-full-top.png" data-cap="Entire report, full page, every section expanded">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/05a-results-full-top.png" loading="lazy" alt="Full-page screenshot of the complete report with all sections expanded"/></div>
-      <div class="cap"><b>The whole report, one image</b>All 35 sections expanded, captured only after streaming truly finished</div>
+  <div class="section">
+    <div class="eyebrow">Completed analysis</div>
+    <h2>The finished report</h2>
+    <p class="section-lede">The finished result on this real 35-section tenancy agreement, run against the live production server (legalclear.duckdns.org): a one-line verdict, 4 named parties correctly extracted, 9 HIGH + 20 MEDIUM + 6 NOTE risk flags tallied, the top risks surfaced above the fold, and the full section-by-section translation below.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/legalclear/06-summary-card-closeup.png" data-cap="At a Glance — verdict, parties, genuine risk counts">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/06-summary-card-closeup.png" loading="lazy" alt="Summary card close-up"/></div>
+        <div class="cap"><b>At a Glance</b>Quick verdict, 4 parties extracted, 9 High / 20 Medium / 6 Notes</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/07-what-to-watch-out-for-closeup.png" data-cap="What to Watch Out For — HIGH risks only">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/07-what-to-watch-out-for-closeup.png" loading="lazy" alt="What to Watch Out For panel"/></div>
+        <div class="cap"><b>What to Watch Out For</b>Top HIGH-severity clauses, one line each</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/08a-translation-accordion-collapsed.png" data-cap="Full Translation, all sections collapsed">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/08a-translation-accordion-collapsed.png" loading="lazy" alt="Translation accordion, all sections collapsed"/></div>
+        <div class="cap"><b>Collapsed view</b>35 section headers, each with its own risk-flag count</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/08c-translation-section-expanded-closeup.png" data-cap="One section expanded — original text + plain English + risk">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/08c-translation-section-expanded-closeup.png" loading="lazy" alt="Expanded translation section"/></div>
+        <div class="cap"><b>Section close-up</b>Original excerpt, plain English, and its risk flag</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/05b-results-viewport-top.png" data-cap="Full results page, top of viewport">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/05b-results-viewport-top.png" loading="lazy" alt="Full results page top"/></div>
+        <div class="cap"><b>Results page</b>Action Bar + At a Glance, as first seen after streaming completes</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/05c-results-viewport-middle.png" data-cap="Results page, scrolled to middle">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/05c-results-viewport-middle.png" loading="lazy" alt="Results page middle of scroll"/></div>
+        <div class="cap"><b>Mid-scroll</b>Deeper into the section-by-section translation</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/05d-results-viewport-bottom.png" data-cap="Results page, scrolled to bottom">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/05d-results-viewport-bottom.png" loading="lazy" alt="Results page bottom of scroll"/></div>
+        <div class="cap"><b>Further down</b>Later sections, still fully rendered</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/05a-results-full-top.png" data-cap="Entire report, full page, every section expanded">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/05a-results-full-top.png" loading="lazy" alt="Full-page screenshot of the complete report with all sections expanded"/></div>
+        <div class="cap"><b>The whole report, one image</b>All 35 sections expanded, captured only after streaming truly finished</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="gallery-group">
-  <h3>Actions — PDF &amp; email <span class="gnum">10–11</span></h3>
-  <p class="gdesc">What happens after analysis: an email-delivery attempt and a real PDF report download.</p>
-  <div class="gallery-grid">
-    <div class="shot" data-src="screenshots/legalclear/10b-email-modal-filled.png" data-cap="Email address entered">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/10b-email-modal-filled.png" loading="lazy" alt="Email modal with an address filled in"/></div>
-      <div class="cap"><b>Address entered</b>Ready to send, before submitting</div>
+  <div class="section">
+    <div class="eyebrow">Actions — PDF &amp; email</div>
+    <h2>What happens after analysis</h2>
+    <p class="section-lede">An email-delivery attempt and a real PDF report download.</p>
+    <div class="gallery-grid">
+      <div class="shot" data-src="screenshots/legalclear/10b-email-modal-filled.png" data-cap="Email address entered">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/10b-email-modal-filled.png" loading="lazy" alt="Email modal with an address filled in"/></div>
+        <div class="cap"><b>Address entered</b>Ready to send, before submitting</div>
+      </div>
+      <div class="shot" data-src="screenshots/legalclear/11a-after-pdf-download.png" data-cap="Report downloaded">
+        <div class="thumb-wrap"><img src="screenshots/legalclear/11a-after-pdf-download.png" loading="lazy" alt="Page state right after the PDF download completes"/></div>
+        <div class="cap"><b>Report downloaded</b>Success toast after a real Download PDF click</div>
+      </div>
     </div>
-    <div class="shot" data-src="screenshots/legalclear/11a-after-pdf-download.png" data-cap="Report downloaded">
-      <div class="thumb-wrap"><img src="screenshots/legalclear/11a-after-pdf-download.png" loading="lazy" alt="Page state right after the PDF download completes"/></div>
-      <div class="cap"><b>Report downloaded</b>Success toast after a real Download PDF click</div>
-    </div>
-  </div>
-</div>
-
   </div>
   <div class="section">
     <div class="eyebrow">Infrastructure &amp; operations</div>
