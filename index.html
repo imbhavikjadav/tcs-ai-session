@@ -1231,18 +1231,23 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       </div>
       <div>
         <h4 style="font-size:14px; margin-bottom:10px; color:var(--lc-accent)">How it's built</h4>
-        <div class="flow-steps" style="height:calc(100% - 34px)">
+        <div class="flow-steps">
           <div class="flow-step" style="grid-template-columns:1fr">
-            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0">
+            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
             A static HTML/CSS/JS page (no framework — the whole UI is one <code class="mono">index.html</code>)
             deployed to Netlify, backed by one Netlify serverless function,
-            <code class="mono">netlify/functions/control.js</code>. That function does the actual work: it
-            hand-implements <strong>AWS Signature Version 4</strong> — HMAC-SHA256 request signing — in
-            plain Node.js using only the built-in <code class="mono">crypto</code> module, calling the raw
-            EC2 HTTP API directly rather than pulling in the full AWS SDK, which would be considerable
-            weight for three actions. Password gate is a client-side session check; the real security
-            boundary is that AWS credentials live only as Netlify environment variables, never in the
-            shipped code, and the repository itself is private.
+            <code class="mono">netlify/functions/control.js</code>.
+            </p>
+            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
+            That function does the actual work: it hand-implements <strong>AWS Signature Version 4</strong> —
+            HMAC-SHA256 request signing — in plain Node.js using only the built-in
+            <code class="mono">crypto</code> module, calling the raw EC2 HTTP API directly rather than
+            pulling in the full AWS SDK, which would be considerable weight for three actions.
+            </p>
+            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0">
+            Password gate is a client-side session check; the real security boundary is that AWS
+            credentials live only as Netlify environment variables, never in the shipped code, and the
+            repository itself is private.
             </p>
           </div>
         </div>
