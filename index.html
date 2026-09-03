@@ -748,16 +748,24 @@
   }
   .tool-card:hover { border-color: var(--gs-accent); transform: translateY(-2px); }
   .tool-card-head { display: flex; align-items: center; gap: 12px; }
+  /* Fixed off-white tile regardless of site theme: these are brand marks
+     drawn for a light background (several are dark/black artwork on a
+     transparent PNG), so tying the tile to var(--card) made them vanish
+     outright in dark mode. A stable light chip is the standard fix
+     app icon grids use for exactly this — logo legibility over strict
+     theme-matching for this one small element. */
   .tool-icon {
-    width: 40px; height: 40px;
-    border-radius: 9px;
-    background: var(--card);
-    border: 1px solid var(--border-soft);
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    padding: 6px;
   }
-  .tool-icon img { width: 26px; height: 26px; object-fit: contain; }
+  .tool-icon img { width: 100%; height: 100%; object-fit: contain; }
   /* Shown only if the real logo file at that path hasn't been added yet —
      a plain initial-letter placeholder so the grid still looks intentional
      rather than broken while logos are gathered one at a time. */
@@ -2994,7 +3002,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
         </div>
         <div class="tool-card">
           <div class="tool-card-head">
-            <div class="tool-icon"><img src="assets/tools/cursor.svg" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;Cu&lt;/span&gt;'"/></div>
+            <div class="tool-icon"><img src="assets/tools/cursor.png" alt="" onerror="this.parentElement.innerHTML='&lt;span class=&quot;tool-icon-fallback&quot;&gt;Cu&lt;/span&gt;'"/></div>
             <div><div class="tool-card-name">Cursor</div><div class="tool-card-maker">Anysphere</div></div>
           </div>
           <div class="tool-card-desc">A full VS Code fork with AI woven directly into the editing loop. The most broadly adopted tool in this category among individual developers.</div>
