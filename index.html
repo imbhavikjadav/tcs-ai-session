@@ -474,7 +474,7 @@
     margin-bottom: 6px;
   }
   .stack-item .name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-  .stack-item .why { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+  .stack-item .why { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
 
   .code-block {
     background: #080D17;
@@ -514,7 +514,7 @@
     background: var(--lc-accent-dim);
     border-radius: 0 8px 8px 0;
     padding: 14px 18px;
-    font-size: 13.5px;
+    font-size: 15px;
     color: var(--text);
     margin: 18px 0;
     line-height: 1.6;
@@ -548,7 +548,7 @@
     padding-top: 2px;
   }
   .flow-step .title { font-weight: 700; font-size: 14.5px; margin-bottom: 4px; }
-  .flow-step .desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
+  .flow-step .desc { font-size: 15px; color: var(--text-dim); line-height: 1.6; }
   .flow-step .desc code { background: var(--card-raised); padding: 1px 6px; border-radius: 4px; font-size: 12px; border: 1px solid var(--border); }
 
   /* ===== Screenshot gallery ===== */
@@ -569,7 +569,7 @@
     padding: 2px 8px;
     border-radius: 999px;
   }
-  .gallery-group .gdesc { color: var(--text-dim); font-size: 13.5px; margin: 8px 0 18px; max-width: 70ch; }
+  .gallery-group .gdesc { color: var(--text-dim); font-size: 15px; margin: 8px 0 18px; max-width: 70ch; }
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -602,8 +602,8 @@
     text-align: center;
     padding: 10px;
   }
-  .shot .cap { padding: 10px 12px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--border-soft); }
-  .shot .cap b { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; font-size: 12.5px; }
+  .shot .cap { padding: 10px 12px; font-size: 13.5px; color: var(--text-dim); border-top: 1px solid var(--border-soft); }
+  .shot .cap b { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; font-size: 14px; }
 
   /* ===== Lightbox ===== */
   #lightbox {
@@ -656,7 +656,7 @@
     position: fixed;
     bottom: 28px; left: 50%;
     transform: translateX(-50%);
-    font-size: 13px;
+    font-size: 14.5px;
     color: var(--text-dim);
     background: var(--card);
     border: 1px solid var(--border);
@@ -701,10 +701,10 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; } }
   .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .kv-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13.5px; }
+  .kv-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
   .kv-table th, .kv-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border-soft); }
   .kv-table th { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); font-weight: 500; }
-  .kv-table td.mono { font-family: var(--font-mono); font-size: 12px; }
+  .kv-table td.mono { font-family: var(--font-mono); font-size: 13.5px; }
   .table-wrap { overflow-x: auto; }
 
   .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
@@ -743,7 +743,7 @@
   .doc-card.fn .doc-icon { background: var(--fn-accent-dim); color: var(--fn-accent); border: 1px solid var(--fn-accent-border); }
   .doc-title { font-weight: 700; font-size: 14.5px; line-height: 1.3; }
   .doc-sub { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); margin-top: 3px; }
-  .doc-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; flex: 1; }
+  .doc-desc { font-size: 14px; color: var(--text-dim); line-height: 1.55; flex: 1; }
   .doc-actions { display: flex; gap: 8px; }
   .doc-btn {
     flex: 1;
@@ -962,7 +962,7 @@
       <text x="350" y="317" text-anchor="middle" font-size="11.5" opacity="0.8">SSE: meta → sections → final</text>
     </g>
   </svg>
-  <figcaption style="text-align:center; font-size:13px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
+  <figcaption style="text-align:center; font-size:16px; color:var(--text-faint); margin-top:16px; font-family:var(--font-mono)">
     Every request checks the SQLite cache first — only a miss reaches Claude. Nginx sits between browser and backend with buffering explicitly disabled, or none of this streams.
   </figcaption>
 </figure>
@@ -1238,18 +1238,18 @@ React build      /api/* → FastAPI (systemd service, port 8000)
         <h4 style="font-size:14px; margin-bottom:10px; color:var(--lc-accent)">How it's built</h4>
         <div class="flow-steps">
           <div class="flow-step" style="grid-template-columns:1fr">
-            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
+            <p style="font-size:15px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
             A static HTML/CSS/JS page (no framework — the whole UI is one <code class="mono">index.html</code>)
             deployed to Netlify, backed by one Netlify serverless function,
             <code class="mono">netlify/functions/control.js</code>.
             </p>
-            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
+            <p style="font-size:15px; color:var(--text-dim); line-height:1.7; margin:0 0 12px">
             That function does the actual work: it hand-implements <strong>AWS Signature Version 4</strong> —
             HMAC-SHA256 request signing — in plain Node.js using only the built-in
             <code class="mono">crypto</code> module, calling the raw EC2 HTTP API directly rather than
             pulling in the full AWS SDK, which would be considerable weight for three actions.
             </p>
-            <p style="font-size:13.5px; color:var(--text-dim); line-height:1.7; margin:0">
+            <p style="font-size:15px; color:var(--text-dim); line-height:1.7; margin:0">
             Password gate is a client-side session check; the real security boundary is that AWS
             credentials live only as Netlify environment variables, never in the shipped code, and the
             repository itself is private.
@@ -1846,7 +1846,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
         timeout=anthropic.Timeout(timeout=<span class="s">1800.0</span>, connect=<span class="s">30.0</span>, read=<span class="s">1800.0</span>, write=<span class="s">60.0</span>, pool=<span class="s">10.0</span>),
     )</pre>
     </div>
-    <p style="color:var(--text-dim); font-size:13.5px; margin-top:14px">A 30-minute SDK timeout looks
+    <p style="color:var(--text-dim); font-size:15px; margin-top:14px">A 30-minute SDK timeout looks
     extreme until you remember it has to survive worst case: <code class="mono">MAX_DOCUMENT_CHARS</code>
     defaults to 50,000 in the env template, but the actual safeguard in code is 800,000 characters
     (<code class="mono">_MAX_DOCUMENT_CHARS</code>) before hard truncation — a genuinely huge contract,
@@ -2039,7 +2039,7 @@ Legal Document Text:
 
         <span class="k">yield</span> {<span class="s">"type"</span>: <span class="s">"heartbeat"</span>, <span class="s">"data"</span>: {}}   <span class="c"># every chunk, keeps proxies alive</span></pre>
     </div>
-    <p style="color:var(--text-dim); font-size:13.5px">The <code class="mono">&lt;final&gt;</code> block is
+    <p style="color:var(--text-dim); font-size:15px">The <code class="mono">&lt;final&gt;</code> block is
     extracted once after the stream ends, since it's the model's summary of everything it just wrote —
     it can only be correct once every section exists.</p>
     <div class="flow-steps" style="margin-top:24px">
@@ -2078,7 +2078,7 @@ Legal Document Text:
         text = text[start : end + <span class="s">1</span>]
     <span class="k">return</span> json.loads(text)</pre>
     </div>
-    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:14px">If that still fails to parse,
+    <p style="color:var(--text-dim); font-size:15px; margin-bottom:14px">If that still fails to parse,
     there's exactly one retry — not a loop, a single deliberate second attempt with the model's own
     (empty) turn primed to bias it toward compliance:</p>
     <div class="code-block">
@@ -2093,7 +2093,7 @@ Legal Document Text:
 <span class="k">except</span> Exception:
     <span class="k">raise</span> RuntimeError(_CLAUDE_PARSE_ERROR_MESSAGE)</pre>
     </div>
-    <p style="color:var(--text-dim); font-size:13.5px">Pre-filling an <code class="mono">assistant</code>
+    <p style="color:var(--text-dim); font-size:15px">Pre-filling an <code class="mono">assistant</code>
     turn with the start of the desired response is a real Anthropic API technique for steering output
     format — here it's used defensively, only on retry, rather than on every call, since it costs an
     extra round trip and the first attempt succeeds the overwhelming majority of the time.</p>
