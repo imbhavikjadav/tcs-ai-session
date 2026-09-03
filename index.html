@@ -771,6 +771,35 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; } }
   .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+  /* ===== Build-time stat badge ===== */
+  .build-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 4px;
+    padding: 8px 16px 8px 12px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+  }
+  .build-time.lc { background: var(--lc-accent-dim); border: 1px solid var(--lc-accent); }
+  .build-time.fn { background: var(--fn-accent-dim); border: 1px solid var(--fn-accent); }
+  .build-time svg { flex-shrink: 0; }
+  .build-time.lc svg { color: var(--lc-accent); }
+  .build-time.fn svg { color: var(--fn-accent); }
+  .build-time .bt-num {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .build-time.lc .bt-num { color: var(--lc-accent); }
+  .build-time.fn .bt-num { color: var(--fn-accent); }
+  .build-time .bt-label {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.3;
+  }
+  .build-time .bt-label b { color: var(--text); font-weight: 700; }
   .kv-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
   .kv-table th, .kv-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border-soft); }
   .kv-table th { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); font-weight: 500; }
@@ -938,6 +967,10 @@
       <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
     </div>
     <div class="eyebrow" style="color:var(--lc-accent)">Case file 01 · Runtime AI product</div>
+    <div class="build-time lc">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+      <span><span class="bt-num">7 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+    </div>
     <p class="section-lede">A legal-document translator that reads what you paste or upload — Terms of
     Service, NDAs, leases, employment contracts — and returns a section-by-section plain-English
     breakdown with every risky clause flagged by severity, streamed live and backed by a real Claude
@@ -1395,6 +1428,10 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo"/>
     </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 02 · Agent-built system</div>
+    <div class="build-time fn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+      <span><span class="bt-num">16 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
+    </div>
     <p class="section-lede">A pan-India, mobile-first truck tendering marketplace. Not a dispatch app —
     a bidding marketplace: a shipper posts a shipment, eligible verified drivers bid on it with an
     itemised price, and the shipper picks the bid that suits them, not just the first one that shows up.
