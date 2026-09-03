@@ -2178,6 +2178,30 @@ Legal Document Text:
     is still thinking" from "the connection actually died" — if 60 seconds pass with zero bytes, even
     pings, the frontend gives up and shows a timeout message rather than a silently frozen progress bar.</p>
   </div>
+
+  <div class="section">
+    <div class="eyebrow">9 · The Claude Console, not just the code</div>
+    <h2>The account actually paying for this</h2>
+    <p class="section-lede">Everything above is the code's side of the story. This is the other side —
+    the real Anthropic Console for the account LegalClear runs on: live spend, real token volume, and
+    the actual request log, one row per API call this document analysis made.</p>
+    <div class="gallery-group">
+      <div class="gallery-grid">
+        <div class="shot" data-src="screenshots/legalclear/console/console-01-dashboard.png" data-cap="Claude Console — Dashboard">
+          <div class="thumb-wrap"><img src="screenshots/legalclear/console/console-01-dashboard.png" loading="lazy" alt="Claude Console dashboard showing organization credits, spend this month, and token volume"/></div>
+          <div class="cap"><b>Dashboard</b>Real account, real balance — $23.87 credits, 91K tokens in the last 7 days</div>
+        </div>
+        <div class="shot" data-src="screenshots/legalclear/console/console-02-usage.png" data-cap="Claude Console — Usage">
+          <div class="thumb-wrap"><img src="screenshots/legalclear/console/console-02-usage.png" loading="lazy" alt="Claude Console usage page with a token-usage table broken down by date and model"/></div>
+          <div class="cap"><b>Usage</b>Token counts by day and model, straight from the org's own billing data</div>
+        </div>
+        <div class="shot" data-src="screenshots/legalclear/console/console-03-logs.png" data-cap="Claude Console — Logs">
+          <div class="thumb-wrap"><img src="screenshots/legalclear/console/console-03-logs.png" loading="lazy" alt="Claude Console request logs showing individual API calls with model, token counts, and streaming type"/></div>
+          <div class="cap"><b>Logs</b>Individual <code class="mono">claude-sonnet-4-5</code> requests — model, input/output tokens, streaming, service tier</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
