@@ -877,8 +877,8 @@
     <div class="brand"><span class="name">Bhavik Jadav</span> <span class="dot">|</span> <small>Hobby Projects</small></div>
     <div class="tabs" role="tablist">
       <button class="tab active" data-panel="overview" role="tab">Overview</button>
-      <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
       <button class="tab" data-panel="freightnexus" role="tab"><span class="tab-dot" style="background:var(--fn-accent)"></span>FreightNexus</button>
+      <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
       <button class="tab" data-panel="claude" role="tab">Claude Integration</button>
     </div>
   </div>
@@ -896,6 +896,24 @@
       Every screen ahead was captured from the running apps, not mocked for the occasion.
     </p>
     <div class="split-grid">
+      <div class="proj-card fn" data-goto="freightnexus">
+        <span class="proj-tag">Agent-built system</span>
+        <div class="proj-logo">
+          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" class="fn-logo-img"/>
+        </div>
+        <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
+        bid-based shipment tendering, live execution tracking, and manual two-way payment
+        confirmation, running against a 25+ table Postgres schema with full RLS.</p>
+        <div class="proj-stack">
+          <span class="chip">Next.js 16</span>
+          <span class="chip">Supabase</span>
+          <span class="chip">shadcn/ui</span>
+          <span class="chip">RLS everywhere</span>
+          <span class="chip">react-pdf</span>
+          <span class="chip">Vercel</span>
+        </div>
+        <div class="proj-cta">Open the case file →</div>
+      </div>
       <div class="proj-card lc" data-goto="legalclear">
         <span class="proj-tag">Runtime AI product</span>
         <div class="proj-logo">
@@ -914,24 +932,6 @@
           <span class="chip">SSE streaming</span>
           <span class="chip">SQLite cache</span>
           <span class="chip">AWS EC2</span>
-        </div>
-        <div class="proj-cta">Open the case file →</div>
-      </div>
-      <div class="proj-card fn" data-goto="freightnexus">
-        <span class="proj-tag">Agent-built system</span>
-        <div class="proj-logo">
-          <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo" class="fn-logo-img"/>
-        </div>
-        <p>A pan-India truck tendering marketplace — four account types, KYC-gated onboarding,
-        bid-based shipment tendering, live execution tracking, and manual two-way payment
-        confirmation, running against a 25+ table Postgres schema with full RLS.</p>
-        <div class="proj-stack">
-          <span class="chip">Next.js 16</span>
-          <span class="chip">Supabase</span>
-          <span class="chip">shadcn/ui</span>
-          <span class="chip">RLS everywhere</span>
-          <span class="chip">react-pdf</span>
-          <span class="chip">Vercel</span>
         </div>
         <div class="proj-cta">Open the case file →</div>
       </div>
@@ -976,7 +976,7 @@
       </div>
       <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
     </div>
-    <div class="eyebrow" style="color:var(--lc-accent)">Case file 01 · Runtime AI product</div>
+    <div class="eyebrow" style="color:var(--lc-accent)">Case file 02 · Runtime AI product</div>
     <div class="build-time lc">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
       <span><span class="bt-num">7 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
@@ -1437,7 +1437,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     <div class="panel-logo">
       <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo"/>
     </div>
-    <div class="eyebrow" style="color:var(--fn-accent)">Case file 02 · Agent-built system</div>
+    <div class="eyebrow" style="color:var(--fn-accent)">Case file 01 · Agent-built system</div>
     <div class="build-time fn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
       <span><span class="bt-num">16 hours</span> <span class="bt-label">total build time — <b>MVP</b>, idea to deployed v1</span></span>
