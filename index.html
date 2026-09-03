@@ -632,9 +632,15 @@
   }
   #lightbox img {
     display: block;
-    width: 100%;
+    margin: 0 auto;
+    /* Fill the wide stage for screenshots at or above its width (every
+       desktop capture), but never upscale a smaller image past its own
+       native resolution — a small control-panel screenshot (its native
+       size is a phone viewport, ~420px) would otherwise get stretched to
+       the full ~1300px stage width and look blurry/oversized. */
+    width: auto;
+    max-width: 100%;
     height: auto;
-    max-width: none;
     max-height: none;
     transform-origin: 50% 50%;
     transition: transform 0.12s ease-out;
