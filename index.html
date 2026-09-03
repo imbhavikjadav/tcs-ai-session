@@ -524,6 +524,49 @@
   .callout strong { color: var(--lc-accent); }
   .callout.fn strong { color: var(--fn-accent); }
 
+  /* ===== Animated chunking diagram ===== */
+  .chunk-anim {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card);
+    padding: 28px 24px 20px;
+  }
+  .chunk-anim:hover, .chunk-anim:focus-visible {
+    border-color: var(--lc-accent);
+  }
+  .chunk-anim:focus-visible { outline: 2px solid var(--lc-accent); outline-offset: 3px; }
+  .chunk-anim-badge {
+    position: absolute;
+    top: -13px;
+    left: 24px;
+    background: var(--lc-accent);
+    color: #1a1206;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+  .chunk-anim [id^="ch-"] {
+    transition: opacity 0.35s ease, stroke-width 0.35s ease;
+  }
+  .chunk-anim-hint {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    margin-top: 4px;
+  }
+  .chunk-anim-hint .kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
   .flow-steps {
     display: flex;
     flex-direction: column;
@@ -2157,6 +2200,106 @@ Legal Document Text:
   </div>
 
   <div class="section">
+    <div class="eyebrow">6b · Watch it happen</div>
+    <h2>Splitting a document and sending it to Claude, chunk by chunk</h2>
+    <p class="section-lede">This mirrors <code class="mono">translate_document()</code> in
+    <code class="mono">claude_service.py</code> exactly — a plain <code class="mono">for idx, chunk in
+    enumerate(chunks)</code> loop. Chunks are sent to Claude <strong>one at a time, in order</strong>,
+    never in parallel — the second chunk's request doesn't start until the first one's response has
+    fully landed. Hover the diagram to pause on any step; move away to resume.</p>
+
+    <figure id="chunk-anim" class="chunk-anim" style="margin:32px 0 0" tabindex="0">
+      <div class="chunk-anim-badge" id="chunk-anim-badge">Step 1 / 7</div>
+      <svg id="chunk-svg" viewBox="0 0 1180 640" role="img" aria-label="Animated diagram: a 42,000 character document is split into two chunks with a 2,000 character overlap at the 28,000 character boundary, each chunk is sent to Claude sequentially and its response returned before the next chunk is sent, a separate party-extraction call runs over the original text, then everything merges into one report with risk counts recomputed from the merged data" style="width:100%;height:auto;max-width:1180px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="chArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+          <marker id="chArrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--lc-accent, #F5A524)"/>
+          </marker>
+        </defs>
+        <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" fill="currentColor">
+
+          <!-- ===== Row 1: source document, splitting into chunks ===== -->
+          <text x="30" y="34" font-size="13" opacity="0.6">Your document — 42,000 characters</text>
+          <rect id="ch-doc" x="30" y="46" width="1120" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="590" y="74" text-anchor="middle" font-size="12.5" opacity="0.55">one continuous string, before any split</text>
+
+          <line id="ch-split-arrow" x1="590" y1="92" x2="590" y2="122" stroke="currentColor" stroke-width="1.3" marker-end="url(#chArrow)" opacity="0"/>
+          <text id="ch-split-label" x="610" y="112" font-size="12" opacity="0" fill="var(--lc-accent, #F5A524)">split at 28,000 chars</text>
+
+          <!-- Chunk 1 -->
+          <rect id="ch-chunk1" x="30" y="130" width="640" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+          <text id="ch-chunk1-label" x="350" y="152" text-anchor="middle" font-weight="600" opacity="0.35">Chunk 1</text>
+          <text id="ch-chunk1-sub" x="350" y="171" text-anchor="middle" font-size="11.5" opacity="0.3">chars 0 – 28,000</text>
+
+          <!-- Overlap sliver -->
+          <rect id="ch-overlap" x="608" y="130" width="62" height="54" rx="6" fill="var(--lc-accent, #F5A524)" opacity="0"/>
+          <text id="ch-overlap-label" x="639" y="205" text-anchor="middle" font-size="11" fill="var(--lc-accent, #F5A524)" opacity="0">2,000-char overlap</text>
+
+          <!-- Chunk 2 -->
+          <rect id="ch-chunk2" x="608" y="130" width="542" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.15"/>
+          <text id="ch-chunk2-label" x="879" y="152" text-anchor="middle" font-weight="600" opacity="0.15">Chunk 2</text>
+          <text id="ch-chunk2-sub" x="879" y="171" text-anchor="middle" font-size="11.5" opacity="0.13">chars 26,000 – 42,000</text>
+
+          <!-- ===== Row 2: sequential requests to Claude ===== -->
+          <rect x="30" y="228" width="240" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="150" y="258" text-anchor="middle" font-weight="700">Your backend</text>
+          <text x="150" y="278" text-anchor="middle" font-size="11.5" opacity="0.65">for idx, chunk in chunks:</text>
+
+          <rect x="820" y="212" width="330" height="102" rx="10" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="2"/>
+          <text x="985" y="245" text-anchor="middle" font-weight="700" fill="var(--lc-accent, #F5A524)">Claude API</text>
+          <text x="985" y="266" text-anchor="middle" font-size="11.5" opacity="0.8">claude-sonnet-4-5</text>
+          <text x="985" y="285" text-anchor="middle" font-size="11.5" opacity="0.8">one call per chunk — never batched</text>
+
+          <!-- request/response arcs, reused for both chunks in sequence -->
+          <path id="ch-req-arrow" d="M 270 250 C 480 220, 650 220, 815 245" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="1.8" marker-end="url(#chArrowAccent)" opacity="0"/>
+          <rect id="ch-req-badge-bg" x="440" y="205" width="220" height="24" rx="5" fill="var(--surface, #0F1826)" opacity="0"/>
+          <text id="ch-req-badge" x="550" y="222" text-anchor="middle" font-size="12" fill="var(--lc-accent, #F5A524)" opacity="0">sending chunk 1 of 2…</text>
+
+          <path id="ch-res-arrow" d="M 815 285 C 650 320, 480 320, 270 268" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#chArrow)" opacity="0"/>
+          <rect id="ch-res-badge-bg" x="420" y="320" width="260" height="24" rx="5" fill="var(--surface, #0F1826)" opacity="0"/>
+          <text id="ch-res-badge" x="550" y="337" text-anchor="middle" font-size="12" opacity="0">response landed — chunk 2 can start now</text>
+
+          <!-- partial results tray -->
+          <rect x="30" y="330" width="240" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 4"/>
+          <text x="150" y="355" text-anchor="middle" font-size="12.5" opacity="0.7">partial_results[]</text>
+          <text id="ch-tray-count" x="150" y="375" text-anchor="middle" font-size="11.5" opacity="0.55">0 of 2 chunks analysed</text>
+
+          <!-- ===== Row 3: separate party-extraction call ===== -->
+          <rect id="ch-parties-box" x="30" y="430" width="240" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3"/>
+          <text id="ch-parties-label" x="150" y="454" text-anchor="middle" font-size="12.5" opacity="0.4">_extract_parties_from_text()</text>
+          <text id="ch-parties-sub" x="150" y="473" text-anchor="middle" font-size="11" opacity="0.35">separate call, first 120,000 chars</text>
+
+          <path id="ch-parties-arrow" d="M 270 460 C 480 440, 650 380, 815 300" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 4" marker-end="url(#chArrow)" opacity="0"/>
+
+          <!-- ===== Row 4: merge ===== -->
+          <rect id="ch-merge-box" x="380" y="470" width="420" height="130" rx="12" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.25"/>
+          <text id="ch-merge-title" x="590" y="500" text-anchor="middle" font-weight="700" opacity="0.35">Merge</text>
+          <text id="ch-merge-1" x="590" y="524" text-anchor="middle" font-size="12" opacity="0.35">section IDs renumbered sequentially</text>
+          <text id="ch-merge-2" x="590" y="546" text-anchor="middle" font-size="12" opacity="0.35">risk counts recomputed from merged risk_flags[]</text>
+          <text id="ch-merge-3" x="590" y="568" text-anchor="middle" font-size="12" opacity="0.35">— never trusted from each chunk's own count</text>
+          <text id="ch-merge-4" x="590" y="590" text-anchor="middle" font-size="11.5" opacity="0.3">parties[] attached from the separate call above</text>
+
+          <line id="ch-merge-arrow1" x1="150" y1="390" x2="150" y2="405" stroke="currentColor" stroke-width="1.3" marker-end="url(#chArrow)" opacity="0"/>
+          <path id="ch-merge-arrow2" d="M 270 360 C 340 400, 360 440, 400 470" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#chArrow)" opacity="0"/>
+
+          <!-- Final report -->
+          <rect id="ch-final-box" x="880" y="500" width="270" height="70" rx="10" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="2" opacity="0.2"/>
+          <text id="ch-final-label" x="1015" y="530" text-anchor="middle" font-weight="700" fill="var(--lc-accent, #F5A524)" opacity="0.3">One merged report</text>
+          <text id="ch-final-sub" x="1015" y="550" text-anchor="middle" font-size="11.5" opacity="0.25">streamed to your browser as normal</text>
+          <path id="ch-final-arrow" d="M 800 535 L 874 535" fill="none" stroke="var(--lc-accent, #F5A524)" stroke-width="1.6" marker-end="url(#chArrowAccent)" opacity="0"/>
+        </g>
+      </svg>
+      <figcaption id="chunk-anim-caption" style="text-align:center; font-size:16px; color:var(--text-faint); margin-top:18px; font-family:var(--font-mono); min-height:24px">
+        Watching a 42,000-character document get chunked and analysed…
+      </figcaption>
+      <div class="chunk-anim-hint" id="chunk-anim-hint"><span class="kbd">hover</span> to pause on any step · loops automatically</div>
+    </figure>
+  </div>
+
+  <div class="section">
     <div class="eyebrow">7 · Caching — replaying a stream that never called Claude</div>
     <h2>The instant result has to still feel like analysis</h2>
     <p class="section-lede">The cache key is a SHA-256 hash of the document text after whitespace and
@@ -2482,4 +2625,120 @@ Legal Document Text:
     }
   }
   document.addEventListener('DOMContentLoaded', wireGlossary);
+
+  // Animated chunking diagram — steps through the real sequential
+  // for-idx-chunk-in-chunks loop from claude_service.py: split with
+  // overlap, chunk 1 request/response, chunk 2 request/response (never
+  // both in flight together), a separate party-extraction call, then
+  // merge. Pauses on hover/focus so it can be read at a comfortable
+  // pace; resumes when the pointer leaves. Freezes on the end state
+  // for prefers-reduced-motion instead of animating at all.
+  function wireChunkAnim() {
+    const root = document.getElementById('chunk-anim');
+    if (!root) return;
+    const $ = (id) => document.getElementById(id);
+    const badge = $('chunk-anim-badge');
+    const caption = $('chunk-anim-caption');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const el = {
+      splitArrow: $('ch-split-arrow'), splitLabel: $('ch-split-label'),
+      chunk1: $('ch-chunk1'), chunk1Label: $('ch-chunk1-label'), chunk1Sub: $('ch-chunk1-sub'),
+      overlap: $('ch-overlap'), overlapLabel: $('ch-overlap-label'),
+      chunk2: $('ch-chunk2'), chunk2Label: $('ch-chunk2-label'), chunk2Sub: $('ch-chunk2-sub'),
+      reqArrow: $('ch-req-arrow'), reqBadgeBg: $('ch-req-badge-bg'), reqBadge: $('ch-req-badge'),
+      resArrow: $('ch-res-arrow'), resBadgeBg: $('ch-res-badge-bg'), resBadge: $('ch-res-badge'),
+      trayCount: $('ch-tray-count'),
+      partiesBox: $('ch-parties-box'), partiesLabel: $('ch-parties-label'), partiesSub: $('ch-parties-sub'),
+      partiesArrow: $('ch-parties-arrow'),
+      mergeBox: $('ch-merge-box'), mergeTitle: $('ch-merge-title'),
+      merge1: $('ch-merge-1'), merge2: $('ch-merge-2'), merge3: $('ch-merge-3'), merge4: $('ch-merge-4'),
+      mergeArrow1: $('ch-merge-arrow1'), mergeArrow2: $('ch-merge-arrow2'),
+      finalBox: $('ch-final-box'), finalLabel: $('ch-final-label'), finalSub: $('ch-final-sub'), finalArrow: $('ch-final-arrow'),
+    };
+
+    // Every step is a full snapshot of every element's opacity (and any
+    // text swaps) — simplest possible model to reason about and to
+    // freeze on for reduced-motion, at the cost of some repetition.
+    const DIM = 0.15, GHOST = 0.3, FULL = 1;
+    const steps = [
+      { // 1 — whole document, nothing split yet
+        caption: 'A 42,000-character document arrives — one continuous string, not yet touched.',
+      },
+      { // 2 — split with overlap highlighted
+        caption: 'Split at 28,000 characters. The highlighted 2,000-char overlap is copied into chunk 2, so a clause spanning the cut still has context on both sides.',
+        show: ['splitArrow', 'splitLabel', 'chunk1', 'chunk1Label', 'chunk1Sub', 'overlap', 'overlapLabel', 'chunk2', 'chunk2Label', 'chunk2Sub'],
+        opac: { chunk1: FULL, chunk1Label: FULL, chunk1Sub: 0.65, overlap: 0.85, overlapLabel: FULL, chunk2: GHOST, chunk2Label: GHOST, chunk2Sub: 0.25 },
+      },
+      { // 3 — chunk 1 request fires
+        caption: 'Chunk 1 goes out to Claude first. Chunk 2 has not been sent yet — it is still waiting.',
+        show: ['chunk1', 'chunk1Label', 'chunk1Sub', 'overlap', 'overlapLabel', 'chunk2', 'chunk2Label', 'chunk2Sub', 'reqArrow', 'reqBadgeBg', 'reqBadge'],
+        opac: { chunk1: FULL, chunk1Label: FULL, chunk1Sub: 0.65, overlap: 0.85, overlapLabel: FULL, chunk2: GHOST, chunk2Label: GHOST, chunk2Sub: 0.25 },
+        text: { reqBadge: 'sending chunk 1 of 2…' },
+      },
+      { // 4 — chunk 1 response lands, tray fills
+        caption: 'Chunk 1’s analysis comes back and is appended to partial_results[]. Only now can the loop move on.',
+        show: ['chunk1', 'chunk1Label', 'chunk1Sub', 'chunk2', 'chunk2Label', 'chunk2Sub', 'resArrow', 'resBadgeBg', 'resBadge', 'trayCount'],
+        opac: { chunk1: FULL, chunk1Label: FULL, chunk1Sub: 0.65, chunk2: GHOST, chunk2Label: GHOST, chunk2Sub: 0.25, trayCount: FULL },
+        text: { resBadge: 'chunk 1 response landed — chunk 2 can start now', trayCount: '1 of 2 chunks analysed' },
+      },
+      { // 5 — chunk 2 request fires (only now)
+        caption: 'Only now does chunk 2 get sent — the exact same round trip, run a second time.',
+        show: ['chunk1', 'chunk1Label', 'chunk1Sub', 'overlap', 'overlapLabel', 'chunk2', 'chunk2Label', 'chunk2Sub', 'reqArrow', 'reqBadgeBg', 'reqBadge', 'trayCount'],
+        opac: { chunk1: GHOST, chunk1Label: GHOST, chunk1Sub: 0.25, overlap: 0.5, overlapLabel: 0.6, chunk2: FULL, chunk2Label: FULL, chunk2Sub: 0.65, trayCount: FULL },
+        text: { reqBadge: 'sending chunk 2 of 2…', trayCount: '1 of 2 chunks analysed' },
+      },
+      { // 6 — chunk 2 response lands + separate parties call fires
+        caption: 'Chunk 2 finishes. Separately — not part of the loop — a smaller call extracts party names from the first 120,000 characters of the original text.',
+        show: ['chunk1', 'chunk1Label', 'chunk2', 'chunk2Label', 'resArrow', 'resBadgeBg', 'resBadge', 'trayCount', 'partiesBox', 'partiesLabel', 'partiesSub', 'partiesArrow'],
+        opac: { chunk1: GHOST, chunk1Label: GHOST, chunk2: FULL, chunk2Label: FULL, trayCount: FULL, partiesBox: FULL, partiesLabel: FULL, partiesSub: 0.7, partiesArrow: 0.8 },
+        text: { resBadge: 'chunk 2 response landed — all chunks done', trayCount: '2 of 2 chunks analysed' },
+      },
+      { // 7 — merge and final report
+        caption: 'Merge: section IDs renumbered in order, risk counts recomputed from the merged risk_flags[] — never trusted from a chunk’s own count — and parties[] attached from the separate call. One report goes out.',
+        show: ['trayCount', 'partiesBox', 'partiesLabel', 'partiesSub', 'mergeBox', 'mergeTitle', 'merge1', 'merge2', 'merge3', 'merge4', 'mergeArrow1', 'mergeArrow2', 'finalBox', 'finalLabel', 'finalSub', 'finalArrow'],
+        opac: { trayCount: FULL, partiesBox: 0.7, partiesLabel: 0.7, partiesSub: 0.5, mergeBox: FULL, mergeTitle: FULL, merge1: FULL, merge2: FULL, merge3: FULL, merge4: FULL, finalBox: FULL, finalLabel: FULL, finalSub: 0.7 },
+        text: { trayCount: '2 of 2 chunks analysed' },
+      },
+    ];
+
+    const allKeys = Object.keys(el);
+    function render(i) {
+      const step = steps[i];
+      badge.textContent = `Step ${i + 1} / ${steps.length}`;
+      caption.textContent = step.caption;
+      const shown = new Set(step.show || []);
+      for (const key of allKeys) {
+        const node = el[key];
+        if (!node) continue;
+        if (!shown.has(key)) { node.style.opacity = 0; continue; }
+        const target = (step.opac && step.opac[key] !== undefined) ? step.opac[key] : FULL;
+        node.style.opacity = target;
+      }
+      if (step.text) {
+        for (const key in step.text) if (el[key]) el[key].textContent = step.text[key];
+      }
+    }
+
+    if (reduceMotion) {
+      render(steps.length - 1);
+      $('chunk-anim-hint').textContent = 'Animation reduced — showing the finished state.';
+      return;
+    }
+
+    let i = 0;
+    let paused = false;
+    render(0);
+    const timer = setInterval(() => {
+      if (paused) return;
+      i = (i + 1) % steps.length;
+      render(i);
+    }, 2600);
+
+    root.addEventListener('mouseenter', () => { paused = true; });
+    root.addEventListener('mouseleave', () => { paused = false; });
+    root.addEventListener('focusin', () => { paused = true; });
+    root.addEventListener('focusout', () => { paused = false; });
+  }
+  document.addEventListener('DOMContentLoaded', wireChunkAnim);
 </script>
