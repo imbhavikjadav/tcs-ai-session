@@ -733,6 +733,15 @@
     border-bottom: 1px dotted var(--text-faint);
     cursor: help;
   }
+  /* SVG diagrams can't wrap a run of text in a <span> without extra
+     <tspan> surgery, so matching <text> elements get the same
+     dotted-underline/cursor treatment applied to the whole label
+     instead of just the matched term. */
+  text.gloss-svg {
+    text-decoration: underline dotted currentColor 1px;
+    text-underline-offset: 3px;
+    cursor: help;
+  }
   #gloss-tip {
     position: fixed;
     z-index: 300;
@@ -753,6 +762,7 @@
   }
   #gloss-tip.show { opacity: 1; transform: translateY(0); }
   #gloss-tip .term { font-family: var(--font-mono); font-weight: 700; color: var(--lc-accent); margin-right: 6px; }
+  #gloss-tip div + div { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-soft); }
 
   /* ===== Footer ===== */
   footer {
@@ -1521,11 +1531,11 @@ React build      /api/* → FastAPI (systemd service, port 8000)
       <text x="705" y="281" text-anchor="middle" font-size="13">Storage · KYC + photos</text>
 
       <rect x="588" y="310" width="234" height="34" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
-      <text x="705" y="332" text-anchor="middle" font-size="12.5">Realtime · live GPS<title>GPS: Global Positioning System</title></text>
+      <text x="705" y="332" text-anchor="middle" font-size="12.5">Realtime · live GPS</text>
 
       <line x1="490" y1="185" x2="559" y2="185" stroke="currentColor" stroke-width="1.4" marker-end="url(#fnArrow)"/>
       <rect x="497" y="173" width="80" height="24" rx="5" fill="var(--surface, #0F1826)"/>
-      <text x="537" y="190" text-anchor="middle" font-size="11.5" opacity="0.85">SQL + RLS<title>SQL: Structured Query Language · RLS: Row-Level Security</title></text>
+      <text x="537" y="190" text-anchor="middle" font-size="11.5" opacity="0.85">SQL + RLS</text>
 
       <!-- External -->
       <rect x="920" y="70" width="220" height="66" rx="9" fill="none" stroke="currentColor" stroke-width="1.3"/>
@@ -2539,11 +2549,14 @@ Legal Document Text:
   }
   document.addEventListener('DOMContentLoaded', wireLightboxZoom);
 
-  // Glossary tooltips — wrap the first plain-prose occurrence of each
+  // Glossary tooltips — wrap EVERY plain-prose occurrence of each
   // acronym/shortform on the page in a dotted-underline span that shows its
-  // full form on hover. Skips script/style/pre/code elements (code-block
-  // identifiers aren't the same thing as the prose term) and only wraps the
-  // FIRST match per term so the page doesn't get visually noisy.
+  // full form on hover, so every instance is covered, not just the first.
+  // Skips script/style/pre/code elements (code-block identifiers aren't the
+  // same thing as the prose term). SVG <text> can't have a <span> spliced
+  // into a run of text without <tspan> surgery, so matching <text> elements
+  // there get the dotted-underline treatment applied to the whole label
+  // instead, tagged with every term found in it.
   const GLOSSARY = {
     PDF: 'Portable Document Format',
     KYC: 'Know Your Customer',
@@ -2581,19 +2594,23 @@ Legal Document Text:
   function wireGlossary() {
     const tip = document.getElementById('gloss-tip');
     if (!tip) return;
-    const wrapped = new Set();
     const skipTags = new Set(['SCRIPT', 'STYLE', 'PRE', 'CODE', 'TITLE']);
+    const SVG_NS = 'http://www.w3.org/2000/svg';
     // Longest-first so e.g. "SSH" doesn't get matched inside a longer term
     // that happens to share letters (defensive; current list has no overlaps).
     const terms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
     const termPattern = new RegExp('\\b(' + terms.join('|') + ')\\b');
+    // Global (not sticky) so a single text node can be scanned for every
+    // term it contains, not just the first — a text node mentioning two
+    // different acronyms (e.g. "...UPI...GST document...") needs both
+    // wrapped, not just whichever comes first.
+    const globalPattern = new RegExp('\\b(' + terms.join('|') + ')\\b', 'g');
 
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         if (!node.parentElement) return NodeFilter.FILTER_REJECT;
         if (skipTags.has(node.parentElement.tagName)) return NodeFilter.FILTER_REJECT;
         if (node.parentElement.closest('#gloss-tip')) return NodeFilter.FILTER_REJECT;
-        if (node.parentElement.namespaceURI === 'http://www.w3.org/2000/svg') return NodeFilter.FILTER_REJECT;
         return termPattern.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
       },
     });
@@ -2602,24 +2619,36 @@ Legal Document Text:
     let n;
     while ((n = walker.nextNode())) nodesToProcess.push(n);
 
-    // Global (not sticky) pattern so a single text node can be scanned for
-    // every term it contains, not just the first — a text node mentioning
-    // two different acronyms (e.g. "...UPI...GST document...") needs both
-    // wrapped, not just whichever comes first.
-    const globalPattern = new RegExp('\\b(' + terms.join('|') + ')\\b', 'g');
-
     for (const node of nodesToProcess) {
       const text = node.nodeValue;
+
+      // SVG text can't have a <span> spliced into one run of characters —
+      // <text>/<tspan> don't accept arbitrary HTML children the way a <p>
+      // does. Instead, tag the whole enclosing <text> element with every
+      // term it contains and let CSS underline the full label.
+      if (node.parentElement.namespaceURI === SVG_NS) {
+        const textEl = node.parentElement.closest('text');
+        if (!textEl) continue;
+        const foundTerms = new Set();
+        let m;
+        globalPattern.lastIndex = 0;
+        while ((m = globalPattern.exec(text))) foundTerms.add(m[1]);
+        if (!foundTerms.size) continue;
+        const existing = textEl.dataset.terms ? textEl.dataset.terms.split(',') : [];
+        const merged = Array.from(new Set([...existing, ...foundTerms]));
+        textEl.dataset.terms = merged.join(',');
+        textEl.classList.add('gloss-svg');
+        continue;
+      }
+
       const frag = document.createDocumentFragment();
       let lastIndex = 0;
       let match;
-      let sawNewWrap = false;
+      let sawMatch = false;
       globalPattern.lastIndex = 0;
       while ((match = globalPattern.exec(text))) {
         const term = match[1];
-        if (wrapped.has(term)) continue; // still consume the match, just don't re-wrap
-        wrapped.add(term);
-        sawNewWrap = true;
+        sawMatch = true;
         if (match.index > lastIndex) {
           frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
         }
@@ -2630,24 +2659,39 @@ Legal Document Text:
         frag.appendChild(span);
         lastIndex = match.index + term.length;
       }
-      if (!sawNewWrap) continue;
+      if (!sawMatch) continue;
       if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
 
       const parent = node.parentNode;
       parent.replaceChild(frag, node);
     }
 
+    function fullFormsFor(el) {
+      if (el.dataset.term) {
+        const full = GLOSSARY[el.dataset.term];
+        return full ? [[el.dataset.term, full]] : [];
+      }
+      if (el.dataset.terms) {
+        return el.dataset.terms.split(',')
+          .filter((t) => GLOSSARY[t])
+          .map((t) => [t, GLOSSARY[t]]);
+      }
+      return [];
+    }
+
     document.body.addEventListener('mouseover', (e) => {
-      const el = e.target.closest('.gloss');
+      const el = e.target.closest('.gloss, .gloss-svg');
       if (!el) return;
-      const full = GLOSSARY[el.dataset.term];
-      if (!full) return;
-      tip.innerHTML = `<span class="term">${el.dataset.term}</span>${full}`;
+      const entries = fullFormsFor(el);
+      if (!entries.length) return;
+      tip.innerHTML = entries
+        .map(([term, full]) => `<div><span class="term">${term}</span>${full}</div>`)
+        .join('');
       tip.classList.add('show');
       positionTip(el);
     });
     document.body.addEventListener('mouseout', (e) => {
-      if (e.target.closest('.gloss')) tip.classList.remove('show');
+      if (e.target.closest('.gloss, .gloss-svg')) tip.classList.remove('show');
     });
 
     function positionTip(el) {
