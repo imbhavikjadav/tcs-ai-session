@@ -2186,6 +2186,75 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
   </div>
 
   <div class="section">
+    <div class="eyebrow">0 · The API itself</div>
+    <h2>Yes, it's a real HTTP API — here's the actual endpoint</h2>
+    <p class="section-lede">Before any of LegalClear's own code: what "calling Claude" concretely means.
+    It's one HTTP endpoint — <code class="mono">POST https://api.anthropic.com/v1/messages</code> —
+    authenticated by an API key in a request header. LegalClear never builds that HTTP request by hand;
+    it calls Anthropic's official Python SDK (<code class="mono">pip install anthropic</code>), and the
+    SDK's <code class="mono">client.messages.create(...)</code> method <em>is</em> that POST request,
+    wrapped so the caller works with Python objects instead of raw JSON and headers.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span>What client.messages.create() sends, underneath the SDK</span><span>raw HTTP, for reference — LegalClear never writes this by hand</span></div>
+      <pre><span class="k">POST</span> https://api.anthropic.com/v1/messages
+x-api-key: sk-ant-...
+anthropic-version: 2023-06-01
+content-type: application/json
+
+{
+  <span class="s">"model"</span>: <span class="s">"claude-sonnet-4-5"</span>,
+  <span class="s">"max_tokens"</span>: <span class="s">8192</span>,
+  <span class="s">"system"</span>: <span class="s">"You are LegalClear, an expert legal document analyser..."</span>,
+  <span class="s">"messages"</span>: [
+    {<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"Analyse the following legal document...\n\nDocument Name: ...\n\nLegal Document Text:\n..."</span>}
+  ]
+}</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>The same call, via the SDK — what LegalClear's code actually contains</span><span>Python, anthropic SDK</span></div>
+      <pre><span class="k">import</span> anthropic
+
+client = anthropic.Anthropic(api_key=<span class="s">"sk-ant-..."</span>)
+
+response = client.messages.create(
+    model=<span class="s">"claude-sonnet-4-5"</span>,
+    max_tokens=<span class="s">8192</span>,
+    system=<span class="s">"You are LegalClear, an expert legal document analyser..."</span>,
+    messages=[
+        {<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: user_message}
+    ],
+)
+
+<span class="k">print</span>(response.content[<span class="s">0</span>].text)   <span class="c"># the model's reply, as plain text</span></pre>
+    </div>
+
+    <div class="kv-table">
+      <table class="kv-table"><tbody>
+        <tr><th>Field</th><th>What it is</th></tr>
+        <tr><td class="mono">model</td><td>Which Claude model answers this request — <code class="mono">claude-sonnet-4-5</code> for every call LegalClear makes.</td></tr>
+        <tr><td class="mono">max_tokens</td><td>Hard ceiling on how long the model's reply can be — LegalClear sets 8,192, its real output ceiling.</td></tr>
+        <tr><td class="mono">system</td><td>A separate slot from the conversation — the fixed rulebook (Section 2 below). Doesn't count as a "turn."</td></tr>
+        <tr><td class="mono">messages</td><td>The actual conversation — a list of <code class="mono">{role, content}</code> turns. LegalClear only ever sends one: a single <code class="mono">user</code> turn, rebuilt fresh every request.</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="callout">
+      <strong>Streaming uses the same endpoint, not a different one.</strong> Adding <code class="mono">stream: true</code> to that same request tells the API to send the reply back as it's generated — a series of
+      <code class="mono">data: {...}</code> Server-Sent Events — instead of one complete JSON response at
+      the end. The SDK exposes this as <code class="mono">client.messages.stream(...)</code>, an async
+      context manager you iterate over chunk by chunk (Section 4 covers exactly how LegalClear consumes
+      it). Same URL, same auth, same request body shape — one boolean is the entire difference between
+      "wait for the whole answer" and "get it as it's written."
+    </div>
+    <p class="section-lede">The official reference for every field, every model name, every error code,
+    and every SDK (Python, TypeScript, and others) is Anthropic's own API documentation at
+    <a href="https://docs.anthropic.com/en/api/messages" target="_blank" rel="noopener" class="mono" style="color:var(--lc-accent)">docs.anthropic.com</a> —
+    that's the actual spec; everything below is what LegalClear specifically built on top of it.</p>
+  </div>
+
+  <div class="section">
     <div class="eyebrow">1 · Model &amp; client setup</div>
     <h2>Two clients, two endpoints, one model</h2>
     <p class="section-lede">LegalClear runs <strong>two separate integration paths</strong> against the
