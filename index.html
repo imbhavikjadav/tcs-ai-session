@@ -298,7 +298,10 @@
   }
 
   /* ===== Section scaffolding ===== */
-  .section { padding: 64px 0; border-bottom: 1px solid var(--border-soft); }
+  /* scroll-margin-top clears the sticky topbar (68px) plus real breathing
+     room, so jumping to a section via the index — or a plain #hash URL —
+     never leaves its heading flush against or hidden under the topbar. */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border-soft); scroll-margin-top: 108px; }
   .section:last-child { border-bottom: none; }
   .eyebrow {
     font-family: var(--font-mono);
