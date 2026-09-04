@@ -3454,6 +3454,13 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
       if (panel) panel.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
       try { localStorage.setItem('tcs-ai-session-tab', tab.dataset.panel); } catch(e) {}
+      // Overview is the one tab with no section index and no in-page
+      // anchors — clear any #section-id left over from another tab so
+      // the URL bar doesn't show a hash that no longer points at
+      // anything on screen.
+      if (tab.dataset.panel === 'overview' && location.hash) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
       buildSectionIndex(tab.dataset.panel);
     });
   });
