@@ -2437,20 +2437,6 @@ Document Name: {document_name}
 Legal Document Text:
 {document_text}</pre>
     </div>
-    <div class="code-block">
-      <div class="code-head"><span>The actual API call — system and user are two separate slots</span><span>claude_service.py:373</span></div>
-      <pre><span class="k">def</span> <span class="fn">_call</span>(extra_messages=None) -> str:
-    messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: user_message}]
-    <span class="k">if</span> extra_messages:
-        messages.extend(extra_messages)
-    response = client.messages.create(
-        model=<span class="s">"claude-sonnet-4-5"</span>,
-        max_tokens=<span class="s">8192</span>,
-        system=SYSTEM_PROMPT,      <span class="c"># fixed persona + rules, every call</span>
-        messages=messages,          <span class="c"># fresh document context, this call only</span>
-    )
-    <span class="k">return</span> response.content[<span class="s">0</span>].text</pre>
-    </div>
     <div class="callout">
       <strong>Why no RAG, no embeddings, no chunk retrieval at query time?</strong> Because rule 9 of the
       system prompt ("never translate a clause in isolation if it depends on or is modified by another")
