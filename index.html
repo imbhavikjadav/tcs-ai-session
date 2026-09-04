@@ -3241,6 +3241,74 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
       left to your own discipline.
     </div>
   </div>
+
+  <div class="section">
+    <div class="eyebrow">Where it actually runs</div>
+    <h2>Local, on your machine — or deployed, running without you</h2>
+    <p class="section-lede">Every tool above runs in one of two places, and the choice isn't about which
+    tool is "better" — it's about one question: does this need to keep working when your computer is
+    asleep? If no, run it locally. If yes, it needs to be deployed somewhere that stays on.</p>
+    <div class="two-col" style="margin-top:28px">
+      <div>
+        <h4 style="font-size:14px; margin-bottom:10px; color:var(--gs-accent)">Local — bound to your machine</h4>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="num">1</div>
+            <div><div class="title">Terminal / CLI agents</div><div class="desc">Claude Code, run in a terminal — reads and writes real files, runs real shell commands, stops the moment you close the session.</div></div>
+          </div>
+          <div class="flow-step">
+            <div class="num">2</div>
+            <div><div class="title">IDE-embedded agents</div><div class="desc">Cursor, Windsurf, the Claude Code VS Code extension — same idea, living inside your editor instead of a separate window.</div></div>
+          </div>
+          <div class="flow-step">
+            <div class="num">3</div>
+            <div><div class="title">A local script against an API</div><div class="desc">Your own Python/Node script calling the Claude API directly, or a LangGraph/CrewAI agent — runs only while the process is alive on your machine.</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:14px; margin-bottom:10px; color:var(--gs-accent)">Deployed — runs independent of you</h4>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="num">1</div>
+            <div><div class="title">Scheduled cloud agents</div><div class="desc">Claude Code's <code class="mono">/schedule</code> Routines, a cron job, a scheduled GitHub Action — fires on a timer, on infrastructure that isn't your laptop.</div></div>
+          </div>
+          <div class="flow-step">
+            <div class="num">2</div>
+            <div><div class="title">An agent inside a deployed app</div><div class="desc">LegalClear itself — the Claude API call is baked into a server process that stays up 24/7 on AWS EC2, waiting for real users to hit it.</div></div>
+          </div>
+          <div class="flow-step">
+            <div class="num">3</div>
+            <div><div class="title">Event-triggered background jobs</div><div class="desc">A webhook handler, a serverless function, a GitHub Action on <code class="mono">pull_request.opened</code> — sleeps until triggered by something external, then runs and goes quiet again.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-lede" style="margin-top:32px">A few concrete examples, work and outside of it, mapped
+    to where each would actually need to run:</p>
+    <div class="table-wrap">
+      <table class="kv-table">
+        <tbody>
+          <tr><th>Example</th><th>Where</th><th>Why</th></tr>
+          <tr><td>Review this PR for bugs, right now</td><td class="mono">Local, on-demand</td><td>One-off, only needed while you're at your desk</td></tr>
+          <tr><td>Keep retrying a failing build while I do something else</td><td class="mono">Local, recurring</td><td><code class="mono">/loop</code>, but still bound to your session staying open</td></tr>
+          <tr><td>Auto-review every new pull request on a repo</td><td class="mono">Deployed, triggered</td><td>Has to fire on GitHub's schedule, not yours</td></tr>
+          <tr><td>Triage overnight support tickets, summary by 9am</td><td class="mono">Deployed, scheduled</td><td>Needs to run while everyone's asleep</td></tr>
+          <tr><td>A product where every user request calls Claude</td><td class="mono">Deployed, always-on</td><td>Real traffic can arrive any time, from anyone</td></tr>
+          <tr><td>Tidy up a messy folder of downloads</td><td class="mono">Local, on-demand</td><td>A one-time task on your own files</td></tr>
+          <tr><td>Watch a site for a restock or price drop</td><td class="mono">Local, recurring</td><td>Fine as long as it only needs to run while you're active</td></tr>
+          <tr><td>A daily personal briefing emailed every morning</td><td class="mono">Deployed, scheduled</td><td>Has to send whether or not your laptop is even open</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout gs">
+      <strong>The deciding question is always the same one.</strong> "Does this need to happen even when
+      my computer is off or asleep?" Yes → it has to be deployed somewhere. No → local is simpler, and
+      free — don't reach for a cloud routine or a hosted server for something that only ever needs to run
+      while you're already sitting there.
+    </div>
+  </div>
 </section>
 
 
