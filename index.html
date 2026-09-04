@@ -2567,21 +2567,6 @@ Legal Document Text:
     comfortably under the 8,192-token output ceiling, not because the model runs out of room to read.</p>
     <div class="kv-table">
       <table class="kv-table"><tbody>
-        <tr><th></th><th class="mono">8192</th><th class="mono">28,000</th></tr>
-        <tr><td>What it counts</td><td>Tokens</td><td>Characters</td></tr>
-        <tr><td>Which direction</td><td>Claude's <strong>output</strong> (the answer coming back)</td><td>LegalClear's <strong>input</strong> (the document going in)</td></tr>
-        <tr><td>What it controls</td><td>A hard API parameter (<code class="mono">max_tokens=8192</code>) — Claude cannot generate more than this many tokens in one response</td><td>An internal threshold LegalClear's own code checks — "if the document is longer than this, split it"</td></tr>
-        <tr><td>Who enforces it</td><td>Anthropic's API — cuts Claude off mid-generation if it hits this cap</td><td>LegalClear's own logic — nothing external enforces 28,000, it's just the number chosen</td></tr>
-      </tbody></table>
-    </div>
-    <p class="section-lede">These aren't directly comparable — a token is roughly ¾ of a word, so 8,192
-    tokens of output is closer to ~30,000+ characters of English text if it <em>were</em> the same kind of
-    text. But it isn't: 28,000 is how much raw document text goes in, and 8,192 is how much structured
-    analysis (JSON, translations, risk flags) can come back out. There's no formula linking them — 28,000
-    is an empirical, conservative threshold for "the largest input that reliably produces an analysis
-    fitting under the real 8,192-token ceiling," tested rather than calculated, with margin to spare.</p>
-    <div class="kv-table">
-      <table class="kv-table"><tbody>
         <tr><th>Constant</th><th>Value</th><th>Why</th></tr>
         <tr><td class="mono">_MAX_OUTPUT_TOKENS</td><td class="mono">8192</td><td>Model's actual output ceiling — a chunk's analysis must fit inside one response.</td></tr>
         <tr><td class="mono">_MAX_CHUNK_CHARS</td><td class="mono">28,000</td><td>Split threshold — documents under this go through the single-call path.</td></tr>
@@ -2589,6 +2574,23 @@ Legal Document Text:
         <tr><td class="mono">_MAX_DOCUMENT_CHARS</td><td class="mono">800,000</td><td>Hard safeguard — beyond this the document is truncated rather than chunked indefinitely.</td></tr>
       </tbody></table>
     </div>
+    <p class="section-lede">Two of these numbers — 8192 and 28,000 — get compared often, but they're not
+    directly related:</p>
+    <div class="kv-table">
+      <table class="kv-table"><tbody>
+        <tr><th></th><th class="mono">8192</th><th class="mono">28,000</th></tr>
+        <tr><td>What it counts</td><td>Tokens</td><td>Characters</td></tr>
+        <tr><td>Which direction</td><td>Claude's <strong>output</strong> (the answer coming back)</td><td>LegalClear's <strong>input</strong> (the document going in)</td></tr>
+        <tr><td>What it controls</td><td>A hard API parameter (<code class="mono">max_tokens=8192</code>) — Claude cannot generate more than this many tokens in one response</td><td>An internal threshold LegalClear's own code checks — "if the document is longer than this, split it"</td></tr>
+        <tr><td>Who enforces it</td><td>Anthropic's API — cuts Claude off mid-generation if it hits this cap</td><td>LegalClear's own logic — nothing external enforces 28,000, it's just the number chosen</td></tr>
+      </tbody></table>
+    </div>
+    <p class="section-lede">A token is roughly ¾ of a word, so 8,192 tokens of output is closer to
+    ~30,000+ characters of English text if it <em>were</em> the same kind of text. But it isn't: 28,000 is
+    how much raw document text goes in, and 8,192 is how much structured analysis (JSON, translations,
+    risk flags) can come back out. There's no formula linking them — 28,000 is an empirical, conservative
+    threshold for "the largest input that reliably produces an analysis fitting under the real
+    8,192-token ceiling," tested rather than calculated, with margin to spare.</p>
     <p class="section-lede">Chunk boundaries prefer a newline, then a space, over a hard character cut —
     <code class="mono">text.rfind("\n", start, end)</code> before falling back to
     <code class="mono">text.rfind(" ", start, end)</code> — so a split never lands mid-word or, ideally,
