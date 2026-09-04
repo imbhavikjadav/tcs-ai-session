@@ -198,6 +198,94 @@
   }
 
   main { max-width: 1180px; margin: 0 auto; padding: 0 24px 120px; }
+
+  /* ===== Section index — fixed to the viewport's left margin, never
+     part of main's own box, so main's width/centering is completely
+     unaffected regardless of whether the index is showing. Two tiers:
+     full text labels once there's real room (~1700px+), a slim
+     numbered-dot rail with a hover flyout label down to ~1400px, and
+     hidden entirely below that rather than ever shrinking main. ===== */
+  .section-index {
+    position: fixed;
+    top: 96px;
+    left: 24px;
+    width: 200px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    z-index: 40;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 4px;
+  }
+  .section-index.visible { display: flex; }
+  .section-index a {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--text-faint);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .section-index a:hover { color: var(--text-dim); background: var(--card); }
+  .section-index a.active {
+    color: var(--text);
+    font-weight: 600;
+    border-left-color: var(--index-accent, var(--neutral-accent));
+    background: var(--card);
+  }
+  .section-index::-webkit-scrollbar { width: 5px; }
+  .section-index::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Rail tier: 1400–1699px — no room for label text, so collapse to a
+     column of small dots; the label appears as a flyout on hover. */
+  @media (max-width: 1699px) {
+    .section-index { width: 28px; left: 14px; gap: 6px; }
+    .section-index a {
+      position: relative;
+      padding: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      border-left-width: 1.5px;
+      background: transparent;
+      overflow: visible;
+    }
+    .section-index a span { display: none; }
+    .section-index a.active { background: var(--index-accent, var(--neutral-accent)); border-color: var(--index-accent, var(--neutral-accent)); }
+  }
+  /* Rail-tier flyout label: position: fixed (not absolute) and placed by
+     JS on hover, deliberately outside .section-index's own DOM subtree —
+     .section-index needs overflow-y: auto for the wide-label tier's long
+     lists, and an absolutely-positioned child gets clipped by that same
+     overflow box the instant it needs to render past the rail's 28px
+     width. Fixed positioning with JS-computed coordinates sidesteps the
+     clip entirely regardless of tier. */
+  .rail-flyout {
+    display: none;
+    position: fixed;
+    z-index: 60;
+    background: var(--card-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    white-space: nowrap;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    pointer-events: none;
+  }
+  .rail-flyout.show { display: block; }
+  /* Below the rail's own minimum room, hide entirely — content width
+     never changes to make space for it. */
+  @media (max-width: 1399px) {
+    .section-index { display: none !important; }
+  }
+
   .panel { display: none; }
   .panel.active { display: block; animation: fadeUp 0.4s ease both; }
   @keyframes fadeUp {
@@ -228,6 +316,19 @@
     content: '';
     width: 22px; height: 1px;
     background: var(--text-faint);
+  }
+  /* A real, semantic <h2> for the panel-header block on tabs whose logo is
+     an image or wordmark rather than text — kept visually minimal (a
+     second small caption) since the logo above it already carries the
+     block's visual identity; exists mainly so the section index has a
+     real heading to link to. */
+  .panel-header-h2 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: -6px 0 16px;
   }
   .section h2 {
     font-size: clamp(26px, 3.4vw, 38px);
@@ -1116,6 +1217,9 @@
   </div>
 </div>
 
+<nav class="section-index" id="sectionIndex" aria-label="Section index"></nav>
+<div class="rail-flyout" id="railFlyout"></div>
+
 <main id="main">
 <section id="panel-overview" class="panel active">
   <div class="hero grid-bg">
@@ -1201,7 +1305,7 @@
 </section>
 
 <section id="panel-legalclear" class="panel">
-  <div class="section" style="padding-top:56px">
+  <div class="section" id="legalclear-overview" style="padding-top:56px">
     <div class="panel-logo">
       <div class="panel-logo-badge">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#0F1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
@@ -1209,6 +1313,7 @@
       <div class="panel-logo-wordmark">Legal<span class="accent">Clear</span></div>
     </div>
     <div class="eyebrow" style="color:var(--lc-accent)">Case file 02 · Runtime AI product</div>
+    <h2 class="panel-header-h2">Overview</h2>
     <div class="badge-stat-row">
       <div class="build-time lc">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
@@ -1231,7 +1336,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-request-path-end-to-end">
     <div class="eyebrow">Architecture</div>
     <h2>Request path, end to end</h2>
     <p class="section-lede">Two moving parts in front of the model: Nginx has to get out of the way of a
@@ -1320,7 +1425,7 @@
 
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-what-it-s-actually-built-from">
     <div class="eyebrow">Tech stack</div>
     <h2>What it's actually built from</h2>
     <div class="stack-grid">
@@ -1339,7 +1444,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-four-shipped-versions-same-running-app">
     <div class="eyebrow">Product evolution</div>
     <h2>Four shipped versions, same running app</h2>
     <p class="section-lede">Each version was a separate, scoped requirements document fed to Claude Code
@@ -1365,7 +1470,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-the-actual-documents-not-screenshots-of-">
     <div class="eyebrow">Downloadable files</div>
     <h2>The actual documents, not screenshots of them</h2>
     <p class="section-lede">The source contract analysed in the walkthrough below, and the report
@@ -1402,7 +1507,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-a-genuine-document-analysed-live">
     <div class="eyebrow">Live walkthrough</div>
     <h2>A genuine document, analysed live</h2>
     <p class="section-lede">Every screenshot below was captured against the live deployed server at
@@ -1411,7 +1516,7 @@
     analysing <strong>AST – 37 Greyfriars Road</strong>, a genuine tenancy/lease-style document, end to end.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-paste-it-or-upload-the-file">
     <div class="eyebrow">Upload &amp; input</div>
     <h2>Paste it, or upload the file</h2>
     <p class="section-lede">The landing page and the two ways to submit a document — paste raw text, or upload the actual file. The "Powered by Claude AI" badge is not marketing copy here; it's accurate.</p>
@@ -1435,7 +1540,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-watching-claude-write-section-by-section">
     <div class="eyebrow">Live streaming</div>
     <h2>Watching Claude write, section by section</h2>
     <p class="section-lede">This is the actual streaming pipeline mid-flight, run against the live production server — the rotating status text and progressive section rendering described in the Claude Integration tab, caught on camera against a genuine 35-section Claude Sonnet run.</p>
@@ -1451,7 +1556,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-the-finished-report">
     <div class="eyebrow">Completed analysis</div>
     <h2>The finished report</h2>
     <p class="section-lede">The finished result on this genuine 35-section tenancy agreement, run against the live production server (legalclear.duckdns.org): a one-line verdict, 4 named parties correctly extracted, 9 HIGH + 20 MEDIUM + 6 NOTE risk flags tallied, the top risks surfaced above the fold, and the full section-by-section translation below.</p>
@@ -1491,7 +1596,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-what-happens-after-analysis">
     <div class="eyebrow">Actions — PDF &amp; email</div>
     <h2>What happens after analysis</h2>
     <p class="section-lede">An email-delivery attempt and an actual PDF report download.</p>
@@ -1506,7 +1611,7 @@
       </div>
     </div>
   </div>
-  <div class="section">
+  <div class="section" id="legalclear-keeping-a-0-month-server-alive-and-contr">
     <div class="eyebrow">Infrastructure &amp; operations</div>
     <h2>Keeping a $0/month server alive — and controllable from a phone</h2>
     <p class="section-lede">LegalClear runs on a single AWS EC2 <code class="mono">t3.micro</code> instance
@@ -1516,7 +1621,7 @@
     when nobody's using it.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-the-full-request-path-in-production">
     <div class="eyebrow">Deployment architecture</div>
     <h2>The full request path in production</h2>
     <div class="code-block">
@@ -1553,7 +1658,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-750-hours-a-month-means-the-server-can-t">
     <div class="eyebrow">The problem free-tier billing creates</div>
     <h2>750 hours a month means the server can't just stay on forever</h2>
     <p class="section-lede">A single EC2 instance running continuously uses roughly 730 hours a month —
@@ -1564,7 +1669,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     below exists to make the first option practical without needing a laptop.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-a-pocket-sized-on-off-switch-for-a-live-">
     <div class="eyebrow">legalclear-control</div>
     <h2>A pocket-sized on/off switch for a live AWS server</h2>
     <p class="section-lede">A second, separate, <em>private</em> repository — deliberately never merged
@@ -1648,7 +1753,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="legalclear-what-this-actually-costs-before-and-afte">
     <div class="eyebrow">Cost reality</div>
     <h2>What this actually costs, before and after the free tier</h2>
     <div class="table-wrap">
@@ -1671,11 +1776,12 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 </section>
 
 <section id="panel-freightnexus" class="panel">
-  <div class="section" style="padding-top:56px">
+  <div class="section" id="freightnexus-overview" style="padding-top:56px">
     <div class="panel-logo">
       <img src="assets/freightnexus-logo.png" alt="Freight Nexus logo"/>
     </div>
     <div class="eyebrow" style="color:var(--fn-accent)">Case file 01 · Agent-built system</div>
+    <h2 class="panel-header-h2">Overview</h2>
     <div class="badge-stat-row">
       <div class="build-time fn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
@@ -1698,7 +1804,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-who-s-actually-using-this">
     <div class="eyebrow">The four account types</div>
     <h2>Who's actually using this</h2>
     <p class="section-lede">A fifth role, Admin, exists purely operationally — provisioned directly in
@@ -1711,7 +1817,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-everything-runs-on-one-postgres-instance">
     <div class="eyebrow">Architecture</div>
     <h2>Everything runs on one Postgres instance</h2>
     <p class="section-lede">No separate application server. Next.js server actions and route handlers
@@ -1813,7 +1919,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
 
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-what-it-s-actually-built-from">
     <div class="eyebrow">Tech stack</div>
     <h2>What it's actually built from</h2>
     <div class="stack-grid">
@@ -1832,7 +1938,7 @@ React build      /api/* → FastAPI (systemd service, port 8000)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-the-state-machine-that-runs-every-trip">
     <div class="eyebrow">Data model, in brief</div>
     <h2>The state machine that runs every trip</h2>
     <p class="section-lede">A trip moves through <strong>14 explicit statuses</strong> from posting to
@@ -1867,7 +1973,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-one-trip-start-to-finish">
     <div class="eyebrow">Live walkthrough</div>
     <h2>One trip, start to finish</h2>
     <p class="section-lede">Two accounts on the live production Supabase project, starting from a
@@ -1885,7 +1991,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-landing-page-and-sign-up">
     <div class="eyebrow">Public &amp; auth</div>
     <h2>Landing page and sign-up</h2>
     <div class="gallery-grid">
@@ -1912,7 +2018,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-bhavik-registers-from-zero">
     <div class="eyebrow">Registration &amp; KYC — Business Owner</div>
     <h2>Bhavik registers from zero</h2>
     <p class="section-lede">A 4-step wizard: account, government ID, a passport-style photo, and a final review — genuine document photos uploaded, nothing mocked.</p>
@@ -1940,7 +2046,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-akshay-registers-himself-then-his-truck">
     <div class="eyebrow">Registration &amp; KYC — Individual Owner-Driver</div>
     <h2>Akshay registers himself, then his truck</h2>
     <p class="section-lede">A longer wizard than the shipper's: driver KYC (government ID + driving licence + photo), then a three-part truck sub-wizard — details, five documents, four photos — all in one account.</p>
@@ -1980,7 +2086,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-a-human-reviews-both-accounts-before-any">
     <div class="eyebrow">Admin portal</div>
     <h2>A human reviews both accounts before anything can move</h2>
     <p class="section-lede">No auto-approval anywhere. Every government ID, driving licence, and truck document sits in one manual review queue until an admin explicitly approves it.</p>
@@ -2004,7 +2110,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-business-owner-posts-trp00062">
     <div class="eyebrow">Posting the trip</div>
     <h2>Business owner posts TRP00062</h2>
     <p class="section-lede">A live 5-step wizard: route, goods details, timeline, receiver + deposit, and a final review — geocoded live against Google Maps. Addresses render as city/state headline with the full geocoded line underneath, never a raw pincode.</p>
@@ -2036,7 +2142,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-akshay-browses-bids-and-wins">
     <div class="eyebrow">Bidding</div>
     <h2>Akshay browses, bids, and wins</h2>
     <div class="gallery-grid">
@@ -2059,7 +2165,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-deposit-confirmed-goods-collected">
     <div class="eyebrow">Deposit &amp; pickup</div>
     <h2>Deposit confirmed, goods collected</h2>
     <div class="gallery-grid">
@@ -2090,7 +2196,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-delivered-tolls-trued-up-final-amount-ap">
     <div class="eyebrow">Delivery &amp; settlement</div>
     <h2>Delivered, tolls trued up, final amount approved</h2>
     <p class="section-lede">The toll true-up in action: estimated ₹750 vs. actual ₹780, plus a genuine ₹200 loading-labor expense — folded into one shipper approval.</p>
@@ -2122,7 +2228,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-trip-closed-both-sides-rated">
     <div class="eyebrow">Completion &amp; ratings</div>
     <h2>Trip closed, both sides rated</h2>
     <div class="gallery-grid">
@@ -2133,7 +2239,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="freightnexus-both-genuine-invoices-generated-automati">
     <div class="eyebrow">Downloadable files</div>
     <h2>Both genuine invoices, generated automatically</h2>
     <p class="section-lede">Not screenshots of PDFs — the actual files, generated automatically at two
@@ -2173,7 +2279,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
 </section>
 
 <section id="panel-claude" class="panel">
-  <div class="section" style="padding-top:56px">
+  <div class="section" id="claude-how-legalclear-actually-talks-to-claude" style="padding-top:56px">
     <div class="eyebrow">Deep dive</div>
     <h2>How LegalClear actually talks to Claude</h2>
     <p class="section-lede">This is the one part of the site written for people who read code, not just
@@ -2182,7 +2288,7 @@ branches:  cancelled  (from `new` through pickup, penalty rules depend on stage)
     calls to the Anthropic API at runtime, by design (see the Overview tab).</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-yes-it-s-an-actual-http-api-here-s-the-e">
     <div class="eyebrow">0 · The API itself</div>
     <h2>Yes, it's an actual HTTP API — here's the endpoint</h2>
     <p class="section-lede">Before any of LegalClear's own code: what "calling Claude" concretely means.
@@ -2288,7 +2394,7 @@ response = client.messages.create(
     that's the actual spec; everything below is what LegalClear specifically built on top of it.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-two-clients-two-endpoints-one-model">
     <div class="eyebrow">1 · Model &amp; client setup</div>
     <h2>Two clients, two endpoints, one model</h2>
     <p class="section-lede">LegalClear runs <strong>two separate integration paths</strong> against the
@@ -2324,7 +2430,7 @@ response = client.messages.create(
     chunked into ~28 pieces, each needing its own full model round-trip.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-where-the-actual-legal-judgment-lives">
     <div class="eyebrow">2 · The system prompt</div>
     <h2>Where the actual legal judgment lives</h2>
     <p class="section-lede">This is the entire product's intelligence, in one string. It does three
@@ -2387,7 +2493,7 @@ OUTPUT BREVITY RULES — strict, followed exactly:
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-how-the-request-actually-gets-built-ever">
     <div class="eyebrow">3 · Context construction</div>
     <h2>How the request actually gets built — every single call, from zero</h2>
     <p class="section-lede">LegalClear has no memory between requests and no retrieval step — there's no
@@ -2449,7 +2555,7 @@ Legal Document Text:
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-processing-the-response-in-chunks-so-the">
     <div class="eyebrow">4 · The streaming protocol</div>
     <h2>Processing the response in chunks — so there's always something to look at</h2>
     <p class="section-lede">The whole point of this section: a 38-section lease takes Claude roughly
@@ -2518,7 +2624,7 @@ Legal Document Text:
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-claude-doesn-t-always-return-clean-json-">
     <div class="eyebrow">5 · Parsing the non-streaming path</div>
     <h2>Claude doesn't always return clean JSON — plan for it</h2>
     <p class="section-lede">The batch endpoint asks for a single JSON object with no markdown fences,
@@ -2559,7 +2665,7 @@ Legal Document Text:
     extra round trip and the first attempt succeeds the overwhelming majority of the time.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-what-happens-past-28-000-characters">
     <div class="eyebrow">6 · Large documents — chunking</div>
     <h2>What happens past ~28,000 characters</h2>
     <p class="section-lede">Claude's own context window could handle far more text than this in one
@@ -2602,7 +2708,7 @@ Legal Document Text:
     characters, since parties are usually named early and a full second pass isn't needed.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-splitting-a-document-and-sending-it-to-c">
     <div class="eyebrow">6b · Watch it happen</div>
     <h2>Splitting a document and sending it to Claude, chunk by chunk</h2>
     <p class="section-lede">This mirrors <code class="mono">translate_document()</code> in
@@ -2702,7 +2808,7 @@ Legal Document Text:
     </figure>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-the-instant-result-has-to-still-feel-lik">
     <div class="eyebrow">7 · Caching — replaying a stream that never called Claude</div>
     <h2>The instant result has to still feel like analysis</h2>
     <p class="section-lede">The cache key is a SHA-256 hash of the document text after whitespace and
@@ -2737,7 +2843,7 @@ Legal Document Text:
     live Claude call rather than replaying something broken.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-three-failure-modes-three-different-mess">
     <div class="eyebrow">8 · Error handling</div>
     <h2>Three failure modes, three different messages</h2>
     <div class="table-wrap">
@@ -2756,7 +2862,7 @@ Legal Document Text:
     pings, the frontend gives up and shows a timeout message rather than a silently frozen progress bar.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="claude-the-account-actually-paying-for-this">
     <div class="eyebrow">9 · The Claude Console, not just the code</div>
     <h2>The account actually paying for this</h2>
     <p class="section-lede">Everything above is the code's side of the story. This is the other side —
@@ -2786,7 +2892,7 @@ Legal Document Text:
 </section>
 
 <section id="panel-loop" class="panel">
-  <div class="section" style="padding-top:56px">
+  <div class="section" id="loop-what-loop-engineering-actually-looks-lik" style="padding-top:56px">
     <div class="eyebrow" style="color:var(--le-accent)">A third thing, off to the side</div>
     <h2>What Loop Engineering actually looks like</h2>
     <p class="section-lede">Not a product, and not a Claude API case study like the two above — a small,
@@ -2804,7 +2910,7 @@ Legal Document Text:
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="loop-try-check-backtrack-repeat">
     <div class="eyebrow">What the term means here</div>
     <h2>Try, check, backtrack, repeat</h2>
     <p class="section-lede">"Loop engineering" isn't an established industry term with one fixed
@@ -2828,7 +2934,7 @@ Legal Document Text:
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="loop-how-to-actually-run-this-loop-in-claude-">
     <div class="eyebrow">The four distinct types, and the commands behind them</div>
     <h2>How to actually run this loop in Claude Code</h2>
     <p class="section-lede">Everything above is the underlying pattern. This part is concrete: Claude
@@ -2939,7 +3045,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="loop-watch-a-backtracking-solver-run-live">
     <div class="eyebrow">Live demo</div>
     <h2>Watch a backtracking solver run, live</h2>
     <p class="section-lede">An unsolved 9×9 Sudoku — <a href="https://www.sudokuwiki.org/Escargot" target="_blank" rel="noopener" class="mono" style="color:var(--le-accent)">AI Escargot</a>,
@@ -2973,7 +3079,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="loop-the-exact-code-driving-the-board-above">
     <div class="eyebrow">The algorithm itself</div>
     <h2>The exact code driving the board above</h2>
     <p class="section-lede">Same rule as the Claude Integration tab: what's shown here is the actual
@@ -3012,7 +3118,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     whole search space is covered by "try harder" or "undo and try something else."</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="loop-the-same-loop-run-by-a-person-instead-of">
     <div class="eyebrow">Why this belongs next to the other two</div>
     <h2>The same loop, run by a person instead of a stack frame</h2>
     <p class="section-lede">LegalClear's own code already runs a version of this loop — look at the error
@@ -3031,7 +3137,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
 </section>
 
 <section id="panel-start" class="panel">
-  <div class="section" style="padding-top:56px">
+  <div class="section" id="start-getting-started-building-with-ai" style="padding-top:56px">
     <div class="eyebrow" style="color:var(--gs-accent)">A practical on-ramp</div>
     <h2>Getting started building with AI</h2>
     <p class="section-lede">Not a case study, and not a ranking — a map of what's actually out there right
@@ -3039,7 +3145,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     so treat the tools below as genuine, current options to try, not a permanent verdict.</p>
   </div>
 
-  <div class="section">
+  <div class="section" id="start-which-of-these-are-you-actually-trying-t">
     <div class="eyebrow">Start here</div>
     <h2>Which of these are you actually trying to do?</h2>
     <p class="section-lede">The tool question only makes sense after this one. All three paths below are
@@ -3093,7 +3199,9 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     </figure>
   </div>
 
-  <div class="section">
+  <div class="section" id="start-three-categories-fourteen-tools">
+    <div class="eyebrow">The tool landscape</div>
+    <h2>Three categories, fourteen tools</h2>
     <div class="tool-category">
       <div class="tool-category-head">
         <span class="tool-category-num">01</span>
@@ -3217,7 +3325,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="start-four-steps-in-order">
     <div class="eyebrow">One concrete way to start</div>
     <h2>Four steps, in order</h2>
     <div class="flow-steps">
@@ -3245,7 +3353,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     </div>
   </div>
 
-  <div class="section">
+  <div class="section" id="start-running-your-own-agents-local-on-your-ma">
     <div class="eyebrow">Where it actually runs</div>
     <h2>Running your own agents — local, on your machine, or deployed and running without you</h2>
     <p class="section-lede">Every tool above runs in one of two places, and the choice isn't about which
@@ -3343,6 +3451,7 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
       if (panel) panel.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
       try { localStorage.setItem('tcs-ai-session-tab', tab.dataset.panel); } catch(e) {}
+      buildSectionIndex(tab.dataset.panel);
     });
   });
   document.querySelectorAll('[data-goto]').forEach(el => {
@@ -3354,6 +3463,92 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     const saved = localStorage.getItem('tcs-ai-session-tab');
     if (saved) { const t = document.querySelector(`.tab[data-panel="${saved}"]`); if (t) t.click(); }
   } catch(e) {}
+
+  // Section index — a fixed left-margin nav (or dot rail on narrower
+  // desktop widths, see CSS) rebuilt from whichever tab's real <h2>
+  // headings whenever a tab becomes active. The Overview tab gets no
+  // index — it's a single short page, not a long scroll needing one.
+  const PANEL_ACCENT_VAR = {
+    legalclear: '--lc-accent',
+    freightnexus: '--fn-accent',
+    claude: '--neutral-accent',
+    loop: '--le-accent',
+    start: '--gs-accent',
+  };
+  let sectionObserver = null;
+  function showRailFlyout(link, label) {
+    const span = link.querySelector('span');
+    // Only the rail (dot) tier hides the label text — in the full-label
+    // tier the span is already visible, so a flyout would be redundant.
+    if (!span || getComputedStyle(span).display !== 'none') return;
+    const flyout = document.getElementById('railFlyout');
+    if (!flyout) return;
+    const r = link.getBoundingClientRect();
+    flyout.textContent = label;
+    flyout.classList.add('show');
+    flyout.style.left = (r.right + 10) + 'px';
+    flyout.style.top = (r.top + r.height / 2) + 'px';
+    flyout.style.transform = 'translateY(-50%)';
+  }
+  function hideRailFlyout() {
+    const flyout = document.getElementById('railFlyout');
+    if (flyout) flyout.classList.remove('show');
+  }
+  function buildSectionIndex(panelName) {
+    const nav = document.getElementById('sectionIndex');
+    if (!nav) return;
+    if (sectionObserver) { sectionObserver.disconnect(); sectionObserver = null; }
+    nav.innerHTML = '';
+    nav.classList.remove('visible');
+
+    if (panelName === 'overview' || !PANEL_ACCENT_VAR[panelName]) return;
+    const panel = document.getElementById('panel-' + panelName);
+    if (!panel) return;
+    const sections = Array.from(panel.querySelectorAll(':scope > .section[id]'));
+    if (!sections.length) return;
+
+    nav.style.setProperty('--index-accent', `var(${PANEL_ACCENT_VAR[panelName]})`);
+
+    const links = [];
+    sections.forEach((sec) => {
+      const h2 = sec.querySelector('h2');
+      if (!h2) return;
+      const label = h2.textContent.trim();
+      const a = document.createElement('a');
+      a.href = '#' + sec.id;
+      a.dataset.target = sec.id;
+      a.innerHTML = `<span>${label}</span>`;
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        sec.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + sec.id);
+      });
+      a.addEventListener('mouseenter', () => showRailFlyout(a, label));
+      a.addEventListener('mouseleave', hideRailFlyout);
+      nav.appendChild(a);
+      links.push(a);
+    });
+    if (!links.length) return;
+    nav.classList.add('visible');
+
+    // Scroll-spy: whichever section's heading has most recently crossed
+    // a line near the top of the viewport is "active". A generous top
+    // margin and a thin bottom margin means the section claims active
+    // status as soon as it starts entering view, not only once centered.
+    sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          links.forEach((l) => l.classList.remove('active'));
+          const match = links.find((l) => l.dataset.target === entry.target.id);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+    sections.forEach((sec) => sectionObserver.observe(sec));
+  }
+  // Build for whichever tab is active once the DOM (and any localStorage
+  // restore above, which already ran synchronously) has settled.
+  buildSectionIndex(document.querySelector('.tab.active')?.dataset.panel || 'overview');
 
   // Lightbox — click to open at full size, no zoom controls
   function openLightbox(src, cap) {
