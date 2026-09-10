@@ -3258,6 +3258,42 @@ with tests passing" --completion-promise "complete" --max-iterations 40</pre>
     time Claude tries to stop — inside one continuous session — until Claude actually outputs
     <code class="mono">complete</code>, or the iteration cap is hit. The cap isn't optional polish; it's the
     real safety net if the completion promise never fires.</p>
+    <p class="section-lede">The prompt only points at <code class="mono">docs/csv-import-spec.md</code> by
+    name — the actual done-criteria live in that file, not the command. This is the same shape as a skill's
+    frontmatter: a short pointer that fires the work, and a separate saved file that defines what "done"
+    really means.</p>
+    <div class="code-block">
+      <div class="code-head"><span>docs/csv-import-spec.md</span><span>the file that command above actually points at</span></div>
+      <pre># CSV import feature — spec
+
+## What it does
+Add a `POST /imports/csv` endpoint that accepts an uploaded CSV file,
+validates every row, and inserts the valid ones into the `contacts`
+table. Invalid rows are skipped, not fatal to the whole upload.
+
+## Required columns
+`name` (non-empty string), `email` (must contain "@"), `signup_date`
+(ISO 8601, e.g. 2026-01-15).
+
+## Behavior on bad rows
+- Missing or malformed column -> skip the row, don't insert it
+- Duplicate email already in `contacts` -> skip, don't overwrite
+- The response body lists how many rows were inserted, how many were
+  skipped, and the line number + reason for each skipped row
+
+## Definition of done
+- `pytest tests/test_csv_import.py -v` passes, covering: a clean
+  file, a missing-column row, a bad-email row, a duplicate-email
+  row, and an entirely empty file
+- Manually run once against `fixtures/sample_contacts.csv` and
+  confirm the row counts in the response match the fixture by eye
+
+Only reply with the word "complete" once both of those are true —
+not after writing the code, after actually verifying it runs.</pre>
+    </div>
+    <p class="section-lede">Notice the file ends the same way every skill and goal on this page has to —
+    with a real, checkable finish line, not "implement CSV import" left to interpretation. That's what makes
+    the completion promise trustworthy instead of a guess.</p>
     <div class="code-block">
       <div class="code-head"><span>Option 2 — the original raw loop</span><span>plain shell, outside Claude Code entirely</span></div>
       <pre><span class="c">// prompt.md holds the one instruction Claude re-reads every pass</span>
