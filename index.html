@@ -39,6 +39,10 @@
     --gs-accent-dim: rgba(132, 204, 22, 0.14);
     --gs-accent-border: rgba(132, 204, 22, 0.35);
 
+    --ag-accent: #F472B6;
+    --ag-accent-dim: rgba(244, 114, 182, 0.14);
+    --ag-accent-border: rgba(244, 114, 182, 0.35);
+
     --risk-high: #F0475C;
     --risk-high-dim: rgba(240, 71, 92, 0.12);
     --risk-medium: #F5A524;
@@ -632,10 +636,12 @@
   .callout.fn { border-color: var(--fn-accent); background: var(--fn-accent-dim); }
   .callout.le { border-color: var(--le-accent); background: var(--le-accent-dim); }
   .callout.gs { border-color: var(--gs-accent); background: var(--gs-accent-dim); }
+  .callout.ag { border-color: var(--ag-accent); background: var(--ag-accent-dim); }
   .callout strong { color: var(--lc-accent); }
   .callout.fn strong { color: var(--fn-accent); }
   .callout.le strong { color: var(--le-accent); }
   .callout.gs strong { color: var(--gs-accent); }
+  .callout.ag strong { color: var(--ag-accent); }
 
   /* ===== Animated chunking diagram ===== */
   .chunk-anim {
@@ -723,6 +729,7 @@
     border-radius: 999px;
     margin-bottom: 12px;
   }
+  .block-card.ag .block-num { color: var(--ag-accent); background: var(--ag-accent-dim); border-color: var(--ag-accent-border); }
   .block-card h4 { font-size: 16.5px; margin-bottom: 8px; }
   .block-card p { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
 
@@ -752,6 +759,7 @@
     font-weight: 700;
     margin-top: 1px;
   }
+  .condition-item.ag .cond-check { border-color: var(--ag-accent); color: var(--ag-accent); }
   .condition-item .cond-text { font-size: 14.5px; color: var(--text-dim); line-height: 1.55; }
   .condition-item .cond-text strong { color: var(--text); }
 
@@ -1156,6 +1164,7 @@
       <button class="tab" data-panel="legalclear" role="tab"><span class="tab-dot" style="background:var(--lc-accent)"></span>LegalClear</button>
       <button class="tab" data-panel="claude" role="tab"><span class="tab-dot" style="background:var(--neutral-accent)"></span>Claude Integration</button>
       <button class="tab" data-panel="loop" role="tab"><span class="tab-dot" style="background:var(--le-accent)"></span>Loop Engineering</button>
+      <button class="tab" data-panel="agents" role="tab"><span class="tab-dot" style="background:var(--ag-accent)"></span>Agents</button>
       <button class="tab" data-panel="start" role="tab"><span class="tab-dot" style="background:var(--gs-accent)"></span>Getting Started</button>
     </div>
   </div>
@@ -3312,6 +3321,141 @@ done</pre>
   </div>
 </section>
 
+<section id="panel-agents" class="panel">
+  <div class="section" id="agents-three-ways-to-build-an-agent-on-claude" style="padding-top:56px">
+    <div class="eyebrow" style="color:var(--ag-accent)">Building on Claude, one level below the product</div>
+    <h2>Three ways to build an agent on Claude</h2>
+    <p class="section-lede">Everything in the Loop Engineering tab was about looping <strong>inside Claude
+    Code</strong> — a session you already have open. This tab is one layer underneath that: how to build a
+    standalone agent of your own, running on your own infrastructure or Anthropic's, callable from your own
+    code instead of a terminal. Three real options exist, and picking the right one matters more than the
+    code that follows.</p>
+    <div class="callout ag">
+      <strong>The one-line version:</strong> the Claude Agent SDK hands you Claude Code's own harness as a
+      library you host yourself; Tool Runner is a lighter loop over tools you define, still on your
+      infrastructure; Managed Agents is the same shape with Anthropic hosting the sandbox instead of you.
+    </div>
+    <div class="table-wrap">
+      <table class="kv-table">
+        <tbody>
+          <tr><th>Approach</th><th>What it actually is</th><th>Who hosts it</th><th>Reach for it when</th></tr>
+          <tr><td class="mono">Agent SDK</td><td>Claude Code's full harness (loop, built-in tools, permissions, hooks, MCP) as a library</td><td>You</td><td>You want file/shell/search tools out of the box, full control</td></tr>
+          <tr><td class="mono">Tool Runner</td><td>A thin agentic loop over tools you define yourself</td><td>You</td><td>A handful of custom tools, no need for the full Code harness</td></tr>
+          <tr><td class="mono">Managed Agents</td><td>The same agent shape, sandboxed and run on Anthropic's infrastructure</td><td>Anthropic</td><td>Long-running or scheduled work, minimal ops on your side</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="agents-the-fastest-real-agent-you-can-run">
+    <div class="eyebrow">The Agent SDK, end to end</div>
+    <h2>The fastest real agent you can run</h2>
+    <p class="section-lede">The Agent SDK is the same harness that runs every Claude Code session — the
+    agentic loop, built-in tools, permission handling — packaged as a Python or TypeScript library instead
+    of a terminal app. You write a prompt and a short options object; the SDK runs the actual
+    think-call-tool-observe-repeat loop for you. No hand-written "check if a tool was called, run it, feed
+    the result back in" logic.</p>
+    <div class="code-block">
+      <div class="code-head"><span>Install</span><span>Python or TypeScript</span></div>
+      <pre><span class="c"># Python</span>
+pip install claude-agent-sdk
+export ANTHROPIC_API_KEY=your-api-key
+
+<span class="c"># TypeScript / Node.js 18+</span>
+npm install @anthropic-ai/claude-agent-sdk
+export ANTHROPIC_API_KEY=your-api-key</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-head"><span>agent.py — a minimal working agent</span><span>reads a file, fixes bugs, no manual loop code</span></div>
+      <pre><span class="k">import</span> asyncio
+<span class="k">from</span> claude_agent_sdk <span class="k">import</span> query, ClaudeAgentOptions
+
+<span class="k">async def</span> <span class="fn">main</span>():
+    <span class="k">async for</span> message <span class="k">in</span> query(
+        prompt=<span class="s">"Read example.py and fix any bugs you find."</span>,
+        options=ClaudeAgentOptions(
+            allowed_tools=[<span class="s">"Read"</span>, <span class="s">"Edit"</span>],
+            permission_mode=<span class="s">"acceptEdits"</span>,  <span class="c"># auto-approve the edits it makes</span>
+            model=<span class="s">"claude-sonnet-5"</span>,
+        ),
+    ):
+        <span class="fn">print</span>(message)  <span class="c"># streamed as Claude works, not just the final result</span>
+
+asyncio.run(main())</pre>
+    </div>
+    <p class="section-lede">Run it with <code class="mono">python agent.py</code> and it reads the file,
+    decides what's wrong, edits it, and stops — entirely on its own. The TypeScript SDK's
+    <code class="mono">query()</code> is the same shape: an async iterator you loop over with
+    <code class="mono">for await</code>.</p>
+  </div>
+
+  <div class="section" id="agents-the-building-blocks-under-the-one-liner">
+    <div class="eyebrow">What the options object actually controls</div>
+    <h2>The building blocks under the one-liner</h2>
+    <p class="section-lede">The whole SDK surface comes down to a handful of concepts — the same ones that
+    already showed up as the "four building blocks" of a loop, just at the level of a single agent process
+    instead of a saved recurring routine.</p>
+    <div class="block-grid">
+      <div class="block-card ag">
+        <div class="block-num">Tools</div>
+        <h4>What the agent is actually allowed to do</h4>
+        <p>Built in, ready to use: <code class="mono">Read</code>, <code class="mono">Write</code>,
+        <code class="mono">Edit</code>, <code class="mono">Bash</code>, <code class="mono">Glob</code>,
+        <code class="mono">Grep</code>, <code class="mono">WebSearch</code>,
+        <code class="mono">WebFetch</code> — plus anything you add yourself as a custom tool or an MCP
+        server. <code class="mono">allowed_tools</code> is the actual allow-list.</p>
+      </div>
+      <div class="block-card ag">
+        <div class="block-num">System prompt</div>
+        <h4>The role the agent plays every single run</h4>
+        <p>A short, persistent instruction — "You are a senior Python developer," for instance — that
+        shapes every decision the agent makes in that run, the same way a skill's frontmatter shapes what a
+        Claude Code loop does with a given trigger.</p>
+      </div>
+      <div class="block-card ag">
+        <div class="block-num">Permissions</div>
+        <h4>Where a human stays in the loop, and where they don't</h4>
+        <p><code class="mono">permission_mode="acceptEdits"</code> auto-approves file changes;
+        <code class="mono">"ask"</code> pauses for a human on everything. This is the exact same trust
+        decision as choosing between a session-bound <code class="mono">/loop</code> and an unattended
+        <code class="mono">/schedule</code> — how much gets to run without anyone watching.</p>
+      </div>
+      <div class="block-card ag">
+        <div class="block-num">Hooks</div>
+        <h4>Code that runs before or after any tool call</h4>
+        <p>A function you register that fires around tool use — logging, an approval gate, a retry. This is
+        literally the same mechanism the Ralph technique's Stop hook uses to intercept Claude's own exit
+        attempt and feed the same prompt back in.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="agents-picking-the-right-one-of-the-three">
+    <div class="eyebrow">Decision, not preference</div>
+    <h2>Picking the right one of the three</h2>
+    <div class="condition-list">
+      <div class="condition-item ag">
+        <div class="cond-check">1</div>
+        <div class="cond-text"><strong>Need the full Claude Code toolset — files, shell, search — on your own infrastructure?</strong> That's the Agent SDK. It's the same harness this very site's Claude Integration tab describes, just embedded in your own program instead of a terminal.</div>
+      </div>
+      <div class="condition-item ag">
+        <div class="cond-check">2</div>
+        <div class="cond-text"><strong>Only need a small, fixed set of tools you wrote yourself, with tight control over each turn?</strong> That's Tool Runner — lighter than the full SDK, still self-hosted, with hooks for approval and retry built into the loop itself.</div>
+      </div>
+      <div class="condition-item ag">
+        <div class="cond-check">3</div>
+        <div class="cond-text"><strong>Don't want to run any infrastructure at all — especially for something long-running or scheduled?</strong> That's Managed Agents: Anthropic hosts the sandbox, closer in spirit to a cloud <code class="mono">/schedule</code> routine than to a session you keep open yourself.</div>
+      </div>
+    </div>
+    <div class="callout ag">
+      <strong>A concrete rule of thumb:</strong> if the task already sounds like "point it at my repo and let
+      it work," reach for the Agent SDK first — it's the same battle-tested harness, just callable from
+      code. Only step down to Tool Runner when the built-in tools are more than the job needs, and only step
+      up to Managed Agents when you specifically don't want to be the one keeping a process alive.
+    </div>
+  </div>
+</section>
+
 <section id="panel-start" class="panel">
   <div class="section" id="start-getting-started-building-with-ai" style="padding-top:56px">
     <div class="eyebrow" style="color:var(--gs-accent)">A practical on-ramp</div>
@@ -3656,6 +3800,7 @@ done</pre>
     freightnexus: '--fn-accent',
     claude: '--neutral-accent',
     loop: '--le-accent',
+    agents: '--ag-accent',
     start: '--gs-accent',
   };
   let sectionObserver = null;
