@@ -3110,7 +3110,7 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
     <div class="block-grid">
       <div class="block-card">
         <div class="block-num">1 · Trigger</div>
-        <h4>Every 2 minutes, only during live matches</h4>
+        <h4>Every 10 seconds, only during live matches</h4>
         <p>A <code class="mono">/loop</code> on a short fixed interval, active only inside each match's
         actual start/end window — no point polling a score feed at 3am when nothing's being played.</p>
       </div>
@@ -3143,28 +3143,12 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
 
   <div class="section" id="loop-three-worked-examples">
     <div class="eyebrow">All four blocks, together</div>
-    <h2>Three worked examples: a loop, a schedule, and a skill</h2>
+    <h2>A schedule, and the skill it actually calls</h2>
     <p class="section-lede">Putting the four blocks together concretely — the same shape each time, filled
     in differently depending on which trigger fits the task.</p>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 1 — /loop, session-scoped, polling</span><span>trigger: time-based · runs while your session is open</span></div>
-      <pre><span class="c">// Trigger: fires every 2 minutes while this session stays open, only</span>
-<span class="c">//   during each match's scheduled window</span>
-<span class="c">// Skill called: /update-scoreboard (the same skill from the diagram above)</span>
-<span class="c">// Goal + verification: the score shown on the live page matches the</span>
-<span class="c">//   official feed — checked by re-fetching the feed right after publish</span>
-<span class="c">// Output + memory: the scoreboard widget republished on change only; the</span>
-<span class="c">//   last-published score is remembered so an unchanged check is nearly free</span>
-
-/loop 2m during today's match window, check the official score feed.
-If it differs from what's currently live, run /update-scoreboard to
-republish it. Skip the update entirely if nothing has changed since
-the last check.</pre>
-    </div>
-
-    <div class="code-block">
-      <div class="code-head"><span>Example 2 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs before every release, whether or not anyone's watching</span></div>
+      <div class="code-head"><span>Example 1 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs before every release, whether or not anyone's watching</span></div>
       <pre><span class="c">// Trigger: a cloud routine, fires automatically as part of every release</span>
 <span class="c">//   — not on a person's clock, on the release pipeline's</span>
 <span class="c">// Skill called: /audit-prod-endpoints — reads every appsettings entry</span>
@@ -3176,14 +3160,14 @@ the last check.</pre>
 <span class="c">//   offender across releases is visible, not just this run's result</span>
 
 /schedule before every release: run /audit-prod-endpoints against the
-Production appsettings config. Fail the release if any service
-endpoint URL contains "np" or "sandbox" — those are non-prod
-environment markers that should never appear in a Production config.
-List every offending key in the release notes.</pre>
+Production appsettings config. Report it if any service endpoint URL
+contains "np" or "sandbox" — those are non-prod environment markers
+that should never appear in a Production config. List every offending
+key in the release notes.</pre>
     </div>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 3 — the skill the release check actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
+      <div class="code-head"><span>Example 2 — the skill the release check actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
       <pre><span class="c">---</span>
 <span class="c">name: audit-prod-endpoints</span>
 <span class="c">description: Scan the Production appsettings config for service endpoint</span>
@@ -3202,11 +3186,12 @@ A clean scan with zero matches is the only passing result.</pre>
     </div>
 
     <div class="callout le">
-      <strong>Notice both loop examples share the same four-block shape.</strong> Only the trigger
-      changes — session-bound polling for the live scoreboard, a release-pipeline routine for the config
-      audit. The skill and the goal-plus-verification pattern underneath are the same discipline either
-      way: do the check the same deliberate way every time, and never call something safe without
-      actually scanning for it.
+      <strong>This is the same four-block shape as the live scoreboard above, just with a different
+      trigger.</strong> A cloud <code class="mono">/schedule</code> routine instead of a session-bound
+      <code class="mono">/loop</code> — because a release check has to run reliably as part of the release
+      pipeline itself, not depend on someone having a terminal open at the right moment. The skill and the
+      goal-plus-verification discipline underneath are identical either way: do the check the same
+      deliberate way every time, and never call something safe without actually scanning for it.
     </div>
   </div>
 </section>
