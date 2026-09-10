@@ -3130,8 +3130,8 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
         <div class="block-num">4 · Output + memory</div>
         <h4>The published page, and the last-known score</h4>
         <p>The output is the live scoreboard update itself. The memory is just the last score it already
-        published — so a quiet 2-minute check that finds nothing new costs almost nothing, instead of
-        re-publishing an identical page every single pass.</p>
+        published — so a quiet check that finds nothing new costs almost nothing, instead of re-publishing
+        an identical page every single pass.</p>
       </div>
     </div>
     <div class="callout le">
@@ -3148,31 +3148,31 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
     in differently depending on which trigger fits the task.</p>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 1 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs before every release, whether or not anyone's watching</span></div>
-      <pre><span class="c">// Trigger: a cloud routine, fires automatically as part of every release</span>
-<span class="c">//   — not on a person's clock, on the release pipeline's</span>
+      <div class="code-head"><span>Example 1 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs every alternate Tuesday morning, whether or not anyone's watching</span></div>
+      <pre><span class="c">// Trigger: a cloud routine, fires every alternate Tuesday morning</span>
+<span class="c">//   — a fixed calendar cadence, not tied to any one release or session</span>
 <span class="c">// Skill called: /audit-prod-endpoints — reads every appsettings entry</span>
 <span class="c">//   for the Production environment and checks each service endpoint URL</span>
 <span class="c">// Goal + verification: zero Production endpoint URLs contain "np" or</span>
 <span class="c">//   "sandbox" — checked by scanning every config value, not sampling some</span>
-<span class="c">// Output + memory: a pass/fail release-block signal, plus a list of any</span>
-<span class="c">//   offending keys; a log of what was scanned each release, so a repeat</span>
-<span class="c">//   offender across releases is visible, not just this run's result</span>
+<span class="c">// Output + memory: a pass/fail report, plus a list of any offending</span>
+<span class="c">//   keys; a log of what was scanned each run, so a repeat offender</span>
+<span class="c">//   across runs is visible, not just this run's result</span>
 
-/schedule before every release: run /audit-prod-endpoints against the
-Production appsettings config. Report it if any service endpoint URL
-contains "np" or "sandbox" — those are non-prod environment markers
-that should never appear in a Production config. List every offending
-key in the release notes.</pre>
+/schedule every alternate Tuesday morning: run /audit-prod-endpoints
+against the Production appsettings config. Report it if any service
+endpoint URL contains "np" or "sandbox" — those are non-prod
+environment markers that should never appear in a Production config.
+List every offending key in the report.</pre>
     </div>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 2 — the skill the release check actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
+      <div class="code-head"><span>Example 2 — the skill the audit actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
       <pre><span class="c">---</span>
 <span class="c">name: audit-prod-endpoints</span>
 <span class="c">description: Scan the Production appsettings config for service endpoint</span>
-<span class="c">  URLs that still point at a non-prod environment. Use before any release</span>
-<span class="c">  to Production.</span>
+<span class="c">  URLs that still point at a non-prod environment. Runs on a recurring</span>
+<span class="c">  schedule as a standing safety check on Production config.</span>
 <span class="c">---</span>
 
 Read every key in the Production appsettings file whose value looks
@@ -3180,17 +3180,17 @@ like a URL (contains "http://" or "https://", or ends in a known
 service-host suffix). For each one, check whether it contains the
 substring "np" or "sandbox" anywhere in the hostname.
 
-If any match is found, treat this as a release-blocking failure —
-report the exact key name and the offending URL, never just a count.
-A clean scan with zero matches is the only passing result.</pre>
+If any match is found, report it — the exact key name and the
+offending URL, never just a count. A clean scan with zero matches is
+the expected result on every run.</pre>
     </div>
 
     <div class="callout le">
       <strong>This is the same four-block shape as the live scoreboard above, just with a different
       trigger.</strong> A cloud <code class="mono">/schedule</code> routine instead of a session-bound
-      <code class="mono">/loop</code> — because a release check has to run reliably as part of the release
-      pipeline itself, not depend on someone having a terminal open at the right moment. The skill and the
-      goal-plus-verification discipline underneath are identical either way: do the check the same
+      <code class="mono">/loop</code> — because a standing config-safety check needs to run reliably on
+      its own calendar, not depend on someone having a terminal open at the right moment. The skill and
+      the goal-plus-verification discipline underneath are identical either way: do the check the same
       deliberate way every time, and never call something safe without actually scanning for it.
     </div>
   </div>
