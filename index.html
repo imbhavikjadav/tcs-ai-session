@@ -680,65 +680,7 @@
     font-size: 11px;
   }
 
-  /* ===== Loop engineering — live Sudoku backtracking demo ===== */
-  .sudoku-app {
-    display: grid;
-    grid-template-columns: minmax(280px, 460px) 1fr;
-    gap: 24px;
-    margin: 28px 0;
-    align-items: start;
-  }
-  @media (max-width: 800px) { .sudoku-app { grid-template-columns: 1fr; } }
-
-  .sudoku-board-wrap {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--card);
-    padding: 20px;
-  }
-  .sudoku-board {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    aspect-ratio: 1;
-    width: 100%;
-    border: 2px solid var(--text-dim);
-    border-radius: 6px;
-    overflow: hidden;
-    background: var(--border-soft);
-    gap: 1px;
-  }
-  .sudoku-cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--card);
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: clamp(12px, 2.6vw, 18px);
-    color: var(--text);
-    position: relative;
-    transition: background 0.1s ease, color 0.1s ease;
-  }
-  .sudoku-cell.given { color: var(--text-faint); }
-  .sudoku-cell.trying { background: var(--le-accent-dim); color: var(--le-accent); }
-  .sudoku-cell.placed { background: var(--le-accent-dim); }
-  .sudoku-cell.reject { background: var(--risk-high-dim); color: var(--risk-high); }
-  .sudoku-cell.solved-flash { background: var(--fn-accent-dim); color: var(--fn-accent); }
-  /* thicker box-boundary rules every 3rd row/col, drawn as borders so the
-     1px cell gap above still reads as a grid, not a solid block */
-  .sudoku-cell:nth-child(3n) { border-right: 2px solid var(--text-dim); }
-  .sudoku-cell:nth-child(9n) { border-right: none; }
-  .sudoku-board > .sudoku-cell:nth-child(n+19):nth-child(-n+27),
-  .sudoku-board > .sudoku-cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--text-dim); }
-
-  .sudoku-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-  }
+  /* ===== Loop engineering — trigger/skill/goal building-block cards ===== */
   .loop-btn {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -755,64 +697,63 @@
   .loop-btn:active { transform: scale(0.97); }
   .loop-btn.le-btn { background: var(--le-accent-dim); border-color: var(--le-accent); color: var(--le-accent); font-weight: 700; }
   .loop-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .sudoku-speed {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-faint);
-    margin-left: auto;
-  }
-  .sudoku-speed input { accent-color: var(--le-accent); }
 
-  .sudoku-stats {
-    display: flex;
-    gap: 20px;
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-soft);
+  .block-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
   }
-  .sudoku-stat-num {
-    display: block;
-    font-family: var(--font-mono);
-    font-weight: 800;
-    font-size: 22px;
-    color: var(--le-accent);
-    font-variant-numeric: tabular-nums;
-  }
-  .sudoku-stat-label { font-size: 11.5px; color: var(--text-faint); }
-
-  .sudoku-log-wrap {
+  .block-card {
     border: 1px solid var(--border);
     border-radius: 14px;
     background: var(--card);
+    padding: 20px;
+    position: relative;
+  }
+  .block-card .block-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--le-accent);
+    background: var(--le-accent-dim);
+    border: 1px solid var(--le-accent-border);
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .block-card h4 { font-size: 16.5px; margin-bottom: 8px; }
+  .block-card p { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+  .condition-list {
     display: flex;
     flex-direction: column;
-    height: 420px;
+    gap: 10px;
+    margin: 20px 0;
   }
-  .sudoku-log-head {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border-soft);
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--text-faint);
-    letter-spacing: 0.02em;
+  .condition-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
   }
-  .sudoku-log {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 12px;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    line-height: 1.7;
+  .condition-item .cond-check {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--le-accent);
+    color: var(--le-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 1px;
   }
-  .sudoku-log .row { white-space: pre-wrap; word-break: break-word; }
-  .sudoku-log .row.try { color: var(--text-faint); }
-  .sudoku-log .row.place { color: var(--le-accent); }
-  .sudoku-log .row.reject { color: var(--risk-high); }
-  .sudoku-log .row.backtrack { color: var(--risk-medium); }
-  .sudoku-log .row.solved { color: var(--fn-accent); font-weight: 700; }
+  .condition-item .cond-text { font-size: 14.5px; color: var(--text-dim); line-height: 1.55; }
+  .condition-item .cond-text strong { color: var(--text); }
 
   /* ===== Getting Started — tool cards, category groups, decision path ===== */
   .tool-category {
@@ -2895,55 +2836,93 @@ Legal Document Text:
 </section>
 
 <section id="panel-loop" class="panel">
-  <div class="section" id="loop-what-loop-engineering-actually-looks-lik" style="padding-top:56px">
+  <div class="section" id="loop-stop-prompting-start-looping" style="padding-top:56px">
     <div class="eyebrow" style="color:var(--le-accent)">A third thing, off to the side</div>
-    <h2>What Loop Engineering actually looks like</h2>
-    <p class="section-lede">Not a product, and not a Claude API case study like the two above — a small,
-    genuinely-running demo of the pattern underneath both of them. Nothing on this page is pre-recorded
-    or simulated: the algorithm below actually runs, in your browser, right now.</p>
+    <h2>Stop prompting Claude. Start looping it.</h2>
+    <p class="section-lede">Not a product, and not a Claude API case study like the two above — a
+    practical breakdown of a real shift in how Claude Code gets used day to day. A plain prompt runs once
+    and stops. A <strong>loop</strong> is a saved, reusable structure that keeps re-prompting Claude on
+    its own, repeatedly, until a goal is verifiably done — without you typing the next instruction
+    yourself each time.</p>
     <div class="callout le">
-      <strong>To be unambiguous: the solver below makes zero calls to Claude, or to any AI model.</strong>
-      It's a classical algorithm — backtracking search, ~40 lines of plain JavaScript, running entirely
-      client-side. There is no API key here for it to call even if it wanted to; this page is static
-      HTML served from GitHub Pages, which is exactly why nothing on it can safely hold one. What this
-      page <em>is</em> claiming is narrower and still genuine: the solver's own control-flow shape — attempt,
-      verify, undo, retry — is the same shape Claude Code runs at build time (see the table below), and
-      this whole demo, code included, was itself built by Claude Code using that discipline. It's an
-      example of what that loop-engineering discipline can build, not an example of Claude running live.
+      <strong>The actual shift, in one line:</strong> a loop is a small system you design once — trigger,
+      skill, goal, verification, memory — that then runs the attempt-check-repeat cycle on your behalf,
+      instead of you supplying that cycle by hand, one message at a time.
     </div>
   </div>
 
-  <div class="section" id="loop-try-check-backtrack-repeat">
-    <div class="eyebrow">What the term means here</div>
-    <h2>Try, check, backtrack, repeat</h2>
-    <p class="section-lede">"Loop engineering" isn't an established industry term with one fixed
-    definition — used here, it means designing the <em>iteration loop itself</em> as the actual
-    engineering artifact, not just the code that runs inside one pass of it. The shape is the same
-    whether the thing making each attempt is a classical algorithm or an AI agent:</p>
-    <div class="kv-table">
-      <table class="kv-table"><tbody>
-        <tr><th>Step</th><th>Classical backtracking (this demo)</th><th>Agentic build loop (LegalClear / FreightNexus)</th></tr>
-        <tr><td class="mono">try</td><td>Place a candidate digit in a cell</td><td>Claude Code writes or edits a chunk of code</td></tr>
-        <tr><td class="mono">check</td><td>Does it violate a row/column/box constraint?</td><td>Does it compile, pass tests, match the spec?</td></tr>
-        <tr><td class="mono">backtrack</td><td>Undo the digit, try the next candidate</td><td>Revert or rewrite, try a different approach</td></tr>
-        <tr><td class="mono">repeat</td><td>Move to the next cell, or the next candidate</td><td>Move to the next file, function, or requirement</td></tr>
-      </tbody></table>
+  <div class="section" id="loop-when-a-task-deserves-a-loop">
+    <div class="eyebrow">Part one — when to build one</div>
+    <h2>Not every task deserves a loop</h2>
+    <p class="section-lede">A loop costs real setup time and real tokens to run unattended. Before
+    building one, four conditions are worth checking — if a task fails any of them, a plain one-off prompt
+    is the right tool, not a loop.</p>
+    <div class="condition-list">
+      <div class="condition-item">
+        <div class="cond-check">1</div>
+        <div class="cond-text"><strong>Does the task repeat?</strong> A genuine one-time task doesn't need a loop — just prompt it directly.</div>
+      </div>
+      <div class="condition-item">
+        <div class="cond-check">2</div>
+        <div class="cond-text"><strong>Is there a clear definition of "done"?</strong> The most reliable loops have a way to quantify completion, not just a vague sense of finished — the same discipline as setting a real success metric for a task before starting it.</div>
+      </div>
+      <div class="condition-item">
+        <div class="cond-check">3</div>
+        <div class="cond-text"><strong>Can you afford to be wasteful?</strong> A loop re-prompts itself automatically, which can burn through tokens fast — worth being deliberate about scope if token budget is tight.</div>
+      </div>
+      <div class="condition-item">
+        <div class="cond-check">4</div>
+        <div class="cond-text"><strong>Does it have the tools it needs?</strong> Both to do the work <em>and</em> to check the work — a loop that can write code but can't run it has no way to verify anything it just did.</div>
+      </div>
     </div>
     <div class="callout le">
-      <strong>This isn't a metaphor stretched to fit — it's the same control-flow shape at different
-      timescales.</strong> The Sudoku solver below backtracks in microseconds, one cell at a time.
-      A Claude Code session backtracks in seconds-to-minutes, one file or one failed test at a time.
-      Both are the same three-part loop: attempt, verify against a constraint, undo and retry on failure.
+      <strong>If a task passes all four, it's a real loop candidate.</strong> If it fails even one — it's
+      genuinely a one-off, "done" is too fuzzy to check, token cost matters more than the time saved, or
+      the tools to verify aren't available — a plain prompt is the better tool, not a loop built for its
+      own sake.
     </div>
   </div>
 
-  <div class="section" id="loop-how-to-actually-run-this-loop-in-claude-">
-    <div class="eyebrow">The four distinct types, and the commands behind them</div>
-    <h2>How to actually run this loop in Claude Code</h2>
-    <p class="section-lede">Everything above is the underlying pattern. This part is concrete: Claude
-    Code has genuine, shipped commands that run exactly this attempt→verify→retry loop for you, not as a
-    metaphor. Four distinct types cover how it actually gets triggered — turn-based, goal-based,
-    time-based, proactive — and the exact command syntax below is pulled from Anthropic's own Claude Code
+  <div class="section" id="loop-the-four-building-blocks">
+    <div class="eyebrow">Part two — the four building blocks</div>
+    <h2>Every loop that actually works has all four</h2>
+    <p class="section-lede">A loop isn't just "a prompt that repeats." Leave any one of these four pieces
+    out and it either never starts, never finishes, burns tokens without improving, or forgets everything
+    it learned between runs.</p>
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-num">1 · Trigger</div>
+        <h4>What starts the loop</h4>
+        <p>The event that kicks it off — a fixed interval, a schedule, or a command you run by name. No
+        trigger, no loop — it's still just a prompt waiting to be typed.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">2 · Execution skills</div>
+        <h4>What actually does the work</h4>
+        <p>Saved, reusable, already-tested instructions the loop calls on each pass. A loop orchestrates;
+        skills are what do the real task, the same way every time.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">3 · Goal + verification</div>
+        <h4>What "done" means, and how to check it</h4>
+        <p>These two can't be separated — a goal with no way to verify it is just a wish. The check is
+        what turns "I think it's done" into "it's actually done."</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">4 · Output + memory</div>
+        <h4>What it produces, and what it remembers</h4>
+        <p>The output is obvious — a file, a deploy, a message. The memory is the part most people skip:
+        without it, every run starts from zero and repeats the same mistakes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="loop-real-triggers-in-claude-code">
+    <div class="eyebrow">Block 1, in Claude Code — the four real trigger types</div>
+    <h2>How a loop actually gets started</h2>
+    <p class="section-lede">Claude Code has genuine, shipped commands for this, not a metaphor. Four
+    distinct types cover how a loop actually gets triggered — turn-based, goal-based, time-based,
+    proactive — and the exact command syntax below is pulled from Anthropic's own Claude Code
     documentation, not paraphrased from memory.</p>
 
     <div class="stack-grid">
@@ -3035,107 +3014,156 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     all — they run as full cloud sessions on Anthropic's infrastructure, triggered by a schedule, an HTTP
     POST to a per-routine endpoint, or a GitHub event such as a new pull request. This is the version
     suited to genuinely unattended work: nightly issue triage, deploy verification, docs-drift checks.</p>
+  </div>
+
+  <div class="section" id="loop-skills-are-what-do-the-work">
+    <div class="eyebrow">Block 2 — execution skills</div>
+    <h2>A loop without battle-tested skills behind it just guesses</h2>
+    <p class="section-lede">The trigger only decides <em>when</em> a loop runs. Skills decide <em>how</em>
+    it does the actual work — and this is the block that most determines whether a loop is trustworthy
+    enough to leave running unattended.</p>
+    <p class="section-lede">A <strong>skill</strong> in Claude Code is a saved, reusable set of
+    instructions — a Markdown file with a short frontmatter block (a name and a description Claude uses
+    to decide when it applies) followed by the actual instructions in plain language. Once saved, it runs
+    the same deliberate way every time, instead of Claude improvising fresh from a bare instruction with
+    no memory of how you actually want that kind of task done.</p>
+    <div class="code-block">
+      <div class="code-head"><span>.claude/skills/pr-review/SKILL.md</span><span>the real shape of a Claude Code skill</span></div>
+      <pre><span class="c">---</span>
+<span class="c">name: pr-review</span>
+<span class="c">description: Review a pull request for correctness, test coverage, and</span>
+<span class="c">  style against this repo's own conventions. Use when asked to review a PR</span>
+<span class="c">  or check a diff before merging.</span>
+<span class="c">---</span>
+
+Check the diff against these rules, in order:
+1. Every new function has a test exercising its actual failure case,
+   not just the happy path.
+2. No new dependency without a one-line justification in the PR description.
+3. Match this repo's existing naming and error-handling conventions —
+   don't introduce a new pattern for something already solved elsewhere.
+
+Leave inline comments for anything that fails a rule. Summarize with a
+clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
+"looks mostly fine."</pre>
+    </div>
+    <div class="callout le">
+      <strong>Why this matters more than the trigger:</strong> the same one-line instruction — "review
+      this PR" — means something different depending on who's asking. A skill is where that difference
+      actually gets written down once, so every loop that calls it inherits the same judgment instead of
+      Claude re-deriving a plausible-sounding standard from scratch on every single run.
+    </div>
+  </div>
+
+  <div class="section" id="loop-goal-and-verification-are-one-thing">
+    <div class="eyebrow">Block 3 — goal and verification</div>
+    <h2>A goal with no way to check it isn't a goal, it's a hope</h2>
+    <p class="section-lede">These two are inseparable by design: a goal states what "done" looks like, and
+    verification is the rule that actually confirms it. Neither one works alone — a goal nobody checks
+    just drifts, and a check with no goal has nothing to check against.</p>
+    <p class="section-lede">For technical tasks this is straightforward — a load-time threshold, a test
+    suite passing, a lint step being clean. For less quantifiable tasks it takes real deliberate work:
+    <strong>bridging the abstract to the verifiable</strong> — turning "is this good" into something a
+    loop can actually check, like a review skill that has to output a concrete verdict (<code class="mono">APPROVE</code>
+    / <code class="mono">REQUEST CHANGES</code>) instead of an open-ended opinion.</p>
+    <div class="kv-table">
+      <table class="kv-table"><tbody>
+        <tr><th>Task type</th><th>Goal</th><th>Verification</th></tr>
+        <tr><td>Technical</td><td>Deploy the site and have it load in under 2 seconds</td><td>Hit the live URL, measure load time, confirm the expected content is present</td></tr>
+        <tr><td>Less quantifiable</td><td>Draft a reply for every unread email</td><td>Every unread thread has a draft, and that draft passes a dedicated review skill — not just "looks reasonable"</td></tr>
+      </tbody></table>
+    </div>
+    <div class="callout le">
+      <strong>The most important discipline here isn't a command — it's keeping the maker and the checker
+      separate.</strong> Claude Code's built-in <code class="mono">/goal</code> evaluator deliberately
+      checks rule compliance against your stated condition, not whether the output is actually
+      <em>good</em> — it can't judge subjective quality, only whether the hard constraint you wrote holds.
+      For anything where "did this actually work" needs real judgment, the stronger pattern is two agents:
+      one drafts the change, a separate one — that didn't write it — verifies it. A single agent grading
+      its own work tends to miss exactly what it was already blind to.
+    </div>
+  </div>
+
+  <div class="section" id="loop-output-and-memory">
+    <div class="eyebrow">Block 4 — output and memory</div>
+    <h2>The part every loop needs and almost nobody builds</h2>
+    <p class="section-lede">The output is the obvious half — a file, an updated codebase, a deployed
+    site, a message sent somewhere. The non-obvious half, and the one most loops skip, is memory. A loop
+    with no memory starts from zero on every single run — no record of what it tried last time, what
+    failed, or what it already learned — which means no improvement between runs, and tokens spent
+    re-discovering the same dead end it hit last time.</p>
+    <div class="callout le">
+      <strong>The fix doesn't need to be complicated.</strong> A plain Markdown file the loop reads at the
+      start of each run and updates at the end — what happened, what worked, what to avoid next time — is
+      enough. The point isn't sophistication, it's that <em>something</em> persists across runs instead of
+      every iteration starting with total amnesia.
+    </div>
+  </div>
+
+  <div class="section" id="loop-three-worked-examples">
+    <div class="eyebrow">All four blocks, together</div>
+    <h2>Three worked examples: a loop, a schedule, and a skill</h2>
+    <p class="section-lede">Putting the four blocks together concretely — the same shape each time, filled
+    in differently depending on which trigger fits the task.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span>Example 1 — /loop, session-scoped, polling</span><span>trigger: time-based · runs while your session is open</span></div>
+      <pre><span class="c">// Trigger: fires every 15 minutes while this session stays open</span>
+<span class="c">// Skill called: /pr-review (the same skill shown above, saved once)</span>
+<span class="c">// Goal + verification: every open PR either has a review comment from</span>
+<span class="c">//   /pr-review, or is already merged — checked by re-listing open PRs</span>
+<span class="c">//   each pass and comparing against what was reviewed last time</span>
+<span class="c">// Output + memory: review comments posted on GitHub; a running note in</span>
+<span class="c">//   .claude/loop-notes/pr-review.md logs which PR numbers were already</span>
+<span class="c">//   handled, so a re-run never reviews the same PR twice</span>
+
+/loop 15m check for any open pull request without a review comment yet.
+For each one, run /pr-review on it and post the result. Log every PR
+number you've handled in .claude/loop-notes/pr-review.md and skip
+anything already logged there.</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>Example 2 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs whether or not your machine is on</span></div>
+      <pre><span class="c">// Trigger: a cloud routine, fires every day at 8am regardless of whether</span>
+<span class="c">//   any session is open or the machine is even on</span>
+<span class="c">// Skill called: /triage-issue — reads a new issue, assigns a label and</span>
+<span class="c">//   an urgency level using this repo's own labeling conventions</span>
+<span class="c">// Goal + verification: every issue opened since the last run has exactly</span>
+<span class="c">//   one urgency label; verified by re-listing unlabeled issues at the end</span>
+<span class="c">// Output + memory: labels applied directly on GitHub; a one-line summary</span>
+<span class="c">//   posted to Slack; the "last run" timestamp itself is the memory —</span>
+<span class="c">//   next run only looks at issues opened after it</span>
+
+/schedule daily at 8am: check for issues opened since the last run,
+label each one using /triage-issue, and post a one-line summary of
+what was labeled to #eng-triage.</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>Example 3 — the skill a loop actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
+      <pre><span class="c">---</span>
+<span class="c">name: triage-issue</span>
+<span class="c">description: Read a GitHub issue and assign it an urgency label based on</span>
+<span class="c">  this repo's own severity conventions. Use when triaging new issues.</span>
+<span class="c">---</span>
+
+Read the issue title and body. Assign exactly one label:
+- urgent — breaks a core user flow, or affects production right now
+- normal — a real bug or request, no immediate breakage
+- low — a nice-to-have, typo, or question
+
+Also add a component label if the issue clearly names one (auth,
+billing, search). Never leave an issue with zero labels, and never
+apply more than one urgency label.</pre>
+    </div>
 
     <div class="callout le">
-      <strong>The most important constraint here isn't a command — it's a discipline: keep the maker and
-      the checker separate.</strong> Claude Code's built-in <code class="mono">/goal</code> evaluator
-      deliberately checks rule compliance against your stated condition, not whether the output is
-      actually <em>good</em> — it can't judge subjective quality, only whether the hard constraint you
-      wrote holds. For anything where "did this actually work" needs genuine judgment (not just "did the
-      tests pass"), the stronger pattern is two agents: one drafts the change, a separate one — that
-      didn't write it — verifies it. A single agent grading its own work tends to miss exactly the things
-      it was already blind to, like optimizing desktop performance while quietly breaking mobile.
+      <strong>Notice all three share the same four-block shape.</strong> Only the trigger changes —
+      session-bound polling, or a cloud schedule that runs with nobody watching. The skill and the
+      goal-plus-verification pattern underneath are the same discipline either way: do the work the same
+      deliberate way every time, and never call something done without actually checking.
     </div>
-  </div>
-
-  <div class="section" id="loop-watch-a-backtracking-solver-run-live">
-    <div class="eyebrow">Live demo</div>
-    <h2>Watch a backtracking solver run, live</h2>
-    <p class="section-lede">An unsolved 9×9 Sudoku — <a href="https://www.sudokuwiki.org/Escargot" target="_blank" rel="noopener" class="mono" style="color:var(--le-accent)">AI Escargot</a>,
-    published by Finnish mathematician Arto Inkala in 2006 and long cited as one of the hardest known
-    17-to-23-clue puzzles for a plain solver to grind through — gets solved live by the exact algorithm
-    shown below it. No puzzle lookup table, no shortcut — every cell you see fill in is a genuine recursive
-    call, and every red flash is a genuine constraint violation the algorithm just backtracked out of.</p>
-
-    <div id="sudoku-app" class="sudoku-app">
-      <div class="sudoku-board-wrap">
-        <div id="sudoku-board" class="sudoku-board" role="img" aria-label="9 by 9 Sudoku grid being solved live by backtracking"></div>
-        <div class="sudoku-controls">
-          <button id="sudoku-play" class="loop-btn le-btn" type="button">▶ Play</button>
-          <button id="sudoku-step" class="loop-btn" type="button">Step ⏭</button>
-          <button id="sudoku-reset" class="loop-btn" type="button">↺ Reset</button>
-          <label class="sudoku-speed">
-            Speed — slow end watches every decision, fast end fast-forwards
-            <input id="sudoku-speed" type="range" min="1" max="200" value="180"/>
-          </label>
-        </div>
-        <div class="sudoku-stats">
-          <div><span class="sudoku-stat-num" id="sudoku-stat-tries">0</span><span class="sudoku-stat-label">attempts</span></div>
-          <div><span class="sudoku-stat-num" id="sudoku-stat-backtracks">0</span><span class="sudoku-stat-label">backtracks</span></div>
-          <div><span class="sudoku-stat-num" id="sudoku-stat-depth">0</span><span class="sudoku-stat-label">cells filled</span></div>
-        </div>
-      </div>
-      <div class="sudoku-log-wrap">
-        <div class="sudoku-log-head">Live decision log</div>
-        <div id="sudoku-log" class="sudoku-log"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" id="loop-the-exact-code-driving-the-board-above">
-    <div class="eyebrow">The algorithm itself</div>
-    <h2>The exact code driving the board above</h2>
-    <p class="section-lede">Same rule as the Claude Integration tab: what's shown here is the actual
-    function, not a paraphrase — the only difference from the shipped copy is that this version pauses
-    after every attempt and reports what it just did, instead of running to completion instantly.</p>
-    <div class="code-block">
-      <div class="code-head"><span>backtracking solver — the loop itself</span><span>step-by-step, generator-based</span></div>
-      <pre><span class="k">function</span>* <span class="fn">solve</span>(board) {
-  <span class="k">const</span> cell = findEmptyCell(board);
-  <span class="k">if</span> (!cell) { <span class="k">yield</span> { type: <span class="s">'solved'</span> }; <span class="k">return true</span>; }
-  <span class="k">const</span> [row, col] = cell;
-
-  <span class="k">for</span> (<span class="k">let</span> digit = <span class="s">1</span>; digit <= <span class="s">9</span>; digit++) {
-    <span class="k">yield</span> { type: <span class="s">'try'</span>, row, col, digit };      <span class="c">// attempt</span>
-
-    <span class="k">if</span> (isValidPlacement(board, row, col, digit)) {
-      board[row][col] = digit;
-      <span class="k">yield</span> { type: <span class="s">'place'</span>, row, col, digit };  <span class="c">// check passed</span>
-
-      <span class="k">if</span> (<span class="k">yield*</span> solve(board)) <span class="k">return true</span>;  <span class="c">// recurse — attempt the next cell</span>
-
-      board[row][col] = <span class="s">0</span>;                        <span class="c">// backtrack — undo this attempt</span>
-      <span class="k">yield</span> { type: <span class="s">'backtrack'</span>, row, col };
-    } <span class="k">else</span> {
-      <span class="k">yield</span> { type: <span class="s">'reject'</span>, row, col, digit }; <span class="c">// check failed</span>
-    }
-  }
-  <span class="k">return false</span>;   <span class="c">// every digit failed — signal the caller to backtrack further</span>
-}</pre>
-    </div>
-    <p class="section-lede">Everything the loop can do reduces to five events, which is also exactly what
-    the log panel above is printing in real time: <code class="mono">try</code> a candidate,
-    <code class="mono">place</code> it once a check passes, <code class="mono">reject</code> it if a check
-    fails, <code class="mono">backtrack</code> when every candidate for a cell has been exhausted, or
-    <code class="mono">solved</code> when there's no empty cell left. There is no sixth outcome — the
-    whole search space is covered by "try harder" or "undo and try something else."</p>
-  </div>
-
-  <div class="section" id="loop-the-same-loop-run-by-a-person-instead-of">
-    <div class="eyebrow">Why this belongs next to the other two</div>
-    <h2>The same loop, run by a person instead of a stack frame</h2>
-    <p class="section-lede">LegalClear's own code already runs a version of this loop — look at the error
-    handling in the Claude Integration tab: a JSON parse failure triggers exactly one retry with an
-    amended prompt before giving up, the same <code class="mono">try → check → retry-or-fail</code>
-    shape as above, just with a network call standing in for a digit placement. Building both LegalClear
-    and FreightNexus with Claude Code was the same loop again, one level up: give it a scoped
-    instruction, let it write code, run/read/test the result, and either move forward or send it back
-    with a correction — never trusting an attempt just because it looked plausible.</p>
-    <p class="section-lede">Which is the honest way to describe the Sudoku solver's relationship to
-    Claude: not a demo of Claude running — the solver itself is plain deterministic JavaScript with no
-    model in the loop — but a demo of what that same disciplined attempt-verify-undo loop, applied by
-    Claude Code at build time, is capable of producing. The board runs itself. Claude wrote the code that
-    lets it.</p>
   </div>
 </section>
 
@@ -3916,252 +3944,4 @@ CLI output. Do not change the public API of any hooks. Stop after 10 turns.
     root.addEventListener('focusout', () => { paused = false; });
   }
   document.addEventListener('DOMContentLoaded', wireChunkAnim);
-
-  // Loop engineering — live backtracking Sudoku solver. The generator
-  // function below is the literal algorithm shown in the code block on the
-  // page (copy stays in sync by hand since the two live in the same file);
-  // the only addition here is UI state around it — play/pause/step/speed
-  // and rendering each yielded event to the board and the log.
-  function wireSudoku() {
-    const boardEl = document.getElementById('sudoku-board');
-    if (!boardEl) return;
-    const logEl = document.getElementById('sudoku-log');
-    const playBtn = document.getElementById('sudoku-play');
-    const stepBtn = document.getElementById('sudoku-step');
-    const resetBtn = document.getElementById('sudoku-reset');
-    const speedInput = document.getElementById('sudoku-speed');
-    const statTries = document.getElementById('sudoku-stat-tries');
-    const statBacktracks = document.getElementById('sudoku-stat-backtracks');
-    const statDepth = document.getElementById('sudoku-stat-depth');
-
-    // "AI Escargot" — published by Arto Inkala in 2006, 23 givens, verified
-    // to have exactly one solution. Genuinely hard for plain backtracking:
-    // expect real, visible thrashing before it resolves. 0 = empty.
-    const PUZZLE = [
-      [1,0,0, 0,0,7, 0,9,0],
-      [0,3,0, 0,2,0, 0,0,8],
-      [0,0,9, 6,0,0, 5,0,0],
-      [0,0,5, 3,0,0, 9,0,0],
-      [0,1,0, 0,8,0, 0,0,2],
-      [6,0,0, 0,0,4, 0,0,0],
-      [3,0,0, 0,0,0, 0,1,0],
-      [0,4,0, 0,0,0, 0,0,7],
-      [0,0,7, 0,0,0, 3,0,0],
-    ];
-
-    let board, given, cells, gen, playing, speedDelay, timer;
-    let stats;
-
-    function isValidPlacement(b, row, col, digit) {
-      for (let i = 0; i < 9; i++) {
-        if (b[row][i] === digit || b[i][col] === digit) return false;
-      }
-      const br = row - (row % 3), bc = col - (col % 3);
-      for (let r = br; r < br + 3; r++) {
-        for (let c = bc; c < bc + 3; c++) {
-          if (b[r][c] === digit) return false;
-        }
-      }
-      return true;
-    }
-    function findEmptyCell(b) {
-      for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) if (b[r][c] === 0) return [r, c];
-      return null;
-    }
-    // The exact algorithm shown in the code block above — a generator so
-    // the UI can pause between every yielded step instead of running the
-    // whole search to completion synchronously.
-    function* solve(b) {
-      const cell = findEmptyCell(b);
-      if (!cell) { yield { type: 'solved' }; return true; }
-      const [row, col] = cell;
-      for (let digit = 1; digit <= 9; digit++) {
-        yield { type: 'try', row, col, digit };
-        if (isValidPlacement(b, row, col, digit)) {
-          b[row][col] = digit;
-          yield { type: 'place', row, col, digit };
-          if (yield* solve(b)) return true;
-          b[row][col] = 0;
-          yield { type: 'backtrack', row, col };
-        } else {
-          yield { type: 'reject', row, col, digit };
-        }
-      }
-      return false;
-    }
-
-    function buildBoard() {
-      boardEl.innerHTML = '';
-      cells = [];
-      for (let r = 0; r < 9; r++) {
-        const rowCells = [];
-        for (let c = 0; c < 9; c++) {
-          const el = document.createElement('div');
-          el.className = 'sudoku-cell';
-          if (board[r][c]) { el.textContent = board[r][c]; el.classList.add('given'); }
-          boardEl.appendChild(el);
-          rowCells.push(el);
-        }
-        cells.push(rowCells);
-      }
-    }
-
-    function log(cls, text) {
-      const row = document.createElement('div');
-      row.className = 'row ' + cls;
-      row.textContent = text;
-      logEl.appendChild(row);
-      // cap log length so a long-running solve doesn't grow the DOM unbounded
-      while (logEl.children.length > 400) logEl.removeChild(logEl.firstChild);
-      logEl.scrollTop = logEl.scrollHeight;
-    }
-
-    function clearFlags() {
-      for (const row of cells) for (const el of row) {
-        el.classList.remove('trying', 'placed', 'reject', 'solved-flash');
-      }
-    }
-
-    function countFilled() {
-      let n = 0;
-      for (const row of board) for (const v of row) if (v !== 0) n++;
-      return n;
-    }
-
-    // Repaints every cell's digit from the authoritative `board` array
-    // rather than trusting incremental per-event DOM edits. Needed because
-    // fast-forward batches run many real place/backtrack events silently
-    // (see advanceSilently) before the next render — only a full sync from
-    // `board` is guaranteed correct after however many silent steps ran.
-    function syncBoardToDom() {
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          const v = board[r][c];
-          cells[r][c].textContent = v ? v : '';
-        }
-      }
-    }
-
-    function applyEvent(ev) {
-      clearFlags();
-      if (ev.type === 'try') {
-        cells[ev.row][ev.col].classList.add('trying');
-        log('try', `try (${ev.row + 1},${ev.col + 1}) = ${ev.digit}`);
-        stats.tries++;
-      } else if (ev.type === 'place') {
-        syncBoardToDom();
-        cells[ev.row][ev.col].classList.add('placed');
-        log('place', `  ✓ valid — placed at (${ev.row + 1},${ev.col + 1})`);
-      } else if (ev.type === 'reject') {
-        cells[ev.row][ev.col].classList.add('reject');
-        log('reject', `  ✕ ${ev.digit} conflicts with row/col/box`);
-      } else if (ev.type === 'backtrack') {
-        syncBoardToDom();
-        log('backtrack', `↺ dead end — backtracking from (${ev.row + 1},${ev.col + 1})`);
-        stats.backtracks++;
-      } else if (ev.type === 'solved') {
-        syncBoardToDom();
-        for (const row of cells) for (const el of row) el.classList.add('solved-flash');
-        log('solved', '✓ SOLVED — every cell satisfies every constraint');
-        stopPlaying();
-        playBtn.disabled = true;
-        stepBtn.disabled = true;
-      }
-      statTries.textContent = stats.tries;
-      statBacktracks.textContent = stats.backtracks;
-      statDepth.textContent = countFilled();
-    }
-
-    function step(render) {
-      if (!gen) return false;
-      const { value, done } = gen.next();
-      if (done) return false;
-      // The 'solved' event always renders regardless of batch position —
-      // it's the one event a fast-forward batch must never fold silently
-      // into the counters, or the run ends with nothing on screen showing
-      // it actually finished.
-      if (render || value.type === 'solved') applyEvent(value);
-      else advanceSilently(value);
-      return true;
-    }
-
-    // Fast-forward path: AI Escargot needs on the order of tens of
-    // thousands of try/reject/backtrack events to solve with plain
-    // backtracking (no heuristics) — rendering every single one to the DOM
-    // would take minutes. So a "batch" only paints the board/log for its
-    // LAST event; earlier events in the batch still run for real (this
-    // isn't a shortcut on the algorithm, only on how much of it gets drawn)
-    // and are folded into the running tries/backtracks counters.
-    function advanceSilently(ev) {
-      if (ev.type === 'try') stats.tries++;
-      else if (ev.type === 'backtrack') stats.backtracks++;
-    }
-
-    function stopPlaying() {
-      playing = false;
-      playBtn.textContent = '▶ Play';
-      if (timer) { clearTimeout(timer); timer = null; }
-    }
-
-    function playLoop() {
-      if (!playing) return;
-      // Slider maps to both delay and batch size: slow end plays one real
-      // event per tick so every decision is watchable; fast end runs a
-      // large batch per animation frame so a genuinely hard puzzle still
-      // finishes in a few seconds instead of minutes.
-      const speedVal = Number(speedInput.value);
-      const batchSize = speedVal < 150 ? 1 : Math.round((speedVal - 150) * 40);
-      let more = true;
-      for (let i = 0; i < batchSize && more; i++) {
-        more = step(i === batchSize - 1 || batchSize === 1);
-      }
-      if (batchSize > 1) {
-        statTries.textContent = stats.tries;
-        statBacktracks.textContent = stats.backtracks;
-        statDepth.textContent = countFilled();
-      }
-      if (!more) { stopPlaying(); return; }
-      timer = setTimeout(playLoop, speedDelay);
-    }
-
-    function reset() {
-      stopPlaying();
-      board = PUZZLE.map((row) => row.slice());
-      given = PUZZLE.map((row) => row.slice());
-      stats = { tries: 0, backtracks: 0 };
-      gen = solve(board);
-      logEl.innerHTML = '';
-      log('try', 'Solver reset — AI Escargot, 23 givens, ready to run.');
-      buildBoard();
-      playBtn.disabled = false;
-      stepBtn.disabled = false;
-      statTries.textContent = '0';
-      statBacktracks.textContent = '0';
-      statDepth.textContent = countFilled();
-    }
-
-    playBtn.addEventListener('click', () => {
-      if (playing) { stopPlaying(); return; }
-      playing = true;
-      playBtn.textContent = '⏸ Pause';
-      playLoop();
-    });
-    stepBtn.addEventListener('click', () => {
-      stopPlaying();
-      step(true);
-    });
-    resetBtn.addEventListener('click', reset);
-    // Slider is "speed" (higher = faster). Below 150 it's a per-step delay
-    // in ms, watchable one decision at a time (see playLoop's batchSize).
-    // From 150 up, delay drops toward 0 as batchSize takes over instead.
-    function updateSpeedDelay() {
-      const speedVal = Number(speedInput.value);
-      speedDelay = speedVal < 150 ? (155 - speedVal) : 4;
-    }
-    speedInput.addEventListener('input', updateSpeedDelay);
-
-    updateSpeedDelay();
-    reset();
-  }
-  document.addEventListener('DOMContentLoaded', wireSudoku);
 </script>
