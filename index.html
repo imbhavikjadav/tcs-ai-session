@@ -3355,6 +3355,12 @@ done</pre>
     of a terminal app. You write a prompt and a short options object; the SDK runs the actual
     think-call-tool-observe-repeat loop for you. No hand-written "check if a tool was called, run it, feed
     the result back in" logic.</p>
+    <div class="callout ag">
+      <strong>The question worth asking before writing any of this:</strong> couldn't this just be a prompt?
+      Often, yes — and if it can be, it should be; a prompt is simpler than an agent every time. What a
+      prompt can't do is run when nobody is there to type it. The example below is chosen specifically
+      because there's no chat window open at the moment it needs to fire.
+    </div>
     <div class="code-block">
       <div class="code-head"><span>Install</span><span>Python or TypeScript</span></div>
       <pre><span class="c"># Python</span>
@@ -3365,28 +3371,40 @@ export ANTHROPIC_API_KEY=your-api-key
 npm install @anthropic-ai/claude-agent-sdk
 export ANTHROPIC_API_KEY=your-api-key</pre>
     </div>
+    <p class="section-lede">The task: a production service emits error-rate metrics continuously. Nobody is
+    watching a dashboard at 3am. An agent checks that metric on a timer, and only when it actually sees a
+    real spike does it wake up, dig through the codebase and recent deploys for a likely cause, and file a
+    report — the rest of the time it does nothing at all.</p>
     <div class="code-block">
-      <div class="code-head"><span>agent.py — a minimal working agent</span><span>reads a file, fixes bugs, no manual loop code</span></div>
-      <pre><span class="k">import</span> asyncio
+      <div class="code-head"><span>oncall_agent.py — sleeps until something's actually wrong</span><span>no chat window, no human typing the trigger</span></div>
+      <pre><span class="k">import</span> asyncio, time
 <span class="k">from</span> claude_agent_sdk <span class="k">import</span> query, ClaudeAgentOptions
 
-<span class="k">async def</span> <span class="fn">main</span>():
+<span class="k">async def</span> <span class="fn">check_and_investigate</span>():
+    error_rate = <span class="fn">fetch_current_error_rate</span>()  <span class="c"># your own metrics call, not Claude</span>
+    <span class="k">if</span> error_rate &lt; <span class="s">THRESHOLD</span>:
+        <span class="k">return</span>  <span class="c"># the normal case: nothing to do, nobody notified</span>
+
     <span class="k">async for</span> message <span class="k">in</span> query(
-        prompt=<span class="s">"Read example.py and fix any bugs you find."</span>,
+        prompt=<span class="s">f"Error rate just hit {error_rate}. Check the last 3 deploys and "</span>
+               <span class="s">"the relevant service logs, find the likely cause, and file a "</span>
+               <span class="s">"report to #incidents with your best guess and the evidence."</span>,
         options=ClaudeAgentOptions(
-            allowed_tools=[<span class="s">"Read"</span>, <span class="s">"Edit"</span>],
-            permission_mode=<span class="s">"acceptEdits"</span>,  <span class="c"># auto-approve the edits it makes</span>
+            allowed_tools=[<span class="s">"Bash"</span>, <span class="s">"Grep"</span>, <span class="s">"Read"</span>],
+            permission_mode=<span class="s">"acceptEdits"</span>,
             model=<span class="s">"claude-sonnet-5"</span>,
         ),
     ):
-        <span class="fn">print</span>(message)  <span class="c"># streamed as Claude works, not just the final result</span>
+        <span class="fn">print</span>(message)
 
-asyncio.run(main())</pre>
+<span class="k">while</span> <span class="k">True</span>:
+    asyncio.run(check_and_investigate())
+    time.sleep(<span class="s">60</span>)  <span class="c"># check again in a minute, whether or not anyone's watching</span></pre>
     </div>
-    <p class="section-lede">Run it with <code class="mono">python agent.py</code> and it reads the file,
-    decides what's wrong, edits it, and stops — entirely on its own. The TypeScript SDK's
-    <code class="mono">query()</code> is the same shape: an async iterator you loop over with
-    <code class="mono">for await</code>.</p>
+    <p class="section-lede">Nothing here could be "just a prompt," because there's no moment where a person
+    is sitting at a keyboard to type one — the trigger is a metric crossing a line, not a person deciding to
+    ask. That's the actual dividing line between prompting Claude and building an agent: not how many tool
+    calls happen, but whether anyone needs to be present to kick it off.</p>
   </div>
 
   <div class="section" id="agents-the-building-blocks-under-the-one-liner">
