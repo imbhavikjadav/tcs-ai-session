@@ -3100,6 +3100,47 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
     </div>
   </div>
 
+  <div class="section" id="loop-a-live-score-site-all-four-blocks">
+    <div class="eyebrow">One real domain, all four blocks</div>
+    <h2>A live game-score website, mapped to all four blocks</h2>
+    <p class="section-lede">Not a coding-tool example — a real-world one. Say you run a website that
+    shows live scores for a sports league. During a match window, the score changes every few minutes and
+    the site needs to reflect that without anyone manually editing a page. Here's the same four blocks
+    from above, filled in for that exact job.</p>
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-num">1 · Trigger</div>
+        <h4>Every 2 minutes, only during live matches</h4>
+        <p>A <code class="mono">/loop</code> on a short fixed interval, active only inside each match's
+        actual start/end window — no point polling a score feed at 3am when nothing's being played.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">2 · Execution skill</div>
+        <h4><code class="mono">/update-scoreboard</code></h4>
+        <p>Reads the official score feed, compares it against what the site currently shows, and — only
+        if it actually changed — rewrites the scoreboard widget and pushes the update live.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">3 · Goal + verification</div>
+        <h4>The live page matches the real score, always</h4>
+        <p>Verified by re-fetching the official feed after every publish and confirming the number on the
+        site equals the number the feed reports — not "we published something," but "it's correct."</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">4 · Output + memory</div>
+        <h4>The published page, and the last-known score</h4>
+        <p>The output is the live scoreboard update itself. The memory is just the last score it already
+        published — so a quiet 2-minute check that finds nothing new costs almost nothing, instead of
+        re-publishing an identical page every single pass.</p>
+      </div>
+    </div>
+    <div class="callout le">
+      <strong>This is exactly why the trigger matters as its own decision.</strong> A live score genuinely
+      needs to update whether or not anyone has a laptop open watching it — which is a real, concrete
+      reason to reach for a cloud-based trigger rather than a session-bound one, covered next.
+    </div>
+  </div>
+
   <div class="section" id="loop-three-worked-examples">
     <div class="eyebrow">All four blocks, together</div>
     <h2>Three worked examples: a loop, a schedule, and a skill</h2>
@@ -3108,61 +3149,64 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
 
     <div class="code-block">
       <div class="code-head"><span>Example 1 — /loop, session-scoped, polling</span><span>trigger: time-based · runs while your session is open</span></div>
-      <pre><span class="c">// Trigger: fires every 15 minutes while this session stays open</span>
-<span class="c">// Skill called: /pr-review (the same skill shown above, saved once)</span>
-<span class="c">// Goal + verification: every open PR either has a review comment from</span>
-<span class="c">//   /pr-review, or is already merged — checked by re-listing open PRs</span>
-<span class="c">//   each pass and comparing against what was reviewed last time</span>
-<span class="c">// Output + memory: review comments posted on GitHub; a running note in</span>
-<span class="c">//   .claude/loop-notes/pr-review.md logs which PR numbers were already</span>
-<span class="c">//   handled, so a re-run never reviews the same PR twice</span>
+      <pre><span class="c">// Trigger: fires every 2 minutes while this session stays open, only</span>
+<span class="c">//   during each match's scheduled window</span>
+<span class="c">// Skill called: /update-scoreboard (the same skill from the diagram above)</span>
+<span class="c">// Goal + verification: the score shown on the live page matches the</span>
+<span class="c">//   official feed — checked by re-fetching the feed right after publish</span>
+<span class="c">// Output + memory: the scoreboard widget republished on change only; the</span>
+<span class="c">//   last-published score is remembered so an unchanged check is nearly free</span>
 
-/loop 15m check for any open pull request without a review comment yet.
-For each one, run /pr-review on it and post the result. Log every PR
-number you've handled in .claude/loop-notes/pr-review.md and skip
-anything already logged there.</pre>
+/loop 2m during today's match window, check the official score feed.
+If it differs from what's currently live, run /update-scoreboard to
+republish it. Skip the update entirely if nothing has changed since
+the last check.</pre>
     </div>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 2 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs whether or not your machine is on</span></div>
-      <pre><span class="c">// Trigger: a cloud routine, fires every day at 8am regardless of whether</span>
-<span class="c">//   any session is open or the machine is even on</span>
-<span class="c">// Skill called: /triage-issue — reads a new issue, assigns a label and</span>
-<span class="c">//   an urgency level using this repo's own labeling conventions</span>
-<span class="c">// Goal + verification: every issue opened since the last run has exactly</span>
-<span class="c">//   one urgency label; verified by re-listing unlabeled issues at the end</span>
-<span class="c">// Output + memory: labels applied directly on GitHub; a one-line summary</span>
-<span class="c">//   posted to Slack; the "last run" timestamp itself is the memory —</span>
-<span class="c">//   next run only looks at issues opened after it</span>
+      <div class="code-head"><span>Example 2 — /schedule, cloud-based, unattended</span><span>trigger: proactive · runs before every release, whether or not anyone's watching</span></div>
+      <pre><span class="c">// Trigger: a cloud routine, fires automatically as part of every release</span>
+<span class="c">//   — not on a person's clock, on the release pipeline's</span>
+<span class="c">// Skill called: /audit-prod-endpoints — reads every appsettings entry</span>
+<span class="c">//   for the Production environment and checks each service endpoint URL</span>
+<span class="c">// Goal + verification: zero Production endpoint URLs contain "np" or</span>
+<span class="c">//   "sandbox" — checked by scanning every config value, not sampling some</span>
+<span class="c">// Output + memory: a pass/fail release-block signal, plus a list of any</span>
+<span class="c">//   offending keys; a log of what was scanned each release, so a repeat</span>
+<span class="c">//   offender across releases is visible, not just this run's result</span>
 
-/schedule daily at 8am: check for issues opened since the last run,
-label each one using /triage-issue, and post a one-line summary of
-what was labeled to #eng-triage.</pre>
+/schedule before every release: run /audit-prod-endpoints against the
+Production appsettings config. Fail the release if any service
+endpoint URL contains "np" or "sandbox" — those are non-prod
+environment markers that should never appear in a Production config.
+List every offending key in the release notes.</pre>
     </div>
 
     <div class="code-block">
-      <div class="code-head"><span>Example 3 — the skill a loop actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
+      <div class="code-head"><span>Example 3 — the skill the release check actually calls</span><span>what block 2 looks like as a real, saved file</span></div>
       <pre><span class="c">---</span>
-<span class="c">name: triage-issue</span>
-<span class="c">description: Read a GitHub issue and assign it an urgency label based on</span>
-<span class="c">  this repo's own severity conventions. Use when triaging new issues.</span>
+<span class="c">name: audit-prod-endpoints</span>
+<span class="c">description: Scan the Production appsettings config for service endpoint</span>
+<span class="c">  URLs that still point at a non-prod environment. Use before any release</span>
+<span class="c">  to Production.</span>
 <span class="c">---</span>
 
-Read the issue title and body. Assign exactly one label:
-- urgent — breaks a core user flow, or affects production right now
-- normal — a real bug or request, no immediate breakage
-- low — a nice-to-have, typo, or question
+Read every key in the Production appsettings file whose value looks
+like a URL (contains "http://" or "https://", or ends in a known
+service-host suffix). For each one, check whether it contains the
+substring "np" or "sandbox" anywhere in the hostname.
 
-Also add a component label if the issue clearly names one (auth,
-billing, search). Never leave an issue with zero labels, and never
-apply more than one urgency label.</pre>
+If any match is found, treat this as a release-blocking failure —
+report the exact key name and the offending URL, never just a count.
+A clean scan with zero matches is the only passing result.</pre>
     </div>
 
     <div class="callout le">
-      <strong>Notice all three share the same four-block shape.</strong> Only the trigger changes —
-      session-bound polling, or a cloud schedule that runs with nobody watching. The skill and the
-      goal-plus-verification pattern underneath are the same discipline either way: do the work the same
-      deliberate way every time, and never call something done without actually checking.
+      <strong>Notice both loop examples share the same four-block shape.</strong> Only the trigger
+      changes — session-bound polling for the live scoreboard, a release-pipeline routine for the config
+      audit. The skill and the goal-plus-verification pattern underneath are the same discipline either
+      way: do the check the same deliberate way every time, and never call something safe without
+      actually scanning for it.
     </div>
   </div>
 </section>
