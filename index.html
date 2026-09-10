@@ -3194,6 +3194,55 @@ the expected result on every run.</pre>
       deliberate way every time, and never call something safe without actually scanning for it.
     </div>
   </div>
+
+  <div class="section" id="loop-the-ralph-technique">
+    <div class="eyebrow">A named technique built on this exact shape</div>
+    <h2>The Ralph technique — the same four blocks, running for hours</h2>
+    <p class="section-lede">Everything above is the general pattern. "Ralph" is a specific, named way of
+    running it — a real, documented technique (with an actual Anthropic-published plugin) for keeping
+    Claude Code working autonomously for hours at a stretch instead of one turn at a time. The name comes
+    from Ralph Wiggum, as a nod to the "keep trying regardless of setbacks" spirit behind it.</p>
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-num">1 · Trigger</div>
+        <h4>A loop that blocks its own exit</h4>
+        <p>The original version is a plain shell loop outside Claude Code, relaunching it with the same
+        prompt file each pass. A newer built-in version uses a <strong>Stop hook</strong> instead — it
+        intercepts the moment Claude tries to end its turn and, if the work isn't actually done, blocks
+        that exit and feeds the same prompt straight back in, all inside one continuous session.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">2 · Execution skill</div>
+        <h4>The same prompt file, every single pass</h4>
+        <p>Not a different instruction each round — the identical saved prompt, re-read fresh every
+        iteration. Consistency across dozens of passes is the point: the same deliberate instructions,
+        not a slightly different one each time.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">3 · Goal + verification</div>
+        <h4>A completion promise, not a vibe</h4>
+        <p>The loop keeps running until Claude explicitly outputs an agreed-upon signal — commonly the
+        literal word "complete" — when it judges the task genuinely finished. No completion promise, no
+        exit; a vague sense of "probably done" doesn't count, matching the same discipline as every goal
+        above needing a real, checkable end state.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">4 · Output + memory</div>
+        <h4>The file system itself is the memory</h4>
+        <p>Each iteration starts with a completely fresh context window — no conversation history carried
+        forward. Instead, Claude reads its own prior work straight off disk to figure out what's already
+        done and what's left, which is a far more literal version of "memory" than a log file: the
+        codebase on disk <em>is</em> the record of progress.</p>
+      </div>
+    </div>
+    <div class="callout le">
+      <strong>Ralph is best suited to well-scoped work with a genuinely checkable finish line</strong> —
+      greenfield builds with automated tests, a refactor with a clear target state, anything where "is
+      this actually done" can be verified mechanically rather than needing a person's judgment call at
+      every step. That's the same condition-one test from the top of this page, just applied to a loop
+      built to run unattended for hours instead of minutes.
+    </div>
+  </div>
 </section>
 
 <section id="panel-start" class="panel">
