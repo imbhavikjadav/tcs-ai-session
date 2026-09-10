@@ -3242,6 +3242,37 @@ the expected result on every run.</pre>
       every step. That's the same condition-one test from the top of this page, just applied to a loop
       built to run unattended for hours instead of minutes.
     </div>
+    <p class="section-lede">There are two real ways to actually run it — a built-in one inside Claude Code,
+    and the original raw version underneath it.</p>
+    <div class="code-block">
+      <div class="code-head"><span>Option 1 — the built-in plugin</span><span>Stop-hook version, same session</span></div>
+      <pre><span class="c">// One-time: add Anthropic's plugin marketplace, then install it</span>
+/plugin marketplace add anthropics/claude-code
+/plugin install ralph-wiggum@claude-code-plugins
+
+<span class="c">// Then, in any session — point it at a prompt and a completion promise</span>
+/ralph-loop "implement the CSV import feature per docs/csv-import-spec.md,
+with tests passing" --completion-promise "complete" --max-iterations 40</pre>
+    </div>
+    <p class="section-lede">This writes a small state file, then re-feeds that same prompt to itself every
+    time Claude tries to stop — inside one continuous session — until Claude actually outputs
+    <code class="mono">complete</code>, or the iteration cap is hit. The cap isn't optional polish; it's the
+    real safety net if the completion promise never fires.</p>
+    <div class="code-block">
+      <div class="code-head"><span>Option 2 — the original raw loop</span><span>plain shell, outside Claude Code entirely</span></div>
+      <pre><span class="c">// prompt.md holds the one instruction Claude re-reads every pass</span>
+<span class="c">// task list, done criteria, and "reply with COMPLETE when finished"</span>
+
+while true; do
+  cat prompt.md | claude -p --dangerously-skip-permissions
+  <span class="c">// each pass is a brand-new session -- no chat history carries over,</span>
+  <span class="c">// so prompt.md has to point Claude back at its own prior work on disk</span>
+done</pre>
+    </div>
+    <p class="section-lede">No Claude Code plugin involved — just a shell loop relaunching a fresh
+    <code class="mono">claude</code> process each pass, with the file system doing all the remembering. This
+    is the version the technique was named after, and it's still the one to reach for outside Claude Code
+    or in a CI box that just needs a loop, not a feature.</p>
   </div>
 </section>
 
