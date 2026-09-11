@@ -891,7 +891,11 @@
   .tool-card-name { font-weight: 700; font-size: 15.5px; color: var(--text); }
   .tool-card-maker { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
   .tool-card-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
-  .tool-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+  /* One tag per row rather than side-by-side — keeps every card's tag
+     block the same shape regardless of how short its two tags are,
+     instead of some cards wrapping to two rows and others fitting both
+     tags on one, which read as visually inconsistent card to card. */
+  .tool-card-tags { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-top: auto; padding-top: 4px; }
   .tool-card-tag {
     font-family: var(--font-mono);
     font-size: 10.5px;
