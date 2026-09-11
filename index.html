@@ -3219,6 +3219,122 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
     </div>
   </div>
 
+  <div class="section" id="loop-verifying-every-screenshot-on-this-very-site">
+    <div class="eyebrow">A loop that actually built this site</div>
+    <h2>Verifying every screenshot on this very site</h2>
+    <p class="section-lede">Not a hypothetical — this is the actual loop used to get the LegalClear and
+    FreightNexus screenshots on this site production-ready. The brief was simple to say and easy to get
+    wrong in practice: capture every real stage of both products' user journeys, with nothing broken in
+    frame — no sticky header or footer floating mid-screenshot, no field with text so long it wraps and
+    clips. A single capture pass never gets all of that right; this had to run, check itself, and fix its
+    own misses across several iterations.</p>
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-num">1 · Trigger</div>
+        <h4>Turn-based, run on demand inside the build session</h4>
+        <p>Not scheduled, not polling — a one-off, deliberately run each time the screenshot set needed a
+        pass, since this only needed to happen while the site's content was actively being built, not on an
+        ongoing cadence afterward.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">2 · Execution skill</div>
+        <h4><code class="mono">/capture-and-verify-screenshots</code></h4>
+        <p>Drives a real browser through both apps' full journeys, saves every screenshot to disk, then
+        inspects each one — page structure and pixels both — for the specific defects that actually kept
+        recurring.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">3 · Goal + verification</div>
+        <h4>Every stage captured, nothing broken in frame</h4>
+        <p>Two conditions, both checked mechanically: every journey stage from the shot list actually has a
+        file, and no file has a sticky header/footer overlapping content or a text field wrapped/clipped
+        from overflow.</p>
+      </div>
+      <div class="block-card">
+        <div class="block-num">4 · Output + memory</div>
+        <h4>The screenshot files, plus a running list of what still fails</h4>
+        <p>The output is the corrected screenshots themselves. The memory is a short list of which specific
+        files failed which specific check last pass — so the next pass fixes exactly those, instead of
+        re-auditing every screenshot from zero each time.</p>
+      </div>
+    </div>
+    <div class="callout le">
+      <strong>This is why verification had to be more than "does a file exist."</strong> A screenshot can be
+      technically present and still be wrong — a header stuck mid-frame, a long company name wrapping onto
+      three lines and covering the field below it. The goal only counts as met once both the coverage check
+      and the defect check pass together, which is exactly why this took several iterations instead of one.
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>.claude/skills/capture-and-verify-screenshots/SKILL.md</span><span>the real shape of the skill this loop calls</span></div>
+      <pre><span class="c">---</span>
+<span class="c">name: capture-and-verify-screenshots</span>
+<span class="c">description: Drive LegalClear and FreightNexus through their real user</span>
+<span class="c">  journeys in a headless browser, capture a screenshot at every listed</span>
+<span class="c">  stage, then verify each one against the shot list and a set of layout</span>
+<span class="c">  defect checks. Re-run for any stage that fails either check.</span>
+<span class="c">---</span>
+
+1. Read the shot list for whichever app is named in the prompt — every
+   stage of its journey that needs a screenshot (e.g. landing page,
+   sign-up wizard step by step, document upload, live streaming result,
+   final report, each admin/KYC screen). Treat this list as the
+   definition of "covered," not a suggestion.
+
+2. For each stage: navigate the real running app to that exact state,
+   wait for the page to finish loading and animating, then capture a
+   full-page screenshot to the project's screenshots folder using the
+   stage's exact filename from the shot list.
+
+3. After every stage is captured, open each screenshot and check it
+   against every one of these, specifically:
+   - Does a sticky header or footer overlap page content instead of
+     sitting cleanly at the top/bottom edge?
+   - Does any text field, badge, or label wrap onto extra lines or get
+     visually clipped because the content is longer than the layout
+     was sized for?
+   - Is the page in a genuinely finished state (no spinner, no
+     half-rendered skeleton, no cut-off animation mid-transition)?
+
+4. Any screenshot that fails a check goes on a retry list, tagged with
+   which specific check it failed. Do not silently re-capture everything
+   — only the stages that actually failed, and only re-check the
+   specific condition each one failed, not the entire checklist over
+   again for shots that already passed.
+
+5. Repeat step 2-4 for everything still on the retry list. Stop only
+   when the retry list is empty — every stage present, every one of
+   them clean.</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-head"><span>prompt.md — what actually got fed to the loop</span><span>the trigger + goal, in the exact words used</span></div>
+      <pre><span class="c">## Task</span>
+Run /capture-and-verify-screenshots for LegalClear and FreightNexus.
+
+<span class="c">## Definition of done</span>
+Every stage on both apps' shot lists has a real screenshot on disk, and
+every one of those screenshots is clean: no sticky header or footer
+sitting in the middle of the frame, and no field or label with text
+long enough to wrap or get clipped.
+
+<span class="c">## Verification</span>
+Don't just confirm a file exists at each path — actually look at each
+image. A screenshot that exists but has a floating header overlapping
+the page, or a company name wrapped onto three lines covering the
+field beneath it, still counts as a miss. Re-capture only what
+actually failed, and keep going until every single one is right.</pre>
+    </div>
+
+    <div class="callout le">
+      <strong>What this looked like in practice:</strong> the first pass caught most stages cleanly, but a
+      handful had the sticky topbar frozen mid-scroll into the shot, and a couple of longer company/document
+      names on FreightNexus's forms wrapped onto a second line and overlapped the field below. Those specific
+      shots — not the whole set — went back through capture-and-check again, and the loop kept going until
+      the retry list was actually empty, not just shorter.
+    </div>
+  </div>
+
   <div class="section" id="loop-a-schedule-and-the-skill-it-actually-calls">
     <div class="eyebrow">All four blocks, together</div>
     <h2>A schedule, and the skill it actually calls</h2>
