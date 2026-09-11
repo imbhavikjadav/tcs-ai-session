@@ -3429,11 +3429,12 @@ the expected result on every run.</pre>
 
   <div class="section" id="loop-the-ralph-technique">
     <div class="eyebrow">A named technique built on this exact shape</div>
-    <h2>The Ralph technique — the same four blocks, running for hours</h2>
+    <h2>The Ralph technique — the same four blocks, a different trigger mechanism</h2>
     <p class="section-lede">Everything above is the general pattern. "Ralph" is a specific, named way of
-    running it — a real, documented technique (with an actual Anthropic-published plugin) for keeping
-    Claude Code working autonomously for hours at a stretch instead of one turn at a time. The name comes
-    from Ralph Wiggum, as a nod to the "keep trying regardless of setbacks" spirit behind it.</p>
+    running it — a real, documented technique (with an actual Anthropic-published plugin) that keeps Claude
+    Code working on its own by intercepting its exit attempts, instead of waiting for a fresh trigger to
+    fire again. The name comes from Ralph Wiggum, as a nod to the "keep trying regardless of setbacks"
+    spirit behind it.</p>
     <div class="block-grid">
       <div class="block-card">
         <div class="block-num">1 · Trigger</div>
@@ -3472,7 +3473,8 @@ the expected result on every run.</pre>
       greenfield builds with automated tests, a refactor with a clear target state, anything where "is
       this actually done" can be verified mechanically rather than needing a person's judgment call at
       every step. That's the same condition-one test from the top of this page, just applied to a loop
-      built to run unattended for hours instead of minutes.
+      that keeps itself running through its own exit attempts instead of waiting on an external trigger to
+      fire again.
     </div>
     <p class="section-lede">There are two real ways to actually run it — a built-in one inside Claude Code,
     and the original raw version underneath it.</p>
