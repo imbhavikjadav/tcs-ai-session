@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presentation Cue Cards — tcs-ai-session</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗒️</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+  :root {
+    --ink: #F3F1EB;
+    --surface: #FBFAF6;
+    --card: #FFFFFF;
+    --border: #DDD8CB;
+    --border-soft: #E7E2D5;
+    --text: #1C2333;
+    --text-dim: #4B5468;
+    --text-faint: #7C8499;
+
+    --ov-accent: #2E7BC4;
+    --fn-accent: #0E9C8C;
+    --lc-accent: #C9821A;
+    --neutral-accent: #5A6B8C;
+    --le-accent: #7C5CD6;
+    --ag-accent: #D6437E;
+    --gs-accent: #5E9614;
+
+    --font-display: 'Space Grotesk', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #0B0F1A;
+      --surface: #0F1420;
+      --card: #161C2C;
+      --border: #2A3348;
+      --border-soft: #232B3E;
+      --text: #E7ECF5;
+      --text-dim: #9FADC4;
+      --text-faint: #6B7A96;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #0B0F1A;
+    --surface: #0F1420;
+    --card: #161C2C;
+    --border: #2A3348;
+    --border-soft: #232B3E;
+    --text: #E7ECF5;
+    --text-dim: #9FADC4;
+    --text-faint: #6B7A96;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: var(--font-mono); }
+
+  /* ===== Top controls (screen only) ===== */
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .controls .title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    margin-right: auto;
+    color: var(--text-dim);
+  }
+  .jump-btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12.5px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+  }
+  .jump-btn .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .print-btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--text);
+    color: var(--surface);
+    font-weight: 700;
+    font-size: 12.5px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* ===== Tab pages ===== */
+  .tabpage {
+    padding: 48px 40px 64px;
+    border-bottom: 8px solid var(--surface);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .tabpage-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+  .tabpage-head .num {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--text-faint);
+    font-weight: 600;
+  }
+  .tabpage-head h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .tabpage-sub {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin: 6px 0 30px;
+    max-width: 80ch;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .card .sec-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.25;
+  }
+  .card .gist {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin: 0 0 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border-soft);
+  }
+  .card ul {
+    margin: 0;
+    padding: 0 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card li {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+  .card li b, .card li strong { color: var(--text); }
+  .card li code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--text);
+  }
+
+  /* Full-bleed section-count strip per tab, purely informational */
+  .tab-meta {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-faint);
+    margin-bottom: 24px;
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    body { background: #fff; color: #111; }
+    .controls { display: none; }
+    .tabpage { break-after: page; border-bottom: none; padding: 24px 28px; max-width: none; }
+    .cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+    .card .gist { color: #000; }
+    .card li { color: #222; }
+    a[href]::after { content: none !important; }
+  }
+
+  @media (max-width: 720px) {
+    .cards { grid-template-columns: 1fr; }
+    .tabpage { padding: 36px 18px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <span class="title">tcs-ai-session — Cue Cards</span>
+  <a class="jump-btn" href="#tab-overview"><span class="dot" style="background:var(--ov-accent)"></span>Overview</a>
+  <a class="jump-btn" href="#tab-freightnexus"><span class="dot" style="background:var(--fn-accent)"></span>FreightNexus</a>
+  <a class="jump-btn" href="#tab-legalclear"><span class="dot" style="background:var(--lc-accent)"></span>LegalClear</a>
+  <a class="jump-btn" href="#tab-claude"><span class="dot" style="background:#8B96AE"></span>Claude Integration</a>
+  <a class="jump-btn" href="#tab-loop"><span class="dot" style="background:var(--le-accent)"></span>Loop Engineering</a>
+  <a class="jump-btn" href="#tab-agents"><span class="dot" style="background:var(--ag-accent)"></span>Agents</a>
+  <a class="jump-btn" href="#tab-start"><span class="dot" style="background:var(--gs-accent)"></span>Getting Started</a>
+  <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="tabpage" id="tab-overview" style="--accent:var(--ov-accent)">
+  <div class="tabpage-head"><span class="num">01</span><h1>Overview</h1></div>
+  <p class="tabpage-sub">The landing page. One job: set up the contrast between the two projects before anyone clicks a tab.</p>
+  <div class="tab-meta">1 section</div>
+  <div class="cards">
+    <div class="card">
+      <div class="sec-label">Hero</div>
+      <h3>Two projects, two totally different relationships with Claude</h3>
+      <p class="gist">This page exists to set up one contrast: Claude that <b>built</b> a product vs. Claude that <b>runs inside</b> a product.</p>
+      <ul>
+        <li>Say it plainly up front: <b>"Ideas, built and shipped"</b> — both built end-to-end with Claude Code.</li>
+        <li><b>FreightNexus</b> — pan-India trucking marketplace, 4 account types, KYC-gated, bid-based. Stack: Next.js 16, Supabase, shadcn/ui, RLS everywhere.</li>
+        <li><b>LegalClear</b> — upload a contract, Claude streams back a risk-flagged plain-English breakdown, generates a PDF, emails it. Stack: React+Vite, FastAPI, <code>claude-sonnet-4-5</code>, SSE streaming.</li>
+        <li>Land the punchline: FreightNexus has <b>zero</b> <code>anthropic</code> imports anywhere — Claude only at build time. LegalClear calls Claude <b>live on every single analysis</b> — take the API key away and the app has nothing left to sell.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FREIGHTNEXUS ============ -->
+<section class="tabpage" id="tab-freightnexus" style="--accent:var(--fn-accent)">
+  <div class="tabpage-head"><span class="num">02</span><h1>FreightNexus</h1></div>
+  <p class="tabpage-sub">Agent-built system — Claude Code wrote the whole thing from a 9-file spec. No LLM anywhere in the runtime path. 16 hours, idea to deployed v1.</p>
+  <div class="tab-meta">16 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">Summary</div>
+      <h3>What it is, and how fast it was built</h3>
+      <p class="gist">A pan-India truck tendering marketplace where shippers post shipments and drivers bid — built entirely by Claude Code, no LLM at runtime.</p>
+      <ul>
+        <li><b>16 hours</b> total build time, idea to deployed MVP.</li>
+        <li>Agentic, spec-driven — Claude Code authored a 9-file spec first.</li>
+        <li>It's a <b>bidding marketplace</b>, not dispatch — shipper picks the best bid, not the first responder.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Who's using it</div>
+      <h3>Four account types, plus an internal Admin</h3>
+      <p class="gist">Business Owner, Individual Owner-Driver, Fleet Owner, Fleet Driver — each a genuinely different workflow, not the same form with a label swap.</p>
+      <ul>
+        <li><b>Business Owner</b>: posts shipments, reviews bids, accepts, tracks, confirms payment, rates.</li>
+        <li><b>Individual Owner-Driver</b>: one login does KYC + truck registration + bidding + execution.</li>
+        <li><b>Fleet Owner</b> bids centrally, assigns truck+driver after winning; <b>Fleet Driver</b> is invite-only, never bids.</li>
+        <li><b>Admin</b> is provisioned directly in the DB — no public sign-up path.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Architecture</div>
+      <h3>One Postgres instance, no app server</h3>
+      <p class="gist">Next.js talks straight to Supabase Postgres — Row-Level Security enforces access at the database layer itself, not in app code.</p>
+      <ul>
+        <li>No dedicated backend — server actions/route handlers hit Supabase directly.</li>
+        <li>Every table is RLS-protected — the database refuses disallowed queries on its own.</li>
+        <li>External services (SendGrid, Google Maps, Vercel Cron) are called directly from Next.js.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Tech stack</div>
+      <h3>What it's actually built from</h3>
+      <p class="gist">Next.js 16.3 App Router + Tailwind/shadcn, Supabase (25+ tables), react-hook-form+Zod, Google Maps, react-pdf, Vercel Cron.</p>
+      <ul>
+        <li>UI generated via the <code>ui-ux-pro-max</code> skill into a master design system.</li>
+        <li>Storage for KYC docs/photos; Realtime for live GPS during transit.</li>
+        <li>Generated PDF is called "Trip Invoice," deliberately <b>never</b> an E-Way Bill.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Core mechanic</div>
+      <h3>A 14-status state machine runs every trip</h3>
+      <p class="gist">Every action is its own visible milestone — new → bid → deposit → transit → delivery → settlement → completed — not a hidden flag.</p>
+      <ul>
+        <li>Full chain: new → bid_accepted → deposit paid/confirmed → en route → pickup photos verified → in_transit → arrived → delivery photos verified → final expenses → final payment → completed.</li>
+        <li>Eligibility gates checked server-side <b>and</b> re-checked at bid time: permit, body type, capacity, document validity, verification.</li>
+        <li>Not escrow — payment is bank transfer/UPI off-platform entirely.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The live walkthrough</div>
+      <h3>One real trip, start to finish — TRP00062</h3>
+      <p class="gist">A genuine registered shipper (Bhavik) and driver (Akshay) run one real trip end to end, on production data, with real documents.</p>
+      <ul>
+        <li>Route: Memnagar (Ahmedabad) → Jewels Circle (Bhavnagar) — 2,800kg electronics, closed container.</li>
+        <li>Settlement: ₹19,000 freight + ₹1,500 allowance + ₹780 actual toll + ₹200 labor = <b>₹21,480 total</b>.</li>
+        <li>25% deposit (₹5,312.5) + final payment (₹16,167.5), both confirmed both sides, both rated 5 stars.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Registration + KYC</div>
+      <h3>Nobody skips the review queue</h3>
+      <p class="gist">Both accounts (and the truck) go through a genuine multi-step KYC wizard, then sit in a manual admin queue — no auto-approval anywhere.</p>
+      <ul>
+        <li>Bhavik: 4-step wizard, Aadhaar uploaded (only last 4 digits stored) → BSOW0057, "Pending Review."</li>
+        <li>Akshay: driver KYC + full truck sub-wizard (details, 5 documents, 4 photos) for GJ01AB1234.</li>
+        <li>Admin queue showed 8 pending items; cleared to 0 after real human review.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Posting → Bidding → Winning</div>
+      <h3>The marketplace mechanic, live</h3>
+      <p class="gist">Business owner posts via a 5-step wizard; the trip surfaces only to eligible drivers; Akshay bids, shipper reviews and accepts.</p>
+      <ul>
+        <li>Addresses always render as geocoded city/state — never a raw pincode.</li>
+        <li>Bid: ₹19,000 + ₹1,500 allowance + ₹750 est. toll = ₹21,250, status PENDING.</li>
+        <li>On acceptance, a 10-step Trip Actions checklist appears; deposit now due.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Execution</div>
+      <h3>Deposit → pickup → transit → delivery → settlement</h3>
+      <p class="gist">Every step needs proof — a bank transfer receipt, pickup photos, a sign-off form — before the trip can move to the next status.</p>
+      <ul>
+        <li>Shipper must verify pickup photos as a <b>blocking checkpoint</b> before in-transit.</li>
+        <li>In-transit correctly shows "Signal unavailable" as the honest empty state — no physical GPS tracker connected.</li>
+        <li>Toll trued up (est. ₹750 → actual ₹780) plus a ₹200 loading-labor expense, both with receipts.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Closing out</div>
+      <h3>Two-way confirmation, two real invoices</h3>
+      <p class="gist">Final payment needs the driver to see the shipper's proof before confirming — and two separate auto-generated PDF invoices exist for the whole lifecycle.</p>
+      <ul>
+        <li>On completion, all 14 milestones turn green and the rating widget appears — both rated 5 stars.</li>
+        <li><b>Trip Acceptance Invoice</b> generated instantly on bid acceptance.</li>
+        <li><b>Trip Completion Invoice</b> shows toll true-up, expenses, full status history, and the explicit "not an E-Way Bill" disclaimer.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LEGALCLEAR ============ -->
+<section class="tabpage" id="tab-legalclear" style="--accent:var(--lc-accent)">
+  <div class="tabpage-head"><span class="num">03</span><h1>LegalClear</h1></div>
+  <p class="tabpage-sub">Runtime AI product — every analysis is a live call to Claude. 7 hours, idea to deployed v1, now on v4 (streaming + caching).</p>
+  <div class="tab-meta">13 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">Summary</div>
+      <h3>A legal-document translator, live on Claude</h3>
+      <p class="gist">Paste or upload a document; Claude streams back a plain-English, risk-flagged breakdown — backed by a real, live API call every time.</p>
+      <ul>
+        <li><b>7 hours</b> total build time, MVP idea-to-deployed.</li>
+        <li>Built agentically, spec-driven — one scoped version at a time.</li>
+        <li>Live at <code>legalclear.duckdns.org</code>, on AWS EC2 free tier.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Request path</div>
+      <h3>Cache first, then Claude, streamed the whole way</h3>
+      <p class="gist">Every request checks a SQLite cache before ever reaching Claude — and Nginx buffering has to be off, or the stream just doesn't reach the browser.</p>
+      <ul>
+        <li>Browser → Nginx (<code>proxy_buffering off</code>) → FastAPI → SQLite cache check → Claude on a miss.</li>
+        <li>Cache key: <code>sha256(text)</code>, 90-day expiry.</li>
+        <li>SSE sequence: meta → sections → final.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Tech stack</div>
+      <h3>What it's actually built from</h3>
+      <p class="gist">React+Vite frontend, FastAPI backend, Anthropic Python SDK (sync + async), SQLite cache, ReportLab PDFs, SendGrid email, all on one EC2 box.</p>
+      <ul>
+        <li>Model used for every call: <code>claude-sonnet-4-5</code>.</li>
+        <li>Axios can't stream SSE — native <code>fetch</code>/<code>ReadableStream</code> used instead.</li>
+        <li>Host: AWS EC2 Ubuntu 22.04 t3.micro, behind Nginx.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Build history</div>
+      <h3>Four shipped versions, each scoped and additive</h3>
+      <p class="gist">v1 base → v2 streaming → v3 conciseness/UX → v4 caching — each was its own requirements doc fed to Claude Code.</p>
+      <ul>
+        <li>v2 had to disable Nginx buffering, or Nginx's default 60s timeout would kill a 5–10 min Claude call.</li>
+        <li>v3 imposed hard word ceilings (verdict: 20 words) — "should I be worried?" answerable in 10 seconds.</li>
+        <li>v4 cache hit = zero token cost, replayed with a deliberate 150ms per-section delay so it still <i>feels</i> like analysis.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Real documents</div>
+      <h3>A genuine lease, analysed live, no mock mode</h3>
+      <p class="gist">Every screenshot that follows is from the real production server hitting the real Claude API against a genuine UK tenancy agreement.</p>
+      <ul>
+        <li>Document: "AST — 37 Greyfriars Road," a real Assured Shorthold Tenancy.</li>
+        <li><code>TEST_MODE=false</code> — this is not the app's mock mode.</li>
+        <li>Both the source lease PDF and the 11-page generated report are open for direct preview/download.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The live run</div>
+      <h3>Paste it or upload it, then watch it stream</h3>
+      <p class="gist">Streaming begins ~9 seconds in with rotating status text, and section cards mount live as Claude works through all 35 sections.</p>
+      <ul>
+        <li>"Powered by Claude AI" badge on the landing page is literally, not just marketingly, true.</li>
+        <li>Progress bar and risk flags appear mid-stream, not after a long wait.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The result</div>
+      <h3>35 sections, tallied risk flags, a real verdict</h3>
+      <p class="gist">The finished report extracts 4 parties and tallies 9 HIGH + 20 MEDIUM + 6 NOTE flags — plus email and PDF-download actions afterward.</p>
+      <ul>
+        <li>"What to Watch Out For" panel surfaces the top HIGH-severity clauses specifically.</li>
+        <li>Post-analysis: email the report (SendGrid) or download the PDF (ReportLab) — both demoed live.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The $0/month problem</div>
+      <h3>Keeping a free-tier server alive — and controllable from a phone</h3>
+      <p class="gist">The 750-hour/month AWS free-tier allowance barely covers continuous uptime, which is why a custom mobile control panel exists.</p>
+      <ul>
+        <li>~730 hrs/month continuous use — almost no margin under the 750-hour cap.</li>
+        <li>DuckDNS + a Netlify maintenance-page fallback if the EC2 instance is stopped.</li>
+        <li>After 12 months: ~$7.50/month indefinitely, or move to Lightsail (~$3.50/mo).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">legalclear-control</div>
+      <h3>A pocket-sized on/off switch for a live AWS server</h3>
+      <p class="gist">A separate installable web app starts/stops the EC2 instance and repoints DNS from a phone — no laptop needed, no AWS SDK dependency.</p>
+      <ul>
+        <li>Hand-rolled AWS SigV4 request signing using only Node's built-in <code>crypto</code> — kept cold-start bundle tiny.</li>
+        <li>AWS credentials live only as Netlify env vars, never in shipped code; repo is private.</li>
+        <li>Installable to a phone home screen like a native app.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CLAUDE INTEGRATION ============ -->
+<section class="tabpage" id="tab-claude" style="--accent:#5A6B8C">
+  <div class="tabpage-head"><span class="num">04</span><h1>Claude Integration</h1></div>
+  <p class="tabpage-sub">A code-level deep dive into exactly how LegalClear talks to Claude. FreightNexus has no equivalent — it never calls the API at runtime.</p>
+  <div class="tab-meta">11 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">The endpoint</div>
+      <h3>"Calling Claude" is one HTTP POST</h3>
+      <p class="gist">Underneath the SDK, it's <code>POST /v1/messages</code> — adding <code>"stream": true</code> is the entire difference between a blocking call and SSE.</p>
+      <ul>
+        <li><code>model</code>: <code>claude-sonnet-4-5</code> — now a "legacy" model in Anthropic's lineup, but still what this integration calls.</li>
+        <li><code>max_tokens</code> is a ceiling, not a target — LegalClear sets 8192.</li>
+        <li><code>system</code> is a separate slot from <code>messages</code> — doesn't count as a conversational turn.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Two clients</div>
+      <h3>Sync and async, same model, both with a 30-min timeout</h3>
+      <p class="gist"><code>claude_service.py</code> (sync) and <code>stream_claude_service.py</code> (async) both target the same model, but serve different code paths.</p>
+      <ul>
+        <li>Both configure a 30-minute SDK timeout — a large document can genuinely take that long.</li>
+        <li>Hard truncation safeguard is 800,000 characters, not the 50,000 in the env template.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">System prompt</div>
+      <h3>Where the actual legal judgment lives</h3>
+      <p class="gist">One string carries the entire product's intelligence — 11 numbered rules plus hard word-count ceilings on every field.</p>
+      <ul>
+        <li>Rule 7: never soften a harmful clause. Rule 8: always flag arbitration, data-selling, auto-renewal, unilateral modification, liability waivers, jurisdiction.</li>
+        <li>Rule 9: never translate a clause in isolation — cross-reference dependent clauses. This is <b>why</b> chunking a huge doc loses quality.</li>
+        <li>Brevity: verdict ≤20 words, summary ≤25 words, risk explanation ≤15 words.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">No memory, ever</div>
+      <h3>Every call starts from zero — no RAG, no embeddings</h3>
+      <p class="gist">Each analysis is a cold, single-turn call: fixed system prompt + freshly rebuilt user message, every single time.</p>
+      <ul>
+        <li>Why no retrieval: rule 9 needs two far-apart clauses in context <b>simultaneously</b> — similarity search can't guarantee that.</li>
+        <li>Chunking (not retrieval) is the accepted trade-off for documents too large for one call.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Streaming parse</div>
+      <h3>Section-by-section, so there's always something to look at</h3>
+      <p class="gist">A 38-section lease takes Claude ~4 minutes — a blank screen that long "reads as broken, not thorough," so results appear from ~10 seconds in.</p>
+      <ul>
+        <li>Regex scans a growing buffer for complete <code>&lt;meta&gt;</code>/<code>&lt;section&gt;</code> tags, parses each, then drops consumed text.</li>
+        <li>A <code>heartbeat</code> event on every chunk keeps proxies from timing out mid-stream.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Defensive parsing</div>
+      <h3>Claude doesn't always return clean JSON — plan for it</h3>
+      <p class="gist">The non-streaming path strips fences, finds the outer braces, and gets exactly <b>one</b> retry if parsing still fails.</p>
+      <ul>
+        <li>Retry primes an assistant turn: "I will now return only the valid JSON object with no additional text:".</li>
+        <li>Distinct exceptions map to distinct failure paths — timeout vs. bad JSON are handled differently.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Chunking</div>
+      <h3>28,000 characters in, because of the 8,192-token ceiling out</h3>
+      <p class="gist">Two unrelated units — an empirically tested 28k-character input threshold keeps every output chunk under the 8,192-token cap.</p>
+      <ul>
+        <li>Chunk boundaries always prefer a newline, then a space — never a hard mid-word cut.</li>
+        <li>After merging: section IDs renumbered, risk counts <b>recomputed</b> from the real merged data (per-chunk self-counts are unreliable).</li>
+        <li>Party extraction is a separate, smaller call over just the first 120,000 characters.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Cache replay</div>
+      <h3>The instant result still has to feel like analysis</h3>
+      <p class="gist">A cache hit replays the exact same SSE event shape as a live run, with a deliberate 150ms delay per section — "instant would read as broken."</p>
+      <ul>
+        <li>A dedicated <code>cached</code> event triggers only the "⚡ Instant result" badge — everything else looks identical to a live call.</li>
+        <li>Cache failures are swallowed silently — a cache bug must never cause a user-facing error.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Error handling</div>
+      <h3>Three failure modes, three different messages</h3>
+      <p class="gist">API timeout, bad JSON, and a missing API key each get their own message — and the missing-key case deliberately doesn't leak that detail.</p>
+      <ul>
+        <li>Missing <code>ANTHROPIC_API_KEY</code> shows the <b>same</b> message as "API unavailable" — never reveals misconfiguration to users.</li>
+        <li>60-second client heartbeat timeout paired with a 5-second backend ping distinguishes "still thinking" from "connection died."</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The real bill</div>
+      <h3>The actual Anthropic Console, live spend and logs</h3>
+      <p class="gist">This isn't a hypothetical integration — here's the real account paying for it, with real token counts and real request logs.</p>
+      <ul>
+        <li>$23.87 in credits, 91K tokens over the last 7 days, at the time of capture.</li>
+        <li>Logs show individual <code>claude-sonnet-4-5</code> requests with input/output tokens and streaming flag.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LOOP ENGINEERING ============ -->
+<section class="tabpage" id="tab-loop" style="--accent:var(--le-accent)">
+  <div class="tabpage-head"><span class="num">05</span><h1>Loop Engineering</h1></div>
+  <p class="tabpage-sub">Not a product case study — a practical break from typing prompts one at a time toward saved, reusable, self-checking loops.</p>
+  <div class="tab-meta">9 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">The reframe</div>
+      <h3>Stop prompting Claude. Start looping it.</h3>
+      <p class="gist">A prompt runs once and stops. A loop is a small system — trigger, skill, goal, verification, memory — that runs attempt-check-repeat <i>for</i> you.</p>
+      <ul>
+        <li>Open with this line: you build the system once, instead of supplying the cycle by hand every message.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The filter</div>
+      <h3>Not every task deserves a loop</h3>
+      <p class="gist">Four conditions decide it — fail even one, and a plain one-off prompt is the right tool, not a loop.</p>
+      <ul>
+        <li>1: Does it <b>repeat</b>? 2: Is "done" clearly <b>defined</b>? 3: Can you afford the <b>token cost</b>? 4: Do the tools exist to <b>do</b> the work <i>and</i> <b>check</b> it?</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The framework</div>
+      <h3>Every working loop has all four building blocks</h3>
+      <p class="gist">Trigger, execution skills, goal+verification, output+memory — this is the mental model the rest of the tab hangs on.</p>
+      <ul>
+        <li><b>Memory</b> is the one almost everybody skips — flag this explicitly.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Triggers</div>
+      <h3>How a loop actually gets started — four real types</h3>
+      <p class="gist">Turn-based, <code>/goal</code>, <code>/loop</code>, and <code>/schedule</code> — real Claude Code syntax, not hypothetical.</p>
+      <ul>
+        <li><code>/goal</code>: a separate evaluator checks after each turn — met / impossible / turn-limit-hit.</li>
+        <li><code>/loop</code>: fixed or self-paced interval, auto-expires after <b>7 days</b>.</li>
+        <li><code>/schedule</code>: cloud Routines, no open session needed — triggered by calendar, API, or GitHub event.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Skills</div>
+      <h3>A loop without battle-tested skills just guesses</h3>
+      <p class="gist">A skill is a saved Markdown instruction file — it encodes judgment once so every invocation inherits the same standard.</p>
+      <ul>
+        <li>Example: <code>pr-review/SKILL.md</code> — 3 explicit rules, must conclude APPROVE/REQUEST CHANGES/COMMENT, never vague.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Goal + verification</div>
+      <h3>A goal with no way to check it is just a hope</h3>
+      <p class="gist">The hard part is bridging "abstract" to "verifiable" — especially for subjective, less-quantifiable tasks.</p>
+      <ul>
+        <li>For real judgment calls: use two separate agents (one drafts, a different one verifies) — never one agent grading its own work.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Worked example</div>
+      <h3>A live scoreboard, mapped to all four blocks</h3>
+      <p class="gist">Every 10 seconds during live matches, re-check the score; only republish if it changed — cheap, verifiable, and needs a cloud trigger.</p>
+      <ul>
+        <li>Memory = just the last published score, so an unchanged check costs almost nothing.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Worked example</div>
+      <h3>A <code>/schedule</code> + the skill it actually calls</h3>
+      <p class="gist">Every alternate Tuesday morning, audit Production config for "np"/"sandbox" endpoint keywords — a standing safety check, not a release gate.</p>
+      <ul>
+        <li>The skill reports the exact offending key + URL — never just a count.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The Ralph technique</div>
+      <h3>The same four blocks, running for hours unattended</h3>
+      <p class="gist">A real, Anthropic-published technique — a Stop hook blocks Claude's own exit and re-feeds the same prompt until a completion promise fires.</p>
+      <ul>
+        <li>Install: <code>/plugin install ralph-wiggum@claude-code-plugins</code>, then <code>/ralph-loop "..." --completion-promise "complete" --max-iterations 40</code>.</li>
+        <li>Memory = the file system itself — no chat history carries forward each pass, Claude re-reads its own prior work off disk.</li>
+        <li>Raw original version: <code>while true; do cat prompt.md | claude -p; done</code> — no plugin at all.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ AGENTS ============ -->
+<section class="tabpage" id="tab-agents" style="--accent:var(--ag-accent)">
+  <div class="tabpage-head"><span class="num">06</span><h1>Agents</h1></div>
+  <p class="tabpage-sub">One layer under Loop Engineering — building a standalone agent callable from your own code, not inside a Claude Code session.</p>
+  <div class="tab-meta">3 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">The three options</div>
+      <h3>Agent SDK vs. Tool Runner vs. Managed Agents</h3>
+      <p class="gist">Same rough shape, three different hosting/control trade-offs — pick based on how much infrastructure you want to own.</p>
+      <ul>
+        <li><b>Agent SDK</b>: Claude Code's full harness, self-hosted, full control.</li>
+        <li><b>Tool Runner</b>: a lighter loop over your own tools, still self-hosted.</li>
+        <li><b>Managed Agents</b>: Anthropic hosts the sandbox — best for long-running/scheduled work.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The real example</div>
+      <h3>An on-call agent — and why it can't just be a prompt</h3>
+      <p class="gist">It polls an error-rate metric on a timer and only investigates when it spikes — chosen specifically because no chat window is open at 3am.</p>
+      <ul>
+        <li>Anchor the whole tab on this line: <b>"couldn't this just be a prompt?"</b> Often yes — the real dividing line is whether a human needs to be present to type the trigger.</li>
+        <li>Code: <code>query()</code> + <code>ClaudeAgentOptions(allowed_tools=[...], permission_mode="acceptEdits")</code> inside a polling <code>while True</code> loop.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Decision guide</div>
+      <h3>Building blocks + picking the right one</h3>
+      <p class="gist">Tools, system prompt, permissions, and hooks are the same four concepts from Loop Engineering, just at the level of one agent process.</p>
+      <ul>
+        <li>Hooks here are literally the same mechanism as the Ralph Stop hook.</li>
+        <li>Rule of thumb: default to Agent SDK first; only step down or up from there.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ GETTING STARTED ============ -->
+<section class="tabpage" id="tab-start" style="--accent:var(--gs-accent)">
+  <div class="tabpage-head"><span class="num">07</span><h1>Getting Started</h1></div>
+  <p class="tabpage-sub">A practical, current map — not a ranking, since "best" changes month to month. Closes with the AI vs. AGI distinction.</p>
+  <div class="tab-meta">6 sections</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="sec-label">Framing</div>
+      <h3>Getting started building with AI</h3>
+      <p class="gist">Set the expectation up front: this is a map of what exists right now, not a permanent verdict.</p>
+      <ul><li>Explicitly not a case study, explicitly not a ranking.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Decision tree</div>
+      <h3>Which of these are you actually trying to do?</h3>
+      <p class="gist">Three different jobs point to three different tool categories — code-with-help, agent-as-product, or no-code workflow.</p>
+      <ul>
+        <li>Coding agents (Claude Code, Codex, Cursor...) vs. Agent frameworks (LangGraph, CrewAI...) vs. No-code (n8n).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The catalog</div>
+      <h3>Three categories, twelve tools</h3>
+      <p class="gist">A real, named roundup — not just Claude Code's own ecosystem, competitors included honestly.</p>
+      <ul>
+        <li>Codex (OpenAI) is Claude Code's closest direct sibling — same shape, different maker, multi-surface (ChatGPT/IDE/CLI).</li>
+        <li>Cursor: most broadly adopted individually. GitHub Copilot: largest install base overall.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The process</div>
+      <h3>Four steps, in order</h3>
+      <p class="gist">Pick one small real task → pick the matching tool category → write a scoped spec first → build in a verification step.</p>
+      <ul><li>Land this line: the four steps are the real leverage, not the fanciest tool.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">Where it runs</div>
+      <h3>Local vs. deployed — one deciding question</h3>
+      <p class="gist">"Does this need to happen even when my computer is off or asleep?" Yes → deploy it. No → local is simpler and free.</p>
+      <ul>
+        <li>LegalClear itself is the "agent inside a deployed app" example — runs 24/7 on EC2.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sec-label">The closer</div>
+      <h3>AI vs. AGI — a distinction worth getting right</h3>
+      <p class="gist">Everything on this whole site is narrow AI. The AI/AGI line is about generality, not intelligence level — and it's a live, unsettled argument right now.</p>
+      <ul>
+        <li>Being <b>agentic</b> (loops, hooks, hours of autonomy) isn't the same as being <b>general</b> — say this explicitly, it ties the whole site together.</li>
+        <li>Live case: <b>GPT-6 Astra</b> (OpenAI, Sept 2026) — real ARC-AGI-3 jump ~7.8%→98.6%, OpenAI's own president floated an AGI framing, Nvidia's CEO said AGI arrived.</li>
+        <li>The honest close: real capability jump, but "is this AGI" is genuinely contested — Ethan Mollick's "jagged AGI" framing, and OpenAI's own system card stopped short of claiming it.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
