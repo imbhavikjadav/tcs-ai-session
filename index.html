@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=1180">
 <title>Bhavik Jadav - Hobby Projects</title>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
@@ -136,7 +136,6 @@
     border-bottom: 1px solid var(--border);
   }
   .topbar-inner {
-    position: relative;
     max-width: 1180px;
     margin: 0 auto;
     padding: 14px 24px;
@@ -206,76 +205,6 @@
     border-radius: 50%;
     margin-right: 7px;
     vertical-align: middle;
-  }
-
-  /* Hamburger trigger — hidden by default (desktop shows the full tab
-     row inline); the breakpoint below flips this and .tabs so only one
-     of the two is ever visible at once. */
-  .nav-burger {
-    display: none;
-    appearance: none;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    width: 38px; height: 38px;
-    border-radius: 9px;
-    cursor: pointer;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-  }
-  .nav-burger svg { width: 18px; height: 18px; }
-
-  /* ===== Narrow-viewport nav: collapse the tab row behind a hamburger =====
-     Below this width the 6-item tab row plus the brand name genuinely
-     cannot fit on one line without either overflowing (cut-off tabs,
-     horizontal scroll trapped inside the header) or wrapping into a
-     cramped multi-row mess. Below the breakpoint, .tabs stops being an
-     inline row entirely and becomes a full-width dropdown panel that
-     only appears while .nav-burger is toggled open. */
-  @media (max-width: 860px) {
-    .nav-burger { display: flex; }
-    .tabs {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 16px;
-      right: 16px;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 4px;
-      padding: 8px;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.28);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-6px);
-      transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
-    }
-    .topbar-inner.nav-open .tabs {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    .tab { width: 100%; text-align: left; padding: 11px 14px; font-size: 13.5px; }
-    /* The Projects dropdown loses its hover/floating-menu behavior here
-       — on a touch panel it just becomes two more stacked, always-
-       visible rows, consistent with every other item in the open menu. */
-    .tab-dropdown-trigger { display: none; }
-    /* Two-class selector deliberately, not one — the base desktop rule
-       for .tab-dropdown-menu appears later in the stylesheet (it's part
-       of the Projects-dropdown block below), and same-specificity rules
-       are decided by source order, so a single-class override here would
-       silently lose to it even inside this media query. .topbar-inner
-       .tab-dropdown-menu outranks it regardless of order. */
-    .topbar-inner .tab-dropdown-menu {
-      position: static;
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-      box-shadow: none;
-      border: none;
-      padding: 0;
-      min-width: 0;
-    }
   }
 
   /* Projects dropdown — groups FreightNexus + LegalClear under one
@@ -1293,10 +1222,7 @@
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand"><span class="name">Bhavik Jadav</span> <span class="dot">|</span> <small>Hobby Projects</small></div>
-    <button class="nav-burger" id="navBurger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="tabsPanel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-    <div class="tabs" id="tabsPanel" role="tablist">
+    <div class="tabs" role="tablist">
       <button class="tab active" data-panel="overview" role="tab"><span class="tab-dot" style="background:var(--ov-accent)"></span>Overview</button>
       <div class="tab-dropdown" id="projectsDropdown">
         <button class="tab tab-dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">Projects<span class="tab-caret">▾</span></button>
@@ -4007,7 +3933,6 @@ export ANTHROPIC_API_KEY=your-api-key</pre>
       }
       buildSectionIndex(tab.dataset.panel);
       closeAllTabDropdowns();
-      closeMobileNav();
       // A tab picked from inside the Projects dropdown keeps keyboard
       // focus after the click, which alone would satisfy :focus-within
       // and leave the menu visibly open until the user clicks elsewhere.
@@ -4025,29 +3950,6 @@ export ANTHROPIC_API_KEY=your-api-key</pre>
     const saved = localStorage.getItem('tcs-ai-session-tab');
     if (saved) { const t = document.querySelector(`.tab[data-panel="${saved}"]`); if (t) t.click(); }
   } catch(e) {}
-
-  // Mobile nav — below 860px the tab row is hidden behind this hamburger
-  // (see the @media block in CSS) and only shown as a full-width dropdown
-  // panel while .topbar-inner carries .nav-open. Desktop never sees this
-  // button at all (display:none until the breakpoint), so this logic is
-  // inert there.
-  const navBurger = document.getElementById('navBurger');
-  const topbarInner = navBurger?.closest('.topbar-inner');
-  function closeMobileNav() {
-    topbarInner?.classList.remove('nav-open');
-    navBurger?.setAttribute('aria-expanded', 'false');
-  }
-  navBurger?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = topbarInner.classList.toggle('nav-open');
-    navBurger.setAttribute('aria-expanded', String(isOpen));
-  });
-  document.addEventListener('click', (e) => {
-    if (topbarInner?.classList.contains('nav-open') && !topbarInner.contains(e.target)) {
-      closeMobileNav();
-    }
-  });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobileNav(); });
 
   // Projects dropdown — hover-to-open on desktop is handled entirely by
   // CSS (:hover / :focus-within). This click handler is the fallback for
