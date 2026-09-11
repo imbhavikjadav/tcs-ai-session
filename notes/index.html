@@ -119,6 +119,10 @@
     border-bottom: 8px solid var(--surface);
     max-width: 1400px;
     margin: 0 auto;
+    /* Clears the sticky .controls bar (56px) plus real breathing room,
+       so jumping here via a nav pill never leaves the heading flush
+       against the bar with zero space above it. */
+    scroll-margin-top: 96px;
   }
   .tabpage-head {
     display: flex;
