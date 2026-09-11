@@ -817,6 +817,7 @@
     margin-top: 1px;
   }
   .condition-item.ag .cond-check { border-color: var(--ag-accent); color: var(--ag-accent); }
+  .condition-item.gs .cond-check { border-color: var(--gs-accent); color: var(--gs-accent); }
   .condition-item .cond-text { font-size: 14.5px; color: var(--text-dim); line-height: 1.55; }
   .condition-item .cond-text strong { color: var(--text); }
 
@@ -3818,6 +3819,53 @@ export ANTHROPIC_API_KEY=your-api-key</pre>
       my computer is off or asleep?" Yes → it has to be deployed somewhere. No → local is simpler, and
       free — don't reach for a cloud routine or a hosted server for something that only ever needs to run
       while you're already sitting there.
+    </div>
+  </div>
+
+  <div class="section" id="start-ai-vs-agi-a-distinction-worth-actually-getting-right">
+    <div class="eyebrow">A term that gets thrown around loosely</div>
+    <h2>AI vs. AGI — a distinction worth actually getting right</h2>
+    <p class="section-lede">Every tool, agent, and example on this entire site — Claude Code, the Agent
+    SDK, LegalClear, FreightNexus, all of it — is <strong>narrow AI</strong>. That's not a knock on any of
+    it; narrow AI is what every real, working AI system in production actually is today. <strong>AGI</strong>
+    is a different, still-hypothetical thing, and the difference isn't "how smart" — it's "how general."</p>
+    <div class="condition-list">
+      <div class="condition-item gs">
+        <div class="cond-check">1</div>
+        <div class="cond-text"><strong>Narrow AI does one kind of thing well.</strong> Claude writing code, a vision model reading X-rays, a chess engine, a recommendation feed — each genuinely capable, sometimes beyond human level, strictly inside its own lane. A model brilliant at code doesn't thereby know how to drive, and vice versa.</div>
+      </div>
+      <div class="condition-item gs">
+        <div class="cond-check">2</div>
+        <div class="cond-text"><strong>AGI would generalize the way a person does.</strong> Learn to cook, then learn to negotiate a lease, then learn a new job — using one underlying general intelligence, not a different specialized model retrained per domain. No AGI system exists yet, by any lab's own account.</div>
+      </div>
+      <div class="condition-item gs">
+        <div class="cond-check">3</div>
+        <div class="cond-text"><strong>Being agentic isn't the same as being general.</strong> Everything in this site's Agents tab — a loop that runs unattended for hours, a Stop hook, a scheduled cloud agent — is still narrow AI given a longer leash. Persistence and autonomy aren't generality; the model is still doing one class of task, just for longer, with less supervision.</div>
+      </div>
+    </div>
+
+    <p class="section-lede" style="margin-top:8px">The clearest way to see the line in practice is a real,
+    current example — one that's actively being argued about as this is written.</p>
+    <div class="callout gs">
+      <strong>GPT-6 Astra (OpenAI, released September 2026)</strong> is the sharpest real-world test case
+      for this whole distinction. OpenAI's own president called it a "generational leap" and floated that it
+      could eventually be seen as the arrival of AGI — pointing to a jump on the ARC-AGI-3 benchmark from
+      roughly 7.8% to 98.6% in about six months. Nvidia's CEO went further and said AGI had arrived.
+    </div>
+    <p class="section-lede">Independent researchers pushed back hard, and the pushback is the actually
+    useful part. The benchmark jump is real and substantial — nobody disputes that. What's disputed is
+    whether a benchmark score is the same thing as general intelligence: critics pointed to undisclosed test
+    settings, and AI researcher Ethan Mollick's framing stuck for a reason — today's best systems are
+    <strong>"jagged AGI"</strong>, meaningfully better than humans in some areas and clearly worse in others,
+    not a single across-the-board leap to human-style generality. OpenAI itself, notably, stopped short of
+    claiming Astra actually <em>is</em> AGI — that framing came from commentary around the launch, not the
+    model's own system card.</p>
+    <div class="callout">
+      <strong>The honest read:</strong> a genuine, verifiable capability jump happened. Whether that
+      constitutes AGI is a live, unsettled argument — not because the improvement isn't real, but because
+      there still isn't an agreed-upon test for what "general" actually has to mean before the label applies.
+      Treat any confident claim either way — including "AGI has arrived" and "AGI is nowhere close" — with
+      the same scrutiny you'd give a benchmark number without knowing what it measured.
     </div>
   </div>
 </section>
