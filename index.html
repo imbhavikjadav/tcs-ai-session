@@ -3326,6 +3326,16 @@ field beneath it, still counts as a miss. Re-capture only what
 actually failed, and keep going until every single one is right.</pre>
     </div>
 
+    <div class="code-block">
+      <div class="code-head"><span>The actual command that started it</span><span>skill + prompt.md, tied together with /loop</span></div>
+      <pre><span class="c">// Claude re-picks the delay itself between passes — no fixed interval</span>
+<span class="c">// makes sense here, since "how long until the next retry pass" depends</span>
+<span class="c">// entirely on how many screenshots just failed, not a clock</span>
+/loop using the capture-and-verify-screenshots skill, follow the task,
+definition of done, and verification steps in prompt.md exactly. Keep
+re-running until the retry list is empty.</pre>
+    </div>
+
     <div class="callout le">
       <strong>What this looked like in practice:</strong> the first pass caught most stages cleanly, but a
       handful had the sticky topbar frozen mid-scroll into the shot, and a couple of longer company/document
@@ -3503,6 +3513,24 @@ done</pre>
     <code class="mono">claude</code> process each pass, with the file system doing all the remembering. This
     is the version the technique was named after, and it's still the one to reach for outside Claude Code
     or in a CI box that just needs a loop, not a feature.</p>
+
+    <p class="section-lede">The same screenshot-verification skill from earlier in this tab works here too
+    — the only thing that changes going from a plain <code class="mono">/loop</code> to Ralph is the
+    stopping condition: a fixed word Claude has to actually say, instead of "the retry list is empty."</p>
+    <div class="code-block">
+      <div class="code-head"><span>The same skill and prompt, run as Ralph instead of /loop</span><span>same skill, same prompt.md, different stopping mechanism</span></div>
+      <pre><span class="c">// Once the plugin's installed, this points /ralph-loop at the exact same</span>
+<span class="c">// skill and prompt.md used earlier — the work doesn't change, only how</span>
+<span class="c">// the loop knows when to stop does</span>
+/ralph-loop using the capture-and-verify-screenshots skill, follow
+prompt.md exactly. Reply with "complete" only once every stage on both
+apps' shot lists has a screenshot, and every screenshot is clean.
+--completion-promise "complete" --max-iterations 15</pre>
+    </div>
+    <p class="section-lede">The <code class="mono">--max-iterations 15</code> cap matters here for a real
+    reason, not just as boilerplate: if a genuinely broken screenshot check kept the retry list non-empty
+    forever, this stops it from re-capturing the same failing shot in an unbounded loop instead of
+    eventually surfacing that something's actually wrong.</p>
   </div>
 </section>
 
