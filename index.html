@@ -3266,10 +3266,10 @@ clear verdict: APPROVE, REQUEST CHANGES, or COMMENT — never a vague
     </div>
 
     <p class="section-lede">"The shot list" isn't ambient knowledge Claude is expected to infer — it's a
-    plain file, written by hand once before the first run, that the skill reads every single pass. It's the
-    actual source of truth for what "every stage" means.</p>
+    plain file, generated once by Claude before the first capture pass and then treated as fixed, that the
+    skill reads every single pass afterward. It's the actual source of truth for what "every stage" means.</p>
     <div class="code-block">
-      <div class="code-head"><span>screenshots/legalclear/shot-list.md</span><span>written once, by hand — the skill only ever reads it</span></div>
+      <div class="code-head"><span>screenshots/legalclear/shot-list.md</span><span>generated once, up front — every later pass only reads it</span></div>
       <pre># LegalClear — required screenshots
 
 | Filename                          | Stage                                    |
